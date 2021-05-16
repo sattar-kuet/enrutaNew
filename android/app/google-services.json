@@ -1,0 +1,48 @@
+
+{
+  "project_info": {
+    "project_number": "653683245037",
+    "project_id": "enruta-10c43",
+    "storage_bucket": "enruta-10c43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653683245037:android:184f60812a6098f49131e4",
+        "android_client_info": {
+          "package_name": "com.example.enruta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653683245037-7mul4jf1tecamikmejnontvm678onjhf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.enruta",
+            "certificate_hash": "db336bad35c6425191b09456e28d5484efc9deda"
+          }
+        },
+        {
+          "client_id": "653683245037-mnktmsoop34bubmnnjie691bt4bc7go3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwNkBdbYPs-Y3tXWTaNUVCArLNJgoDmvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653683245037-mnktmsoop34bubmnnjie691bt4bc7go3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
