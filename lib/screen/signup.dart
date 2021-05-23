@@ -644,7 +644,8 @@ class _SignUpState extends State<SignUp> {
 
   void takePhoto(ImageSource source) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var image = await ImagePicker.pickImage(source: source);
+    var image = await ImagePicker.pickImage(
+        source: source, maxHeight: 400, maxWidth: 300);
     // final pickedFile = await _picker.getImage(
     //   source: source,
     // );
