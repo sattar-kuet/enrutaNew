@@ -5,7 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:enruta/model/Response.dart';
 import 'package:enruta/model/category_model.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
@@ -55,8 +57,21 @@ Future<Response> sendForm(
   }
 }
 
+Future<File> getImageFileFromAssets(String path) async {
+  final byteData = await rootBundle.load(path);
+
+  final file = File('${(await getTemporaryDirectory()).path}/dummy.png');
+  await file.writeAsBytes(byteData.buffer
+      .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+  return file;
+}
+
 Future<dynamic> registration(String name, String address, String email,
     String password, File _imageFile) async {
+  if (_imageFile == null) {
+    _imageFile = await getImageFileFromAssets("assets/images/group4320.png");
+  }
   var request = http.MultipartRequest(
       'POST', Uri.parse("http://enruta.itscholarbd.com/api/v2/signup"));
   print('path = $_imageFile');

@@ -54,6 +54,7 @@ class _SignUpState extends State<SignUp> {
   GoogleSignInAccount currentUser;
   PickedFile _imageFile;
   var imageF;
+  bool imagepassed = false;
   final ImagePicker _picker = ImagePicker();
 
   String message = '';
@@ -215,7 +216,7 @@ class _SignUpState extends State<SignUp> {
                               address,
                               email,
                               password,
-                              imageF == null ? imageF : File(imageF.path));
+                              !imagepassed ? null : File(imageF.path));
                           // var rsps=  await signUpWithImage(name, address, email, password,imageF);
                           // print("\n\nstatus:"+rsp['status'].toString());
                           if (rsp["status"] == 0) {
@@ -494,7 +495,7 @@ class _SignUpState extends State<SignUp> {
           color: Colors.grey.shade200,
           child: CircleAvatar(
             radius: 80.0,
-            backgroundImage: imageF == null
+            backgroundImage: !imagepassed
                 ? AssetImage("assets/images/group4320.png")
                 : FileImage(File(imageF.path)),
           ),
@@ -653,9 +654,11 @@ class _SignUpState extends State<SignUp> {
 
     setState(() {
       if (image != null) {
+        imagepassed = true;
         imageF = File(image.path);
         print('IMAGE PATH =$imageF');
       } else {
+        imagepassed = true;
         print('No image selected.');
       }
       // // _imageFile = pickedFile;
