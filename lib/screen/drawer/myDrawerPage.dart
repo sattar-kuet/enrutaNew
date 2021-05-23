@@ -20,7 +20,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
 
 class MyDrawerPage extends StatelessWidget {
-
   final language = Get.put(LanguageController());
   String text(String key) {
     return language.text(key);
@@ -70,19 +69,23 @@ class MyDrawerPage extends StatelessWidget {
                 child: Container(
                   // backgroundColor: theamColor,
                   child:
-                  // Image.network("https://lh4.googleusercontent.com/-MZPdSamrBIc/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclYi0TEz4rOxdXFBufUHhpleBeL2Q/s96-c/photo.jpg",
-                  // fit: BoxFit.fill,)
-                  Obx(()=> dController.pimage.value !=null ?
-                  ClipOval(
-                    child: Image.network(
-                      dController.pimage.value,
-                      fit: BoxFit.fill,
-                      errorBuilder:(BuildContext context, Object exception,
-                                  StackTrace stackTrace) {
-                                return Center(child: Image.asset('assets/icons/persono.png'),);
-                              } ,
-                    ),
-                  ):Image.asset('assets/icons/persono.png')),
+                      // Image.network("https://lh4.googleusercontent.com/-MZPdSamrBIc/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclYi0TEz4rOxdXFBufUHhpleBeL2Q/s96-c/photo.jpg",
+                      // fit: BoxFit.fill,)
+                      Obx(() => dController.pimage.value != null
+                          ? ClipOval(
+                              child: Image.network(
+                                dController.pimage.value,
+                                fit: BoxFit.fill,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace stackTrace) {
+                                  return Center(
+                                    child:
+                                        Image.asset('assets/icons/persono.png'),
+                                  );
+                                },
+                              ),
+                            )
+                          : Image.asset('assets/icons/persono.png')),
                   // Container(
                   //     // width: 52.0,
                   //     // height: 52.0,
@@ -94,19 +97,14 @@ class MyDrawerPage extends StatelessWidget {
                   //         )
                   //     )):Image.asset('assets/icons/persono.png')),
 
-
-
-
-                      // Image.network(dController.pimage.value, fit: BoxFit.fill,
-                      //     errorBuilder: (BuildContext context, Object exception,
-                      //         StackTrace stackTrace) {
-                      //       return Center(child: Image.asset('assets/icons/persono.png'),);
-                      //     }
-                      //
-                      //
-                      // ):Image.asset('assets/icons/persono.png'),)
-
-
+                  // Image.network(dController.pimage.value, fit: BoxFit.fill,
+                  //     errorBuilder: (BuildContext context, Object exception,
+                  //         StackTrace stackTrace) {
+                  //       return Center(child: Image.asset('assets/icons/persono.png'),);
+                  //     }
+                  //
+                  //
+                  // ):Image.asset('assets/icons/persono.png'),)
                 ),
               ),
             ),
@@ -320,58 +318,59 @@ class MyDrawerPage extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.only(left: 20),
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Icon(SvgPicture.asset("assets/icons/home.svg"))
-                    Container(
-                      height: 20,
-                      width: 40,
-                      margin: EdgeInsets.only(right: 30),
-                      child: SvgPicture.asset("assets/icons/support.svg"),
-                    ),
-                    Text(
-                      text('costumers_support'),
-                      style: TextStyle(
-                          fontFamily: "TTCommonsd",
-                          fontSize: 16,
-                          color: Color(Helper.getHexToInt("#8D92A3"))),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.only(left: 20),
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Icon(SvgPicture.asset("assets/icons/home.svg"))
-                    Container(
-                      height: 20,
-                      width: 40,
-                      margin: EdgeInsets.only(right: 30),
-                      child: SvgPicture.asset("assets/icons/shop.svg"),
-                    ),
-                    Text(
-                      text('register_a_business'),
-                      style: TextStyle(
-                          fontFamily: "TTCommonsd",
-                          fontSize: 16,
-                          color: Color(Helper.getHexToInt("#8D92A3"))),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {},
+            //   child: Container(
+            //     padding: EdgeInsets.only(left: 20),
+            //     height: 50,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         // Icon(SvgPicture.asset("assets/icons/home.svg"))
+            //         Container(
+            //           height: 20,
+            //           width: 40,
+            //           margin: EdgeInsets.only(right: 30),
+            //           child: SvgPicture.asset("assets/icons/support.svg"),
+            //         ),
+            //         Text(
+            //           text('costumers_support'),
+            //           style: TextStyle(
+            //               fontFamily: "TTCommonsd",
+            //               fontSize: 16,
+            //               color: Color(Helper.getHexToInt("#8D92A3"))),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // InkWell(
+            //   onTap: () {},
+            //   child: Container(
+            //     padding: EdgeInsets.only(left: 20),
+            //     height: 50,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         // Icon(SvgPicture.asset("assets/icons/home.svg"))
+            //         Container(
+            //           height: 20,
+            //           width: 40,
+            //           margin: EdgeInsets.only(right: 30),
+            //           child: SvgPicture.asset("assets/icons/shop.svg"),
+            //         ),
+            //         Text(
+            //           text('register_a_business'),
+            //           style: TextStyle(
+            //               fontFamily: "TTCommonsd",
+            //               fontSize: 16,
+            //               color: Color(Helper.getHexToInt("#8D92A3"))),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
             InkWell(
               onTap: () {
                 Navigator.pop(context);
@@ -411,6 +410,4 @@ class MyDrawerPage extends StatelessWidget {
   Future<void> handleSignOut() async {
     googleSignIn.disconnect();
   }
-
-
 }
