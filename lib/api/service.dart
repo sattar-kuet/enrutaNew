@@ -294,8 +294,10 @@ class Service {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json);
+
     if (response.statusCode == 200) {
       tController.spin.value = false;
+
       var p = PopularShop.fromJson(jsonDecode(response.body));
       return p;
     } else {

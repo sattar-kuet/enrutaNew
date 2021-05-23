@@ -150,8 +150,8 @@ class HomePage extends StatelessWidget {
                     child: Obx(
                       () => GridView.count(
                         crossAxisCount: 4,
-
-                        controller: new ScrollController(keepScrollOffset: false),
+                        controller:
+                            new ScrollController(keepScrollOffset: false),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         padding: EdgeInsets.all(15),
@@ -252,7 +252,8 @@ class HomePage extends StatelessWidget {
                               child: Container(
                                   margin: EdgeInsets.only(
                                       left: 10, bottom: 10, top: 10),
-                                  child: Text( text('what_s_new'),
+                                  child: Text(
+                                    text('what_s_new'),
                                     style: TextStyle(
                                         fontFamily: 'TTCommonsm',
                                         fontSize: 17,
@@ -273,8 +274,9 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Obx(() => tController.polularShopList.value.length > 0
- /**/                     ? Container(
+                  Obx(() => tController.polularShopList.value.length >
+                          0 //tController.polularShopList.value.length > 0
+                      /**/ ? Container(
                           padding: EdgeInsets.only(bottom: 50),
                           color: cardbackgroundColor,
                           child: Column(
@@ -285,7 +287,8 @@ class HomePage extends StatelessWidget {
                                     child: Container(
                                         margin: EdgeInsets.only(
                                             left: 20, bottom: 10, top: 20),
-                                        child: Text(text('popular_restaurants'),
+                                        child: Text(
+                                          text('popular_restaurants'),
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                               fontFamily: 'TTCommonsm',
@@ -299,7 +302,8 @@ class HomePage extends StatelessWidget {
                                   Container(
                                       margin: EdgeInsets.only(
                                           right: 20, bottom: 10, top: 20),
-                                      child: Text(text('view_all'),
+                                      child: Text(
+                                        text('view_all'),
                                         textAlign: TextAlign.end,
                                         style: TextStyle(
                                             fontFamily: 'TTCommonsm',
@@ -314,12 +318,13 @@ class HomePage extends StatelessWidget {
                               Container(
                                   width: MediaQuery.of(context).size.width - 10,
                                   child: Obx(
-                                    () =>
-                                    tController.polularShopList.value.length
-                                  > 0
+                                    () => tController
+                                                .polularShopList.value.length >
+                                            0
                                         ? GridView.count(
                                             crossAxisCount: 2,
-                                            controller: new ScrollController(keepScrollOffset: false),
+                                            controller: new ScrollController(
+                                                keepScrollOffset: false),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             childAspectRatio: 0.9,
@@ -329,10 +334,8 @@ class HomePage extends StatelessWidget {
                                                 right: 10,
                                                 left: 10),
                                             children: List.generate(
-                                                tController
-                                                    .polularShopList
-                                                    .value
-                                                    .length, (index) {
+                                                tController.polularShopList
+                                                    .value.length, (index) {
                                               return PopularShopListView(
                                                 itemData: tController
                                                     .polularShopList
@@ -344,13 +347,15 @@ class HomePage extends StatelessWidget {
                                   )),
                             ],
                           ),
-/**/                        )
+/**/
+                        )
                       : Container(
                           margin: EdgeInsets.all(40),
                           child: Center(
                               child: EmptyListWidget(
                                   title: text('no_restaurants'),
-                                  subTitle:text('no_popular_restaurants_available_yet'),
+                                  subTitle: text(
+                                      'no_popular_restaurants_available_yet'),
                                   // image: 'assets/images/userIcon.png',
                                   image: null,
                                   packageImage: PackageImage.Image_1,
@@ -444,7 +449,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Center(
-                  child: Text( text('your_order_placed_successfully'),
+                  child: Text(
+                    text('your_order_placed_successfully'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 24,
@@ -452,7 +458,8 @@ class HomePage extends StatelessWidget {
                         color: Color(Helper.getHexToInt("#959595"))),
                   ),
                 ),
-                Text(text('it_may_take_40_min_to_arrive'),
+                Text(
+                  text('it_may_take_40_min_to_arrive'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18,
@@ -484,7 +491,8 @@ class HomePage extends StatelessWidget {
                 Container(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(text('order_details'),
+                    child: Text(
+                      text('order_details'),
                       style: TextStyle(
                           fontSize: 18,
                           fontFamily: 'TTCommonsm',
@@ -502,7 +510,8 @@ class HomePage extends StatelessWidget {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(text('your_order_form'),
+                        child: Text(
+                          text('your_order_form'),
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontSize: 18,
