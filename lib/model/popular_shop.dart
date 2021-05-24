@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 
 PopularShop popularShopFromJson(String str) =>
     PopularShop.fromJson(json.decode(str));
@@ -59,6 +60,7 @@ class Datums {
   String address;
   String lat;
   String lng;
+  var isFavorite = false.obs;
 
   factory Datums.fromJson(Map<String, dynamic> json) => Datums(
         shopId: json["shopId"],

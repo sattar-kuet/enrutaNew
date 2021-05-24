@@ -130,7 +130,11 @@ class CategoryListView extends StatelessWidget {
                                       //   fav.remove(itemData);
                                       // }
                                       // pref.setStringList('FAV_List', fav);
-                                      Get.snackbar('ADD in Favourite', '');
+                                      itemData.isFavorite.value
+                                          ? Get.snackbar(
+                                              'Added in Favourites', '')
+                                          : Get.snackbar(
+                                              'Removed from Favourites', '');
                                     },
                                   ),
                                 )))),

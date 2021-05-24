@@ -1,10 +1,15 @@
+import 'package:enruta/controllers/productController.dart';
+import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/near_by_place_data.dart';
+import 'package:enruta/screen/homePage.dart';
+import 'package:enruta/screen/myFavorite/myFavorite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 
 import '../helper/helper.dart';
 
-class ItemListView extends StatelessWidget {
+class ItemListView extends StatefulWidget {
   const ItemListView(
       {Key key,
       this.itemData,
@@ -18,13 +23,16 @@ class ItemListView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
-//  Widget _bgCard(String titels, String imageicon, String info, String unit,
-//       bool loveicon) {
+  @override
+  _ItemListViewState createState() => _ItemListViewState();
+}
 
-//   }
-
+class _ItemListViewState extends State<ItemListView> {
   @override
   Widget build(BuildContext context) {
+    final tController = Get.put(TestController());
+    final pcontroller = Get.put(ProductController());
+    final controller = Get.find<TestController>();
     return Container(
       height: 255,
       width: 180,
@@ -52,7 +60,7 @@ class ItemListView extends StatelessWidget {
                     image: DecorationImage(
                       alignment: Alignment.center,
                       matchTextDirection: false,
-                      image: NetworkImage(itemData.logo),
+                      image: NetworkImage(widget.itemData.logo),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -86,7 +94,7 @@ class ItemListView extends StatelessWidget {
                               ),
                               // child: Center(
                               child: Text(
-                                itemData.name,
+                                widget.itemData.name,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontFamily: 'Poppinsr',
@@ -104,13 +112,32 @@ class ItemListView extends StatelessWidget {
                               child: Container(
                                   height: 25,
                                   width: 25,
-                                  color: itemData.favorite
+                                  color: widget.itemData.favorite
                                       ? Color(Helper.getHexToInt("#FFEEEE"))
                                       : Color(Helper.getHexToInt("#F9F9F9")),
                                   child: IconButton(
                                     padding: EdgeInsets.all(0),
-                                    onPressed: () {},
-                                    icon: itemData.favorite
+                                    onPressed: () async {
+                                      List fav = [];
+
+                                      pcontroller.sendfavorit(
+                                          widget.itemData.shopId, 0);
+                                      controller.getnearByPlace();
+                                      widget.itemData.isFavorite.toggle();
+
+                                      // SharedPreferences pref = await SharedPreferences.getInstance();
+                                      // if(itemData.isFavorite.value == true){
+                                      //   fav.add(itemData);
+                                      // }else{
+                                      //   fav.remove(itemData);
+                                      // }
+                                      // pref.setStringList('FAV_List', fav);
+
+                                      Get.snackbar(
+                                          'Removed from Favourites', '');
+                                      Get.offAll(HomePage());
+                                    },
+                                    icon: widget.itemData.favorite
                                         ? Icon(Icons.favorite,
                                             color: Color(
                                                 Helper.getHexToInt("#FF5A5A")),
@@ -156,7 +183,7 @@ class ItemListView extends StatelessWidget {
                           child: Container(
                             margin: EdgeInsets.only(left: 7),
                             child: RatingBar(
-                              initialRating: itemData.rating,
+                              initialRating: widget.itemData.rating,
 
                               // minRating: 1,
                               direction: Axis.horizontal,
@@ -171,7 +198,7 @@ class ItemListView extends StatelessWidget {
                               ),
 
                               onRatingUpdate: (rating) {
-                                print(itemData.rating);
+                                print(widget.itemData.rating);
                               },
                             ),
                           ),
@@ -184,7 +211,7 @@ class ItemListView extends StatelessWidget {
                           padding: EdgeInsets.only(right: 10),
                           child: Text(
                             // '8888522 Reviews',
-                            ' ${itemData.rating} Reviews',
+                            ' ${widget.itemData.rating} Reviews',
                             style: TextStyle(
                                 fontFamily: 'TTCommonsd',
                                 fontSize: 11,
@@ -204,7 +231,7 @@ class ItemListView extends StatelessWidget {
               left: 10,
               right: 10,
               child: Text(
-                itemData.name,
+                widget.itemData.name,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: 'TTCommonsr',

@@ -312,16 +312,22 @@ class HomePage extends StatelessWidget {
                                       Container(
                                           margin: EdgeInsets.only(
                                               right: 20, bottom: 10, top: 20),
-                                          child: Text(
-                                            text('view_all'),
-                                            textAlign: TextAlign.end,
-                                            style: TextStyle(
-                                                fontFamily: 'TTCommonsm',
-                                                fontSize: 17,
-                                                color: Color(Helper.getHexToInt(
-                                                        "#11C4A1"))
-                                                    .withOpacity(1)),
-                                          )),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              tController.getPopularOrder();
+                                            },
+                                            icon: Icon(Icons.refresh),
+                                          ))
+                                      // child: Text(
+                                      //   text('Reload'),
+                                      //   textAlign: TextAlign.end,
+                                      //   style: TextStyle(
+                                      //       fontFamily: 'TTCommonsm',
+                                      //       fontSize: 17,
+                                      //       color: Color(Helper.getHexToInt(
+                                      //               "#11C4A1"))
+                                      //           .withOpacity(1)),
+                                      // )),
                                       // )
                                     ],
                                   ),

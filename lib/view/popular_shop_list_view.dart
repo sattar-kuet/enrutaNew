@@ -1,4 +1,3 @@
-import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/model/popular_shop.dart';
 import 'package:enruta/screen/menuandreviewpage.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,6 @@ class PopularShopListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 255,
       width: 180,
@@ -38,14 +36,15 @@ class PopularShopListView extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => MenuAndReviewPage(
-                  itemData.shopId,
-                  itemData.vat.toInt(),
-                  itemData.deliveryCharge,
-                  itemData.name,
-                  itemData.address
-              )));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MenuAndReviewPage(
+                      itemData.shopId,
+                      itemData.vat.toInt(),
+                      itemData.deliveryCharge,
+                      itemData.name,
+                      itemData.address)));
         },
         child: Stack(
           children: [
@@ -61,7 +60,8 @@ class PopularShopListView extends StatelessWidget {
                     image: DecorationImage(
                       alignment: Alignment.center,
                       matchTextDirection: false,
-                      image: NetworkImage(itemData.logo),//AssetImage(itemData.logo),
+                      image: NetworkImage(
+                          itemData.logo), //AssetImage(itemData.logo),
                       fit: BoxFit.contain,
                     ),
                   ),

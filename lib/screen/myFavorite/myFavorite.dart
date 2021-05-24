@@ -106,8 +106,8 @@ class MyFavorite extends StatelessWidget {
                       fontSize: 14,
                       color: Color(Helper.getHexToInt("#22242A"))),
                 )),
-            Expanded(
-              child: Container(
+            Expanded(child: Obx(() {
+              return Container(
                 height: 150,
                 decoration: BoxDecoration(),
                 child: GridView.builder(
@@ -124,8 +124,8 @@ class MyFavorite extends StatelessWidget {
                         itemData: itemList[index],
                       );
                     }),
-              ),
-            ),
+              );
+            })),
           ],
         ),
       ),
