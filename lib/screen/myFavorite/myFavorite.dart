@@ -24,7 +24,7 @@ class MyFavorite extends StatelessWidget {
     if (itemList.isEmpty == true) {
       tController.getnearByPlace();
       // itemList.refresh();
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         if (u.favorite == true) {
           print('loop = = $u');
           itemList.add(u);
@@ -33,8 +33,10 @@ class MyFavorite extends StatelessWidget {
     } else {
       //  tController.getPopularOrder();
       //itemList.refresh();
+      tController.getnearByPlace();
       itemList.clear();
-      tController.datum.forEach((u) {
+
+      tController.nearbyres.forEach((u) {
         if (u.favorite == true) {
           print('loop = = $u');
           itemList.add(u);

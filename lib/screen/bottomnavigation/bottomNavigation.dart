@@ -1,4 +1,5 @@
 import 'package:enruta/controllers/language_controller.dart';
+import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/bottomnavigation/bottomController.dart';
 import 'package:enruta/screen/homePage.dart';
@@ -40,6 +41,7 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     int currentScrreen = 0;
     final bottomController = Get.put(BottomController());
+    final controller = Get.find<TestController>();
 
     void onTabTapped(int index) {
       print(index);
@@ -55,10 +57,12 @@ class BottomNavigation extends StatelessWidget {
         if (bottomController.curentPage.value == 0) {
           print(currentScrreen);
           bottomController.curentPage.value = 1;
+          controller.getPopularShops();
           Get.offAll(HomePage());
         }
       } else if (index == 1) {
         print("one");
+
         Get.to(MyFavorite());
       } else if (index == 2) {
         // if (currentScrreen != index) {

@@ -21,7 +21,7 @@ class SearchController extends GetxController {
 
   @override
   void onInit() {
-    cartLists.value = Get.find<TestController>().datum.toList();
+    cartLists.value = Get.find<TestController>().nearbyres.toList();
   }
 
   void clearFilter() {
@@ -40,12 +40,12 @@ class SearchController extends GetxController {
     final tController = Get.put(TestController());
 
     if (itemList.isEmpty == true) {
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         itemList.add(u);
       });
     } else {
       itemList.clear();
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         itemList.add(u);
       });
     }
@@ -70,12 +70,12 @@ class SearchController extends GetxController {
     final tController = Get.put(TestController());
 
     if (itemList.isEmpty == true) {
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         itemList.add(u);
       });
     } else {
       itemList.clear();
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         itemList.add(u);
       });
     }

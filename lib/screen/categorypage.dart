@@ -46,7 +46,7 @@ class _CategoryPageState extends State<CategoryPage> {
     if (itemList.isEmpty == true) {
       tController.getnearByPlace();
       // itemList.refresh();
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         print('loop = = $u');
         itemList.add(u);
       });
@@ -54,7 +54,7 @@ class _CategoryPageState extends State<CategoryPage> {
       //  tController.getPopularOrder();
       //itemList.refresh();
       itemList.clear();
-      tController.datum.forEach((u) {
+      tController.nearbyres.forEach((u) {
         itemList.add(u);
       });
     }

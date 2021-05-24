@@ -6,8 +6,8 @@ import 'package:enruta/model/Response.dart';
 import 'package:enruta/model/category_model.dart';
 import 'package:enruta/screen/login.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart' as g;
+import 'package:get_storage/get_storage.dart' as gs;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
@@ -43,11 +43,11 @@ Future<Response> sendForm(
     var convertedDatatojson = jsonDecode(response.toString());
     var a = convertedDatatojson["status"];
     if (a == 1) {
-      Get.snackbar("Wellcome", "Registration  success");
-      Get.offAll(LoginPage());
+      g.Get.snackbar("Wellcome", "Registration  success");
+      g.Get.offAll(LoginPage());
       return response;
     } else {
-      Get.snackbar(" ", "Something wrong");
+      g.Get.snackbar(" ", "Something wrong");
     }
     return response;
 
@@ -60,7 +60,7 @@ Future<Response> sendForm(
 Future<File> getImageFileFromAssets(String path) async {
   final byteData = await rootBundle.load(path);
 
-  final file = File('${(await getTemporaryDirectory()).path}/dummy.png');
+  final file = File('${(await gs.getTemporaryDirectory()).path}/dummy.png');
   await file.writeAsBytes(byteData.buffer
       .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 

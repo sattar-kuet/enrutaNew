@@ -103,7 +103,7 @@ class CurentOrderController extends GetxController {
       if (lat > 0) {
         isLoading(true);
         await Future.delayed(Duration(seconds: 1));
-        Service.getPopularOrder(id, lat, lo).then((values) {
+        Service.getPopularShop(id, lat, lo).then((values) {
           if (!values.isNull) {
             polularShopList.value = values.data.toList();
           }

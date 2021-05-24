@@ -121,7 +121,7 @@ class CategoryListView extends StatelessWidget {
                                       print(' STATUS ==${itemData.shopId}');
                                       pcontroller.sendfavorit(
                                           itemData.shopId, status);
-                                      controller.getnearByPlace();
+
                                       itemData.isFavorite.toggle();
                                       // SharedPreferences pref = await SharedPreferences.getInstance();
                                       // if(itemData.isFavorite.value == true){
@@ -130,6 +130,8 @@ class CategoryListView extends StatelessWidget {
                                       //   fav.remove(itemData);
                                       // }
                                       // pref.setStringList('FAV_List', fav);
+                                      controller.getnearByPlace();
+
                                       itemData.isFavorite.value
                                           ? Get.snackbar(
                                               'Added in Favourites', '')

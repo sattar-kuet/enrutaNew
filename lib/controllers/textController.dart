@@ -11,7 +11,7 @@ class TestController extends GetxController {
   static const String url = 'http://enruta.itscholarbd.com/api/v2/categories';
 
   var category = List<Category>().obs;
-  var datum = List<Datum>().obs;
+  var nearbyres = List<Datum>().obs;
   var polularShopList = List<Datums>().obs;
 
   final address = ''.obs;
@@ -54,7 +54,7 @@ class TestController extends GetxController {
     }
   }
 
-  getPopularOrder() async {
+  getPopularShops() async {
     SharedPreferences spreferences = await SharedPreferences.getInstance();
     orderiscoming(true);
     var id = spreferences.getInt("id");
@@ -66,14 +66,15 @@ class TestController extends GetxController {
       isLoading(true);
 
       //await Future.delayed(Duration(seconds: 1));
-      await Service.getPopularOrder(id, lat, lo).then((values) {
+      await Service.getPopularShop(id, lat, lo).then((values) {
         // if(!values.isNull){
         //   polularShopList.value = values.data.toList();
         // }
         st.value = values.status;
-        print("$id from getpopularorder ");
+        print("$id from getpopularshop ");
 
         polularShopList.value = values.data.toList();
+        //print(polularShopList[1]);
 
         // if(polularShopList.value.length>0){
         //   curentOrder.value = polularShopList.value[0];
@@ -98,8 +99,8 @@ class TestController extends GetxController {
     var lo = userlong.value;
     Service.createAlbum(userid, lat, lo).then((values) {
       st.value = values.status;
-      datum.value = values.data;
-      print(datum);
+      nearbyres.value = values.data;
+      print("nearby $nearbyres");
     });
   }
 
@@ -117,10 +118,10 @@ class TestController extends GetxController {
 
     print(address);
     getnearByPlace();
-    getPopularOrder();
+    getPopularShops();
   }
 }
-//this the problem//
+//Popular and nearby issue//
 
 ///////////////////*****************************//////////////////////// */
 /////////////////////***************************//////////////////////

@@ -1,3 +1,4 @@
+import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/category_model.dart';
 import 'package:enruta/screen/categorypage.dart';
@@ -19,6 +20,7 @@ class MenuItemView extends StatelessWidget {
   final Animation<dynamic> animation;
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<TestController>();
     return Container(
       child: InkWell(
         hoverColor: Color(Helper.getHexToInt("#11C4A1")),

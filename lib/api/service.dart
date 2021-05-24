@@ -12,7 +12,7 @@ import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/orerder/orderDetailsModel.dart';
 import 'package:enruta/screen/promotion/offerModel.dart';
 import 'package:enruta/screen/voucher/voucher_model.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as g;
 import 'package:http/http.dart' as http;
 
 class Service {
@@ -156,7 +156,7 @@ class Service {
         body: jsonEncode(<String, String>{}),
       );
       if (response.statusCode == 200) {
-        print(response.body);
+        //print(response.body);
         return OfferModel.fromJson(jsonDecode(response.body));
       } else {
         print("data null");
@@ -284,11 +284,10 @@ class Service {
     }
   }
 
-  static Future<PopularShop> getPopularOrder(
-      var userId, var lat, var lo) async {
-    Get.put(TestController());
+  static Future<PopularShop> getPopularShop(var userId, var lat, var lo) async {
+    g.Get.put(TestController());
     print("Get popular whenComplete");
-    final tController = Get.find<TestController>();
+    final tController = g.Get.find<TestController>();
     String json = '{"user_id": $userId, "lat": $lat, "lng": $lo}';
     tController.spin.value = true;
     print("User id $userId");
@@ -298,6 +297,8 @@ class Service {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json);
+
+    print(response.body);
     print("${response.statusCode} response status");
 
     if (response.statusCode == 200) {

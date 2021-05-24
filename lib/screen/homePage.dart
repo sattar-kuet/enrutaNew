@@ -314,7 +314,7 @@ class HomePage extends StatelessWidget {
                                               right: 20, bottom: 10, top: 20),
                                           child: IconButton(
                                             onPressed: () {
-                                              tController.getPopularOrder();
+                                              tController.getPopularShops();
                                             },
                                             icon: Icon(Icons.refresh),
                                           ))
