@@ -274,102 +274,116 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Obx(() => tController.polularShopList.value.length >
-                          0 //tController.polularShopList.value.length > 0
-                      /**/ ? Container(
-                          padding: EdgeInsets.only(bottom: 50),
-                          color: cardbackgroundColor,
-                          child: Column(
-                            children: [
-                              Row(
+                  Obx(() {
+                    if (tController.orderiscoming.value)
+                      return Container(
+                        height: 200,
+                        child: Center(
+                          child: Container(child: CircularProgressIndicator()),
+                        ),
+                      );
+                    else
+                      return tController.polularShopList
+                              .isNotEmpty //tController.polularShopList.value.length > 0
+                          /**/ ? Container(
+                              padding: EdgeInsets.only(bottom: 50),
+                              color: cardbackgroundColor,
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                        margin: EdgeInsets.only(
-                                            left: 20, bottom: 10, top: 20),
-                                        child: Text(
-                                          text('popular_restaurants'),
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontFamily: 'TTCommonsm',
-                                              fontSize: 17,
-                                              color: Color(Helper.getHexToInt(
-                                                      "#000000"))
-                                                  .withOpacity(0.8)),
-                                        )),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                            margin: EdgeInsets.only(
+                                                left: 20, bottom: 10, top: 20),
+                                            child: Text(
+                                              text('popular_restaurants'),
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontFamily: 'TTCommonsm',
+                                                  fontSize: 17,
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#000000"))
+                                                      .withOpacity(0.8)),
+                                            )),
+                                      ),
+                                      // Expanded(
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                              right: 20, bottom: 10, top: 20),
+                                          child: Text(
+                                            text('view_all'),
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                                fontFamily: 'TTCommonsm',
+                                                fontSize: 17,
+                                                color: Color(Helper.getHexToInt(
+                                                        "#11C4A1"))
+                                                    .withOpacity(1)),
+                                          )),
+                                      // )
+                                    ],
                                   ),
-                                  // Expanded(
                                   Container(
-                                      margin: EdgeInsets.only(
-                                          right: 20, bottom: 10, top: 20),
-                                      child: Text(
-                                        text('view_all'),
-                                        textAlign: TextAlign.end,
-                                        style: TextStyle(
-                                            fontFamily: 'TTCommonsm',
-                                            fontSize: 17,
-                                            color: Color(Helper.getHexToInt(
-                                                    "#11C4A1"))
-                                                .withOpacity(1)),
+                                      width: MediaQuery.of(context).size.width -
+                                          10,
+                                      child: Obx(
+                                        () => tController.polularShopList.value
+                                                    .length >
+                                                0
+                                            ? GridView.count(
+                                                crossAxisCount: 2,
+                                                controller:
+                                                    new ScrollController(
+                                                        keepScrollOffset:
+                                                            false),
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                childAspectRatio: 0.9,
+                                                padding: EdgeInsets.only(
+                                                    top: 10,
+                                                    bottom: 10,
+                                                    right: 10,
+                                                    left: 10),
+                                                children: List.generate(
+                                                    tController.polularShopList
+                                                        .value.length, (index) {
+                                                  return PopularShopListView(
+                                                    itemData: tController
+                                                        .polularShopList
+                                                        .value[index],
+                                                  );
+                                                }),
+                                              )
+                                            : Text(""),
                                       )),
-                                  // )
                                 ],
                               ),
-                              Container(
-                                  width: MediaQuery.of(context).size.width - 10,
-                                  child: Obx(
-                                    () => tController
-                                                .polularShopList.value.length >
-                                            0
-                                        ? GridView.count(
-                                            crossAxisCount: 2,
-                                            controller: new ScrollController(
-                                                keepScrollOffset: false),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            childAspectRatio: 0.9,
-                                            padding: EdgeInsets.only(
-                                                top: 10,
-                                                bottom: 10,
-                                                right: 10,
-                                                left: 10),
-                                            children: List.generate(
-                                                tController.polularShopList
-                                                    .value.length, (index) {
-                                              return PopularShopListView(
-                                                itemData: tController
-                                                    .polularShopList
-                                                    .value[index],
-                                              );
-                                            }),
-                                          )
-                                        : Text(""),
-                                  )),
-                            ],
-                          ),
 /**/
-                        )
-                      : Container(
-                          margin: EdgeInsets.all(40),
-                          child: Center(
-                              child: EmptyListWidget(
-                                  title: text('no_restaurants'),
-                                  subTitle: text(
-                                      'no_popular_restaurants_available_yet'),
-                                  // image: 'assets/images/userIcon.png',
-                                  image: null,
-                                  packageImage: PackageImage.Image_1,
-                                  titleTextStyle: Theme.of(context)
-                                      .typography
-                                      .dense
-                                      .display1
-                                      .copyWith(color: Color(0xff9da9c7)),
-                                  subtitleTextStyle: Theme.of(context)
-                                      .typography
-                                      .dense
-                                      .body2
-                                      .copyWith(color: Color(0xffabb8d6)))),
-                        ))
+                            )
+                          : Container(
+                              margin: EdgeInsets.all(40),
+                              child: Center(
+                                  child: EmptyListWidget(
+                                      title: text('no_restaurants'),
+                                      subTitle: text(
+                                          'no_popular_restaurants_available_yet'),
+                                      // image: 'assets/images/userIcon.png',
+                                      image: null,
+                                      packageImage: PackageImage.Image_1,
+                                      titleTextStyle: Theme.of(context)
+                                          .typography
+                                          .dense
+                                          .display1
+                                          .copyWith(color: Color(0xff9da9c7)),
+                                      subtitleTextStyle: Theme.of(context)
+                                          .typography
+                                          .dense
+                                          .body2
+                                          .copyWith(color: Color(0xffabb8d6)))),
+                            );
+                  })
                 ],
               ),
             ),

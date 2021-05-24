@@ -20,8 +20,6 @@ class NearByPlace {
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
-
-
   Map<String, dynamic> toJson() => {
         "status": status,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
@@ -64,42 +62,41 @@ class Datum {
   String lng;
   var isFavorite = false.obs;
 
-
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    shopId: json["shopId"],
-    shopStatus: json["shopStatus"],
-    catId: json["catId"],
-    userId: json["userId"],
-    name: json["name"],
-    vat: json["vat"] == null ? 0 : json["vat"].toInt(),
-    deliveryCharge: json["delivery_charge"],
-    favorite: json["favorite"],
-    time: json["time"],
-    logo: json["logo"],
-    totalReview: json["totalReview"],
-    rating: json["rating"] == null ? 0.0 : json["rating"].toDouble(),
-    address: json["address"],
-    lat: json["lat"],
-    lng: json["lng"],
-  );
+        shopId: json["shopId"],
+        shopStatus: json["shopStatus"],
+        catId: json["catId"],
+        userId: json["userId"],
+        name: json["name"],
+        vat: json["vat"] == null ? 0 : json["vat"].toInt(),
+        deliveryCharge: json["delivery_charge"],
+        favorite: json["favorite"],
+        time: json["time"],
+        logo: json["logo"],
+        totalReview: json["totalReview"],
+        rating: double.parse(json["rating"]),
+        address: json["address"],
+        lat: json["lat"],
+        lng: json["lng"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "shopId": shopId,
-    "shopStatus": shopStatus,
-    "catId": catId,
-    "userId": userId,
-    "name": name,
-    "vat": vat,
-    "delivery_charge": deliveryCharge,
-    "favorite": favorite,
-    "time": time,
-    "logo": logo,
-    "totalReview": totalReview,
-    "rating": rating,
-    "address": address,
-    "lat": lat,
-    "lng": lng,
-  };
+        "shopId": shopId,
+        "shopStatus": shopStatus,
+        "catId": catId,
+        "userId": userId,
+        "name": name,
+        "vat": vat,
+        "delivery_charge": deliveryCharge,
+        "favorite": favorite,
+        "time": time,
+        "logo": logo,
+        "totalReview": totalReview,
+        "rating": rating.toString(),
+        "address": address,
+        "lat": lat,
+        "lng": lng,
+      };
 
   // factory Datum.fromJson(Map<String, dynamic> json) => Datum(
   //       shopId: json["shopId"],

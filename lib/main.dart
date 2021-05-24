@@ -5,6 +5,7 @@ import 'package:enruta/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,6 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -36,8 +38,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   GoogleSignInAccount currentUser;
-
-
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     print(islogin);
     // islogin ==1?Get.offAll(HomePage()):Get.offAll(LoginPage());
-    if(checkLogin == "a"){
+    if (checkLogin == "a") {
       Get.offAll(HomePage());
     } else {
       Get.offAll(LoginPage());

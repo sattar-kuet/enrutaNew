@@ -20,6 +20,7 @@ class TestController extends GetxController {
   var st = 0.obs;
   RxBool spin = false.obs;
   var isLoading = true.obs;
+  var orderiscoming = true.obs;
 
   @override
   void onInit() {
@@ -39,7 +40,6 @@ class TestController extends GetxController {
   RxBool filter9 = true.obs;
 
   void getmenulist() async {
-    await Future.delayed(Duration(seconds: 1));
     try {
       isLoading(true);
       Service.getcategory().then((values) {
@@ -56,7 +56,7 @@ class TestController extends GetxController {
 
   getPopularOrder() async {
     SharedPreferences spreferences = await SharedPreferences.getInstance();
-
+    orderiscoming(true);
     var id = spreferences.getInt("id");
     var lat = userlat.value;
     var lo = userlong.value;
@@ -65,20 +65,20 @@ class TestController extends GetxController {
     if (lat > 0) {
       isLoading(true);
 
-      await Future.delayed(Duration(seconds: 1));
-      Service.getPopularOrder(id, lat, lo).then((values) {
+      //await Future.delayed(Duration(seconds: 1));
+      await Service.getPopularOrder(id, lat, lo).then((values) {
         // if(!values.isNull){
         //   polularShopList.value = values.data.toList();
         // }
         st.value = values.status;
+        print("$id from getpopularorder ");
 
         polularShopList.value = values.data.toList();
 
         // if(polularShopList.value.length>0){
         //   curentOrder.value = polularShopList.value[0];
         // }
-        print(polularShopList.length);
-      });
+      }).whenComplete(() => orderiscoming(false));
     }
 
     // }catch(e){
@@ -104,7 +104,6 @@ class TestController extends GetxController {
   }
 
   _getLocation() async {
-    await Future.delayed(Duration(seconds: 1));
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     final coordinates = new Coordinates(position.latitude, position.longitude);
@@ -121,3 +120,7 @@ class TestController extends GetxController {
     getPopularOrder();
   }
 }
+//this the problem//
+
+///////////////////*****************************//////////////////////// */
+/////////////////////***************************//////////////////////

@@ -24,19 +24,16 @@ class VoucherController extends GetxController {
     SharedPreferences pre = await SharedPreferences.getInstance();
     var id = pre.getInt("id");
     print('id is $id');
-    try {
-      isLoading(true);
-      await Future.delayed(Duration(seconds: 1));
-      Service.getAllVoucher(95).then((values) {
-        voucher.value = values.voucher;
-        code.value = voucher.value.code;
-        discount.value = voucher.value.discount;
-        minimum.value = voucher.value.minOrder;
-        vdata.value = 1;
-      });
-    } finally {
-      isLoading(false);
-    }
+
+    isLoading(true);
+    //await Future.delayed(Duration(seconds: 3));
+    await Service.getAllVoucher(95).then((values) {
+      voucher.value = values.voucher;
+      code.value = voucher.value.code;
+      discount.value = voucher.value.discount;
+      minimum.value = voucher.value.minOrder;
+      vdata.value = 1;
+    }).whenComplete(() => isLoading(false));
   }
 
   void advoucher() {

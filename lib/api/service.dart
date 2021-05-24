@@ -286,19 +286,25 @@ class Service {
 
   static Future<PopularShop> getPopularOrder(
       var userId, var lat, var lo) async {
+    Get.put(TestController());
+    print("Get popular whenComplete");
     final tController = Get.find<TestController>();
     String json = '{"user_id": $userId, "lat": $lat, "lng": $lo}';
     tController.spin.value = true;
+    print("User id $userId");
+
     final response = await http.post(getPopularShopUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json);
+    print("${response.statusCode} response status");
 
     if (response.statusCode == 200) {
       tController.spin.value = false;
 
       var p = PopularShop.fromJson(jsonDecode(response.body));
+      print(p);
       return p;
     } else {
       throw Exception('Failed to get order List.');

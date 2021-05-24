@@ -45,8 +45,7 @@ class MyVoucher extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text(
-              text('my_voucher'),
+          title: Text(text('my_voucher'),
               style: TextStyle(
                   fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
           centerTitle: true,
@@ -60,7 +59,10 @@ class MyVoucher extends StatelessWidget {
                     Container(
                       child: Obx(() {
                         if (voucherController.isLoading.value)
-                          return Center(child: CircularProgressIndicator());
+                          return Container(
+                              height: 500,
+                              child:
+                                  Center(child: CircularProgressIndicator()));
                         else
                           return voucherController.vdata.value != 0
                               ? getVoucher(
@@ -70,7 +72,8 @@ class MyVoucher extends StatelessWidget {
                                   child: Center(
                                       child: EmptyListWidget(
                                           title: text('no_voucher'),
-                                          subTitle: text('no_voucher_available_yet'),
+                                          subTitle:
+                                              text('no_voucher_available_yet'),
                                           // image: 'assets/images/userIcon.png',
                                           image: null,
                                           packageImage: PackageImage.Image_2,

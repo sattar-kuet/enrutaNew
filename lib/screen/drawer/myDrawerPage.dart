@@ -1,3 +1,4 @@
+import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/controllers/paymentController.dart';
@@ -31,6 +32,7 @@ class MyDrawerPage extends StatelessWidget {
     final dController = Get.put(ResetController());
     final pmController = Get.put(PaymentController());
     final tController = Get.put(TestController());
+    Get.put(CartController());
     dController.getUserInfo();
     return Drawer(
       child: Container(

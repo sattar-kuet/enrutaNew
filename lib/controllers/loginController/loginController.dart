@@ -64,7 +64,6 @@ class LoginController extends GetxController {
   void login(String email, [String password]) async {
     var convertedDatatojson;
     try {
-
       String url = 'http://enruta.itscholarbd.com/api/v2' + '/login';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
@@ -162,18 +161,18 @@ class LoginController extends GetxController {
 
         // print("\n\n\n\n\n User:" + user.toString()+"\n\n\n\n\n\n");
 
-
         var id = await convertedDatatojson["user"]["id"];
 
-        print("\n\n\n\n\nID:" + id.toString() +"\n\n\n\n\n\n");
+        print("\n\n\n\n\nID:" + id.toString() + "\n\n\n\n\n\n");
 
         // String name = await convertedDatatojson["user"]["name"].toString();
 
         var roleId = await convertedDatatojson["user"]["role_id"];
 
-        print("\n\n\n\n\nRoleID:" + id.toString() +"\n\n\n\n\n\n");
+        print("\n\n\n\n\nRoleID:" + id.toString() + "\n\n\n\n\n\n");
 
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
 
         int Xid = int.parse(id.toString());
         await sharedPreferences.setInt("id", Xid);
@@ -182,8 +181,7 @@ class LoginController extends GetxController {
         Get.offAll(HomePage());
       }
     } catch (e) {
-
-      print("\n\n\n\n\nErr: " + e.toString() +"\n\n\n\n\n\n");
+      print("\n\n\n\n\nErr: " + e.toString() + "\n\n\n\n\n\n");
 
       Get.snackbar("warning", e.toString(),
           snackPosition: SnackPosition.BOTTOM);
@@ -226,8 +224,8 @@ class LoginController extends GetxController {
   }
 
   Future<void> handleSignOut() async {
-    googleSignIn.disconnect();
+    await googleSignIn.disconnect();
   }
 
-  Future<void> _handleSignOut() => googleSignIn.disconnect();
+  Future<void> _handleSignOut() async => await googleSignIn.disconnect();
 }

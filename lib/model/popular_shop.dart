@@ -72,7 +72,7 @@ class Datums {
         time: json["time"],
         logo: json["logo"],
         totalReview: json["totalReview"],
-        rating: double.parse(json["rating"]),
+        rating: double.parse(json["rating"].toString()),
         address: json["address"],
         lat: json["lat"],
         lng: json["lng"],

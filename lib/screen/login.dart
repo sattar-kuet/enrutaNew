@@ -12,11 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:enruta/Animation/FadeAnimation.dart';
 
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../helper/helper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:enruta/helper/FacebookLogin.dart';
 import 'package:http/http.dart' as http;
+
 // class LoginPage extends GetWidget<LoginController> {
 // class LoginPage extends StatelessWidget {
 
@@ -34,15 +36,12 @@ GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
 //   ],
 // );
 
-
 class LoginPage extends StatefulWidget {
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final language = Get.put(LanguageController());
   String text(String key) {
     return language.text(key);
@@ -88,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
     // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
     //   setState(() {
     //     _currentUser = account;
@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                     text('welcome'),
+                      text('welcome'),
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 40),
                     ),
@@ -249,8 +249,10 @@ class _LoginPageState extends State<LoginPage> {
                   key: _formkey,
                   child: Column(
                     children: <Widget>[
-                      FadeAnimation(1.3,
-                          buidTextfield3(text('email'), emailController, context)),
+                      FadeAnimation(
+                          1.3,
+                          buidTextfield3(
+                              text('email'), emailController, context)),
                       SizedBox(
                         height: 10,
                       ),
