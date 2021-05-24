@@ -117,26 +117,7 @@ class _ItemListViewState extends State<ItemListView> {
                                       : Color(Helper.getHexToInt("#F9F9F9")),
                                   child: IconButton(
                                     padding: EdgeInsets.all(0),
-                                    onPressed: () async {
-                                      List fav = [];
-
-                                      pcontroller.sendfavorit(
-                                          widget.itemData.shopId, 0);
-                                      controller.getnearByPlace();
-                                      widget.itemData.isFavorite.toggle();
-
-                                      // SharedPreferences pref = await SharedPreferences.getInstance();
-                                      // if(itemData.isFavorite.value == true){
-                                      //   fav.add(itemData);
-                                      // }else{
-                                      //   fav.remove(itemData);
-                                      // }
-                                      // pref.setStringList('FAV_List', fav);
-
-                                      Get.snackbar(
-                                          'Removed from Favourites', '');
-                                      Get.offAll(HomePage());
-                                    },
+                                    onPressed: () {},
                                     icon: widget.itemData.favorite
                                         ? Icon(Icons.favorite,
                                             color: Color(
