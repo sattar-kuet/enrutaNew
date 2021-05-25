@@ -17,16 +17,16 @@ import 'cartPage.dart';
 
 class MenuAndReviewPage extends StatelessWidget {
   final mController = Get.put(MenuController());
-  final  cartCont = Get.put(CartController());
+  final cartCont = Get.put(CartController());
   final SuggestController suggestCont = Get.put(SuggestController());
   var shop_id = 0;
   var shop_name = "";
   var vat = 0;
   var deliveryCharge = 0;
-  var address='';
+  var address = '';
 
-  MenuAndReviewPage(
-      this.shop_id, this.vat, this.deliveryCharge, this.shop_name,[this.address]);
+  MenuAndReviewPage(this.shop_id, this.vat, this.deliveryCharge, this.shop_name,
+      [this.address]);
 
   List<ReviewListData> reviewList;
   List<RatingListData> ratingList = RatingListData.ratingList;
@@ -91,8 +91,9 @@ class MenuAndReviewPage extends StatelessWidget {
                       ),
                       child: FlexibleSpaceBar(
                         centerTitle: true,
-                        title:  Text(
-                         this.address??'2060  LA Colendge, BLvd 2.1 Miles- Fast Food ',
+                        title: Text(
+                          this.address ??
+                              '2060  LA Colendge, BLvd 2.1 Miles- Fast Food ',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -188,17 +189,24 @@ class MenuAndReviewPage extends StatelessWidget {
                     child: Stack(
                       children: [
                         Obx(() {
-                          if (cartCont.isLoading.value)
-                            return Center(child: CircularProgressIndicator());
-                          else
+                          //cartCont.getmenuItems(shop_id);
+                          if (cartCont.isLoading.value) {
+                            print("card value ${cartCont.isLoading}");
+                            return Center(
+                                child: CircularProgressIndicator(
+                              backgroundColor: Colors.black,
+                            ));
+                          } else
                             return StaggeredGridView.countBuilder(
                               itemCount: cartCont.menuItems.length,
                               crossAxisCount: 1,
                               crossAxisSpacing: 1,
                               mainAxisSpacing: 1,
                               itemBuilder: (context, index) {
+                                print(
+                                    "price = ${cartCont.menuItems[index].price}"); //menu items
                                 return ReviewListView(
-                                  reviewData: cartCont.menuItems[index],
+                                  menuitemdata: cartCont.menuItems[index],
                                   shopid: shop_id.toString(),
                                   vat: vat,
                                   deliveryCharge: deliveryCharge,
@@ -228,7 +236,15 @@ class MenuAndReviewPage extends StatelessWidget {
                   ),
                   Container(
                       color: cardbackgroundColor,
-                      child: Obx(() => StaggeredGridView.countBuilder(
+                      child: Obx(() {
+                        if (mController.isLoading.value) {
+                          print("card value ${cartCont.isLoading}");
+                          return Center(
+                              child: CircularProgressIndicator(
+                            backgroundColor: Colors.black,
+                          ));
+                        } else
+                          return StaggeredGridView.countBuilder(
                             crossAxisCount: 1,
                             itemCount: mController.reviewItems.length,
                             crossAxisSpacing: 1,
@@ -240,7 +256,8 @@ class MenuAndReviewPage extends StatelessWidget {
                             },
                             staggeredTileBuilder: (index) =>
                                 StaggeredTile.fit(1),
-                          ))),
+                          );
+                      })),
                 ],
               ),
             ),

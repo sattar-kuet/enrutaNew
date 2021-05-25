@@ -2,6 +2,7 @@ import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/screen/homePage.dart';
+import 'package:enruta/screen/menuandreviewpage.dart';
 import 'package:enruta/screen/myFavorite/myFavorite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -43,6 +44,8 @@ class _ItemListViewState extends State<ItemListView> {
       ),
       child: InkWell(
         onTap: () {
+          Get.to(MenuAndReviewPage(widget.itemData.shopId, widget.itemData.vat,
+              widget.itemData.deliveryCharge, widget.itemData.name));
           // Navigator.push(context,
           //     MaterialPageRoute(builder: (context) => MenuAndReviewPage()));
         },

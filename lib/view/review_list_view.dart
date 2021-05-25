@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class ReviewListView extends StatelessWidget {
   const ReviewListView(
       {Key key,
-      this.reviewData,
+      this.menuitemdata,
       this.animationController,
       this.animation,
       this.callback,
@@ -18,7 +18,7 @@ class ReviewListView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback callback;
-  final Product reviewData;
+  final Product menuitemdata;
   final AnimationController animationController;
   final Animation<dynamic> animation;
   final String shopid;
@@ -60,14 +60,14 @@ class ReviewListView extends StatelessWidget {
                   width: 80,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: reviewData.logo == null
+                    child: menuitemdata.logo == null
                         ? Center(
                             child: Image.asset(
                               "assets/icons/image.png",
                               scale: 5,
                             ),
                           )
-                        : Image.network(reviewData.logo, fit: BoxFit.cover,
+                        : Image.network(menuitemdata.logo, fit: BoxFit.cover,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace stackTrace) {
                             return Center(
@@ -99,7 +99,7 @@ class ReviewListView extends StatelessWidget {
                     // color: Colors.green,
                     borderRadius: BorderRadius.circular(3)),
                 child: Text(
-                  "\$" + reviewData.price.toString(),
+                  "\$" + menuitemdata.price.toString(),
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(Helper.getHexToInt("#FFBB19")),
@@ -113,7 +113,7 @@ class ReviewListView extends StatelessWidget {
               left: 100,
               child: Container(
                 child: Text(
-                  reviewData.title,
+                  menuitemdata.title,
                   style: TextStyle(
                       fontFamily: "TTCommonsd",
                       fontSize: 16,
@@ -127,7 +127,7 @@ class ReviewListView extends StatelessWidget {
               right: 20,
               child: Container(
                 child: Text(
-                  reviewData.subTxt,
+                  menuitemdata.subTxt,
                   textAlign: TextAlign.justify,
                   maxLines: 2,
                   style: TextStyle(
@@ -153,12 +153,12 @@ class ReviewListView extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            if (reviewData.pqty > 1) {
-                              reviewData.pqty.value--;
+                            if (menuitemdata.pqty > 1) {
+                              menuitemdata.pqty.value--;
                               print("remove");
-                              cartController.isInChart(shopid, reviewData);
+                              cartController.isInChart(shopid, menuitemdata);
                             }
-                            // Get.find<MenuController>().decrement(reviewData.id);
+                            // Get.find<MenuController>().decrement(menuitemdata.id);
                             // cartController.decrement();
                           },
                           child: Center(
@@ -170,7 +170,7 @@ class ReviewListView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // reviewData.qty = cartController.qty;
+                      // menuitemdata.qty = cartController.qty;
                       Expanded(
                         child: Container(
                           height: 25,
@@ -179,11 +179,11 @@ class ReviewListView extends StatelessWidget {
                               color: Color(Helper.getHexToInt("#3AD8B4")),
                               borderRadius: BorderRadius.circular(5)),
                           child: Center(child: Obx(() {
-                            reviewData.qty = cartController.qty.value;
+                            menuitemdata.qty = cartController.qty.value;
 
                             return Text(
                               // cartController.qty.value.toString(),
-                              reviewData.pqty.toString(),
+                              menuitemdata.pqty.toString(),
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                   fontSize: 12,
@@ -197,11 +197,11 @@ class ReviewListView extends StatelessWidget {
                           child: Container(
                         child: InkWell(
                           onTap: () {
-                            // Get.find<MenuController>().increment(reviewData.id);
-                            reviewData.pqty.value++;
-                            // cartController.increment(reviewData.id);
+                            // Get.find<MenuController>().increment(menuitemdata.id);
+                            menuitemdata.pqty.value++;
+                            // cartController.increment(menuitemdata.id);
                             print("add");
-                            cartController.isInChart(shopid, reviewData);
+                            cartController.isInChart(shopid, menuitemdata);
                           },
                           child: Center(
                               child: Icon(
@@ -220,8 +220,8 @@ class ReviewListView extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   cartController.additemtocarts(
-                      reviewData, shopid, vat, deliveryCharge);
-                  reviewData.qty = reviewData.pqty.toInt();
+                      menuitemdata, shopid, vat, deliveryCharge);
+                  menuitemdata.qty = menuitemdata.pqty.toInt();
                   // GetStorage box = GetStorage();
                   // box.write("cartList", Get.find<CartController>().cartList);
                   // box.write("shopid", shopid);
@@ -230,7 +230,7 @@ class ReviewListView extends StatelessWidget {
                   // print(vat);
                   // box.write("shopid", shopid);
                   // print("object");
-                  cartController.isInChart(shopid, reviewData);
+                  cartController.isInChart(shopid, menuitemdata);
                 },
                 child: Container(
                   height: 25,

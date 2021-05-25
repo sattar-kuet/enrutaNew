@@ -62,7 +62,17 @@ class CartListView extends StatelessWidget {
                     // image: DecorationImage(
                     //     image: NetworkImage(cartData.logo), fit: BoxFit.cover),
                   ),
-                  child: Image.network(cartData.logo, fit: BoxFit.fill),
+                  child: cartData.logo == null
+                      ? Image.asset("assets/icons/image.png", fit: BoxFit.fill)
+                      : Image.network(cartData.logo, fit: BoxFit.fill,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace stackTrace) {
+                          return Center(
+                              child: Image.asset(
+                            "assets/icons/image.png",
+                            scale: 5,
+                          ));
+                        }),
                 ),
               ),
               Positioned(

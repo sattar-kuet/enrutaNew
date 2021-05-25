@@ -35,7 +35,7 @@ class Service {
       'http://enruta.itscholarbd.com/api/v2/getProductByShopId';
   static const String baseUrl = 'http://enruta.itscholarbd.com/api/v2/';
 
-  static const String base_url = 'enruta.itscholarbd.com';
+  static const String base_url = 'http://enruta.itscholarbd.com';
 
   static const String toggleFavorite =
       'http://enruta.itscholarbd.com/api/v2/toggleFavourite';
@@ -67,22 +67,30 @@ class Service {
   }
 
   static Future<MenuModel> menulist(var x) async {
+    print("menu item id $x");
     if (x != null) {
-      final queryParameters = {
-        'shop_id': x.toString(),
-      };
       try {
-        final uri =
-            Uri.http(base_url, '/api/v2/getProductByShopId', queryParameters);
         // print(uri);
-        final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+
         // final response = await http.get(uri, headers: headers);
-        final response = await http.get(uri);
+
+        final response = await http.post(
+          "http://enruta.itscholarbd.com/api/v2/getProductByShopId",
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'shop_id': x.toString(),
+          }),
+        );
+
         if (response.statusCode == 200) {
           final MenuModel model = menuModelFromJson(response.body);
           // print(model.products.toList());
+          //print(response.body);
           return model;
         } else {
+          print("get menu api eerror");
           return null;
         }
       } catch (e) {
@@ -92,31 +100,31 @@ class Service {
     }
   }
 
-  static Future<MenuModel> getMenuList(var x) async {
-    try {
-      // print(x);
-      var uri = Uri.parse(base_url);
-      uri = uri.replace(queryParameters: <String, String>{'shop_id': '2'});
+  // static Future<MenuModel> getMenuList(var x) async {
+  //   try {
+  //     // print(x);
+  //     var uri = Uri.parse(base_url);
+  //     uri = uri.replace(queryParameters: <String, String>{'shop_id': '2'});
 
-      final response = await http.get(
-        uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      if (response.statusCode == 200) {
-        final MenuModel model = menuModelFromJson(response.body);
-        // print(model.products.toList());
+  //     final response = await http.get(
+  //       uri,
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final MenuModel model = menuModelFromJson(response.body);
+  //       // print(model.products.toList());
 
-        return model;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
+  //       return model;
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //     return null;
+  //   }
+  // }
 
   static Future<NearByPlace> getNearByPlace(
       int userid, var lat, var long) async {
@@ -178,7 +186,7 @@ class Service {
         body: jsonEncode(<String, String>{"id": '$id'}),
       );
       if (response.statusCode == 200) {
-        print(response.body);
+        //print(response.body);
         return OrderDetailsModel.fromJson(jsonDecode(response.body));
       } else {
         print("data null");
@@ -223,10 +231,11 @@ class Service {
           'shop_id': id.toString(),
         }),
       );
+      print("review body ${response.body}");
       if (response.statusCode == 200) {
         return ReviewModel.fromJson(jsonDecode(response.body));
       } else {
-        print("NULLSSSSS");
+        print("riview api status eror");
         return null;
       }
     } catch (e) {
@@ -298,7 +307,7 @@ class Service {
         },
         body: json);
 
-    print(response.body);
+    //print(response.body);
     print("${response.statusCode} response status");
 
     if (response.statusCode == 200) {

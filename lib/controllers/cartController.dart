@@ -1,4 +1,3 @@
-
 import 'package:enruta/api/service.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/controllers/menuController.dart';
@@ -42,7 +41,7 @@ class CartController extends GetxController {
   var cartLists = List<Product>().obs;
 
   var deliveryType = 0.obs;
-var logCont = Get.put(LoginController());
+  var logCont = Get.put(LoginController());
   RxList<CartItemModel> items = RxList<CartItemModel>([]);
   // var cartL = List<Product>().obs;
 
@@ -95,7 +94,6 @@ var logCont = Get.put(LoginController());
 
   @override
   void onInit() {
-
     totalcalculate();
     GetStorage box = GetStorage();
     if (shopid.value == null) {
@@ -112,6 +110,7 @@ var logCont = Get.put(LoginController());
     if (box.read("paymentoption") != null) {}
 
     getsuggetItems();
+    print("Menu items fn called");
 
     List storedCartList = GetStorage().read<List>('cartList');
     // shopid.value = GetStorage().read('shopid');
@@ -145,18 +144,18 @@ var logCont = Get.put(LoginController());
       isLoading(true);
       await Future.delayed(Duration(seconds: 1));
       Service.menulist(shopid.value).then((val) {
-       if(val != null){
-         suggetItems.value = val.products.toList();
-         print(suggetItems.length);
-       }
+        if (val != null) {
+          suggetItems.value = val.products.toList();
+          print(suggetItems.length);
+        }
       });
-    } catch (e) {}
-    finally {
+    } catch (e) {} finally {
       isLoading(false);
     }
   }
 
-  void additemtocarts(Product item, String shop, int vats, int deliveryC) async {
+  void additemtocarts(
+      Product item, String shop, int vats, int deliveryC) async {
     print("shopid" '$shop');
     print(vats);
     print(deliveryC);
@@ -234,13 +233,13 @@ var logCont = Get.put(LoginController());
     // if (shopid.value != null) {
     var check = false;
     if (cartList.length == 0) {
-      Get.snackbar(" add", "item added");
+      Get.snackbar("", "item added");
       cartList.add(item);
       box.write("shopcategory", categoryName.value);
       box.write("cartList", Get.find<CartController>().cartList);
       Get.find<SuggestController>().removeitemfromlist(item.id);
-      var a= box.read("shopcategory");
-      print("sssssss"+a);
+      var a = box.read("shopcategory");
+      print("sssssss" + a);
       totalcalculate();
       getplist();
       check = true;
@@ -248,15 +247,15 @@ var logCont = Get.put(LoginController());
     } else {
       for (var i = 0; i < cartList.length; i++) {
         if (item.id != 0 && item.id == cartList[i].id) {
-          cartList.value[i].qty =item.qty;
+          cartList.value[i].qty = item.qty;
           // Get.snackbar(" add", "item alrady added");
-          Get.snackbar("update", "item qty update");
+          Get.snackbar("Cart", "Added to cart");
           check = true;
           return;
         }
       }
     }
-    print("value value value"+ '${cartList.value}');
+    print("value value value" + '${cartList.value}');
     if (check == false) {
       cartList.add(item);
 
@@ -272,18 +271,22 @@ var logCont = Get.put(LoginController());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String shop = prefs.getString('shopid');
     bool result = false;
-    if (shop != null && int.parse(shop) == int.parse(shopId) && cartList.length != 0) {
+    if (shop != null &&
+        int.parse(shop) == int.parse(shopId) &&
+        cartList.length != 0) {
       for (Product p in cartList) {
         if (item.id != 0 && item.id == p.id) {
-          if (p.qty == item.pqty.value){
+          if (p.qty == item.pqty.value) {
             result = true;
           }
         }
       }
     }
-    print("Shop:"+shopId+" Item:"+item.title+" :$result");
+    print("Shop:" + shopId + " Item:" + item.title + " :$result");
     return result;
-  } /// /// ///
+  }
+
+  /// /// ///
 
   void addtocart(Product item, String s) {
     GetStorage box = GetStorage();
@@ -366,12 +369,11 @@ var logCont = Get.put(LoginController());
       cartList.add(item);
       print("when 0");
     }
-    for(var i = 0; i<menuItems.value.length; i++){
-      if(menuItems.value[i].id == item.id){
+    for (var i = 0; i < menuItems.value.length; i++) {
+      if (menuItems.value[i].id == item.id) {
         menuItems.value[i].pqty.value = item.qty;
       }
     }
-
 
     for (var i = 0; i < cartList.length; i++) {
       print(cartList[i].id + item.id);
@@ -448,7 +450,7 @@ var logCont = Get.put(LoginController());
     } catch (e) {}
   }
 
-    sendOrder(BuildContext context) async {
+  sendOrder(BuildContext context) async {
     isLoding.value = true;
     GetStorage box = GetStorage();
     SharedPreferences pre = await SharedPreferences.getInstance();
@@ -459,7 +461,6 @@ var logCont = Get.put(LoginController());
 
     user_id.value = pre.getString("email");
 
-    
     deliveryCharge.value = deliveryCharge.value;
 
     grandTotal.value = gTotal.round();
@@ -469,18 +470,18 @@ var logCont = Get.put(LoginController());
     tax.value = vatPrice.toInt();
 
     sendOrder.userId = pre.getInt("id");
-    if(sendOrder.userId==null){
+    if (sendOrder.userId == null) {
       logCont.checklogin();
     }
     sendOrder.shopCategory = pre.getString("categoryName");
     // if(sendOrder.shopCategory.isEmpty){
-      sendOrder.shopCategory = box.read("shopcategory");
+    sendOrder.shopCategory = box.read("shopcategory");
     // }
 
     sendOrder.lat = selectLat.value.toString();
 
     sendOrder.lng = selectLng.value.toString();
-print("cartListcartListcartListcartList"+cartList.value.toString());
+    print("cartListcartListcartListcartList" + cartList.value.toString());
     for (var item in cartList) {
       Item p = new Item();
       p.productId = item.id;
@@ -491,7 +492,7 @@ print("cartListcartListcartListcartList"+cartList.value.toString());
       // order.items.add(item);
     }
     sendOrder.items = pList.toList();
-    print("cartListcartListcartListcartList"+sendOrder.items.toString());
+    print("cartListcartListcartListcartList" + sendOrder.items.toString());
     // order.items = cartList.toList();
 
     // order.items = cartList.toList();
@@ -512,7 +513,7 @@ print("cartListcartListcartListcartList"+cartList.value.toString());
     Service.sendorder(sendOrder).then((values) {
       Response res = values;
       String responseCode = res.statusCode.toString();
-      if(res.statusCode==200){
+      if (res.statusCode == 200) {
         submitorderstatus.value = true;
         sendOrder = new SendOrderModel();
         pList = [];
@@ -528,39 +529,36 @@ print("cartListcartListcartListcartList"+cartList.value.toString());
       print(res.body);
       print(res.body);
 
-
       // Get.back();
-     isLoding.value = false;
+      isLoding.value = false;
     });
   }
-  // increment() => qty++;
-void gobackhomePage() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  shopid.value = prefs.getString('shopid');
-  prefs.remove("shopid");
-  shopid.value = prefs.getString('shopid');
 
-  print(shopid.value.toString());
+  // increment() => qty++;
+  void gobackhomePage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    shopid.value = prefs.getString('shopid');
+    prefs.remove("shopid");
+    shopid.value = prefs.getString('shopid');
+
+    print(shopid.value.toString());
 
     Get.offAll(HomePage());
-}
+  }
 
-
-
-  void clearall (){
+  void clearall() {
     deliveryCharge.value = 0;
 
     grandTotal.value = 0;
     subTprice.value = 0;
-    tvatprice.value = 0 ;
-    deliveryCharge.value =0;
+    tvatprice.value = 0;
+    deliveryCharge.value = 0;
     cuppon.value = 0;
     voucher.value = 0;
     discount.value = 0;
-    grandTotalprice.value= 0;
+    grandTotalprice.value = 0;
     tax.value = 0;
     grandTotal.value = 0;
-
   }
 
   increment(int id) {
@@ -580,15 +578,16 @@ void gobackhomePage() async{
       isLoading(true);
       await Future.delayed(Duration(seconds: 1));
       Service.menulist(id).then((va) {
-        if(va != null){
+        if (va != null) {
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();
           print(menuItemsTemp.length);
           cartLists.value = cartList.value.toList();
-          if(cartList.value.length>0){
-            for(var j=0; j<menuItemsTemp.value.length; j++){
+          if (cartList.value.length > 0) {
+            for (var j = 0; j < menuItemsTemp.value.length; j++) {
               for (var i = 0; i < cartList.length; i++) {
-                if (menuItemsTemp.value[j].id != 0 && menuItemsTemp.value[j].id == cartList[i].id) {
+                if (menuItemsTemp.value[j].id != 0 &&
+                    menuItemsTemp.value[j].id == cartList[i].id) {
                   // cartList.value[i].qty =item.qty;
                   menuItemsTemp.value[j].pqty.value = cartList[i].qty;
                   // Get.snackbar(" add", "item alrady added");
@@ -596,22 +595,17 @@ void gobackhomePage() async{
                 }
               }
             }
-
           }
           menuItems.value = menuItemsTemp.value;
           // update();
 
-
-
         }
       });
     } catch (e) {} finally {
+      //print("get menu api end");
       isLoading(false);
     }
   }
-
-
-
 }
 
 extension NumberParsing on String {

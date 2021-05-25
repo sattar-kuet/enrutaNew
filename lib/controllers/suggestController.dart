@@ -26,21 +26,21 @@ class SuggestController extends GetxController {
       isLoading(true);
       await Future.delayed(Duration(seconds: 1));
       Service.menulist(shopid.value).then((va) {
-       if(va != null){
-         suggetItems.value = va.products.toList();
-         shopid.value = va.shopid.toString();
-         vats.value = va.vat.toInt();
-         print(
-             'shopid is $shopid   vat is $vats   delivery charge is $va.deliveryCharge');
+        if (va != null) {
+          suggetItems.value = va.products.toList();
+          shopid.value = va.shopid.toString();
+          vats.value = va.vat.toInt();
+          print(
+              'shopid is $shopid   vat is $vats   delivery charge is $va.deliveryCharge');
 
-         Get.find<CartController>().vat.value = va.vat.toInt();
-         Get.find<CartController>().deliveryCharge.value =
-             va.deliveryCharge.toInt();
+          Get.find<CartController>().vat.value = va.vat.toInt();
+          Get.find<CartController>().deliveryCharge.value =
+              va.deliveryCharge.toInt();
 
-         dc.value = va.deliveryCharge.toInt();
+          dc.value = va.deliveryCharge.toInt();
 
-         print(suggetItems.length);
-       }
+          print(suggetItems.length);
+        }
       });
     } catch (e) {} finally {
       isLoading(false);
