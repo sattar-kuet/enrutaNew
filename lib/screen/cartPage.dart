@@ -304,23 +304,11 @@ class CartPage extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(6)),
                                           child: InkWell(
-                                            onTap: () {
-                                              if (voucherController.text !=
-                                                      null &&
-                                                  voucherController.text !=
-                                                      "coffee") {
-                                                cartCont.checkOffer.value = 1;
-                                                cartCont.cuppon.value = 0;
-                                                cartCont.totalcalculate();
-                                                // Get.snackbar("worning",
-                                                //     "your voucher code not match");
-                                              } else {
-                                                cartCont.cuppon.value = 50;
-                                                cartCont.totalcalculate();
-                                                // Get.snackbar("done", "Welcome");
-                                              }
+                                            onTap: () async {
+                                              await cartCont.applyVoucher(
+                                                  voucherController.text);
 
-                                              print(voucherController.text);
+                                              cartCont.totalcalculate();
                                             },
                                             child: Center(
                                                 child: Text(

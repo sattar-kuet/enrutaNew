@@ -76,3 +76,66 @@ class Voucher {
         "title": title,
       };
 }
+
+class CuponModel {
+  int status;
+  Cupon offer;
+  CuponModel({
+    this.status,
+    this.offer,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'status': status,
+      'offer': offer.toMap(),
+    };
+  }
+
+  factory CuponModel.fromMap(Map<String, dynamic> map) {
+    return CuponModel(
+      status: map['status'],
+      offer: Cupon.fromMap(map['offer']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory CuponModel.fromJson(String source) =>
+      CuponModel.fromMap(json.decode(source));
+}
+
+class Cupon {
+  int discount;
+  int type;
+  DateTime validity;
+  int minimum_spent;
+  Cupon({
+    this.discount,
+    this.type,
+    this.validity,
+    this.minimum_spent,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'discount': discount,
+      'type': type,
+      'validity': validity.toIso8601String(),
+      'minimum_spent': minimum_spent,
+    };
+  }
+
+  factory Cupon.fromMap(Map<String, dynamic> map) {
+    return Cupon(
+      discount: map['discount'],
+      type: map['type'],
+      validity: DateTime.parse(map['validity']),
+      minimum_spent: map['minimum_spent'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Cupon.fromJson(String source) => Cupon.fromMap(json.decode(source));
+}

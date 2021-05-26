@@ -198,6 +198,32 @@ class Service {
     }
   }
 
+  static Future<CuponModel> getCuppons(
+      String shop_id, String user_id, String code) async {
+    try {
+      final response = await http.post(
+        baseUrl + "applyCode",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "shop_id": '$shop_id',
+          "user_id": '$user_id',
+          "code": '$code'
+        }),
+      );
+      if (response.statusCode == 200) {
+        return CuponModel.fromJson(response.body);
+      } else {
+        print("data null");
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   static Future<VoucherModel> getAllVoucher(var id) async {
     try {
       final response = await http.post(

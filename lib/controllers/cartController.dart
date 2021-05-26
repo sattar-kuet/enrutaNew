@@ -8,6 +8,7 @@ import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/cart/cart_model.dart';
 import 'package:enruta/screen/cartPage.dart';
 import 'package:enruta/screen/homePage.dart';
+import 'package:enruta/screen/voucher/voucher_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class CartController extends GetxController {
   var user_id = ''.obs;
   var order = SendOrderModel();
   var newOrder = 0.obs;
+  var cupontype = 0.obs;
 
   // final menuController = Get.put(MenuController()).obs;
   // ignore: deprecated_member_use
@@ -54,9 +56,12 @@ class CartController extends GetxController {
   var tax = 0.obs;
 
   var cuppon = 0.obs;
+  var cuponholder = 0.obs;
+  var cupponMinimum = 0.obs;
   //for voucher
   var shopvoucher = 0.obs;
   var voucher = 0.obs;
+
   var voucherMinimum = 0.obs;
 
   var isLoding = false.obs;
@@ -192,6 +197,7 @@ class CartController extends GetxController {
                   prefs.setInt("vat", vats);
                   prefs.setInt("deliveryCharge", deliveryC);
                   voucher.value = 0;
+                  cuppon.value = 0;
                   prefs.setString("categoryName",
                       Get.find<MenuController>().categoryName.value);
                   Get.find<SuggestController>().getsuggetItems();
@@ -388,6 +394,28 @@ class CartController extends GetxController {
     }
   }
 
+  Future<void> applyVoucher(String code) async {
+    print("Shop id = $shopid from apply voucher");
+    CuponModel a = await Service.getCuppons(shopid.value, user_id.value, code);
+    try {
+      if (!a.offer.isNull) {
+        cupponMinimum.value = a.offer.minimum_spent;
+        cupontype.value = a.offer.type;
+        if (cupontype.value == 1) {
+          cuponholder.value = a.offer.discount;
+          print("c holder type 0 ${cuponholder.value}");
+        } else if (cupontype.value == 2) {
+          cuponholder.value = ((subTprice * a.offer.discount) / 100).toInt();
+          print("c holder type 1 ${cuponholder.value}");
+        }
+      }
+    } catch (e) {
+      checkOffer.value = 1;
+      cuponholder.value = 0;
+      cuppon.value = 0;
+    }
+  }
+
   void totalcalculate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // var pk = voucherMinimum.value.toDouble();
@@ -396,6 +424,10 @@ class CartController extends GetxController {
       voucher.value = shopvoucher.value;
     } else {
       voucher.value = 0;
+    }
+    if (totalPrice > cupponMinimum.value) {
+    } else {
+      cuponholder.value = 0;
     }
 
     if (totalPrice > minimumSpent.value) {
@@ -406,6 +438,7 @@ class CartController extends GetxController {
 
     subTprice.value = totalPrice;
     tvatprice.value = vatPrice;
+    cuppon.value = cuponholder.value;
     grandTotalprice.value = gTotal;
     shopid.value = prefs.getString("shopid");
     print("totalcalculate working");
@@ -559,6 +592,8 @@ class CartController extends GetxController {
     grandTotalprice.value = 0;
     tax.value = 0;
     grandTotal.value = 0;
+    cupponMinimum.value = 0;
+    cuponholder.value = 0;
   }
 
   increment(int id) {
