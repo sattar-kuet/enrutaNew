@@ -373,8 +373,8 @@ class _MyAccountState extends State<MyAccount> {
     final dController = Get.find<MyAccountController>();
     final Controller = Get.find<ResetController>();
     path = await ImagePicker.pickImage(
-      source: source,
-    ).then((value) async {
+            source: source, maxHeight: 400, maxWidth: 300)
+        .then((value) async {
       print('VALUE = $value');
       setState(() {
         if (value != null) {

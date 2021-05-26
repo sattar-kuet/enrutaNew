@@ -147,8 +147,9 @@ class HomePage extends StatelessWidget {
                   Container(
                     color: Color(Helper.getHexToInt("#F8F9FF")),
                     width: 120,
-                    child: Obx(
-                      () => GridView.count(
+                    child: Obx(() {
+                      Get.put(TestController());
+                      return GridView.count(
                         crossAxisCount: 4,
                         controller:
                             new ScrollController(keepScrollOffset: false),
@@ -161,8 +162,8 @@ class HomePage extends StatelessWidget {
                             categoryData: tController.category[index],
                           );
                         }),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                   // Obx(
                   //   () => cartController.newOrder.value > 0

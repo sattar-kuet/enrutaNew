@@ -1,3 +1,4 @@
+import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/loginController/loginBinding.dart';
 import 'package:enruta/screen/homePage.dart';
@@ -9,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'controllers/textController.dart';
 import 'helper/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -74,6 +76,8 @@ class _SplashScreenState extends State<SplashScreen> {
     print(islogin);
     // islogin ==1?Get.offAll(HomePage()):Get.offAll(LoginPage());
     if (checkLogin == "a") {
+      Get.put(TestController());
+      Get.put(CartController());
       Get.offAll(HomePage());
     } else {
       Get.offAll(LoginPage());

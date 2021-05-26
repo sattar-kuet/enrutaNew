@@ -1,7 +1,9 @@
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/cartPage.dart';
+import 'package:enruta/screen/resetpassword/resetController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import 'homePage.dart';
 
@@ -22,6 +24,7 @@ class _HomePagetState extends State<HomePaget> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ResetController());
     return Scaffold(
         body: _children[_curentIndex],
         bottomNavigationBar: Container(

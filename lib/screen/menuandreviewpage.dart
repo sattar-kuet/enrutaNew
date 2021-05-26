@@ -7,6 +7,7 @@ import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/rating_list_data.dart';
 import 'package:enruta/model/review_list_data.dart';
+import 'package:enruta/screen/resetpassword/resetController.dart';
 import 'package:enruta/view/rating_list_view.dart';
 import 'package:enruta/view/review_list_view.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class MenuAndReviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ResetController());
     reviewList = ReviewListData.reviewList;
     print(shop_id);
     cartCont.getmenuItems(shop_id);
