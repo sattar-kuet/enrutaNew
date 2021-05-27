@@ -40,6 +40,9 @@ class CartPage extends StatelessWidget {
     cCont.subTprice.value = (cCont.totalPrice != null ? cCont.totalPrice : 0.0);
     cCont.tvatprice.value = (cCont.vatPrice != null ? cCont.vatPrice : 0.0);
     cCont.grandTotalprice.value = (cCont.gTotal != null ? cCont.gTotal : 0.0);
+    cartCont.checkOffer.value = 0;
+    cartCont.cuponerrortxt.value = "";
+
     print(cartCont.totalPrice);
     print(cartCont.vat.value);
     print(cartCont.gTotal);
@@ -329,7 +332,7 @@ class CartPage extends StatelessWidget {
                                       left: 20,
                                       right: 20,
                                       child: Text(
-                                        text('wrong_coupon_code'),
+                                        cartCont.cuponerrortxt.value,
                                         style: TextStyle(color: Colors.red),
                                       ),
                                     )

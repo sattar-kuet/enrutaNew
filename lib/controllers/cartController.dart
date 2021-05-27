@@ -73,6 +73,8 @@ class CartController extends GetxController {
   var offer = 0.obs;
 
   var checkOffer = 0.obs;
+  var underValue = 0.obs;
+  var cuponerrortxt = "".obs;
 
   double get totalPrice =>
       cartList.fold(0, (sum, item) => sum + item.price * item.qty);
@@ -396,6 +398,7 @@ class CartController extends GetxController {
 
   Future<void> applyVoucher(String code) async {
     print("Shop id = $shopid from apply voucher");
+    underValue.value = 0;
     CuponModel a = await Service.getCuppons(shopid.value, user_id.value, code);
     try {
       if (!a.offer.isNull) {
@@ -410,6 +413,7 @@ class CartController extends GetxController {
         }
       }
     } catch (e) {
+      cuponerrortxt.value = "wrong coupon code";
       checkOffer.value = 1;
       cuponholder.value = 0;
       cuppon.value = 0;
@@ -426,8 +430,13 @@ class CartController extends GetxController {
       voucher.value = 0;
     }
     if (totalPrice > cupponMinimum.value) {
+      checkOffer.value = 0;
     } else {
+      cuponerrortxt.value = "Minimum ammout is $cupponMinimum";
+      print(cuponerrortxt.value);
       cuponholder.value = 0;
+      checkOffer.value = 1;
+      cupponMinimum.value = 0;
     }
 
     if (totalPrice > minimumSpent.value) {
