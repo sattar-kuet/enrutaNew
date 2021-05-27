@@ -414,9 +414,12 @@ class CartController extends GetxController {
       }
     } catch (e) {
       cuponerrortxt.value = "wrong coupon code";
+
       checkOffer.value = 1;
       cuponholder.value = 0;
       cuppon.value = 0;
+      print("check offer ${checkOffer.value}");
+      print(cuponerrortxt.value);
     }
   }
 
@@ -430,7 +433,7 @@ class CartController extends GetxController {
       voucher.value = 0;
     }
     if (totalPrice > cupponMinimum.value) {
-      checkOffer.value = 0;
+      //checkOffer.value = 0;
     } else {
       cuponerrortxt.value = "Minimum ammout is $cupponMinimum";
       print(cuponerrortxt.value);
