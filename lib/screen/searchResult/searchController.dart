@@ -61,6 +61,7 @@ class SearchController extends GetxController {
           filterData.add(item);
         }
       }
+      filterData.toSet().toList();
       filterlength.value = filterData.length;
       Get.to(SearchResult());
     }
@@ -88,33 +89,38 @@ class SearchController extends GetxController {
           .where((item) => item.deliveryCharge.toString().toLowerCase() == '0');
       for (var item in itemList) {
         //  String pname = item.deliveryCharge.toString().toLowerCase();
-        print('LENGTH == ${item.deliveryCharge}');
+        // print('LENGTH == ${item.deliveryCharge}');
         if (filter1.value == true && filter3.value == false) {
-          print('FIRST');
+          // print('FIRST');
           if (item.shopStatus == 2) {
             filterData.add(item);
+            filterData.toSet().toList();
             // }
           }
         } else if (filter1.value == false && filter3.value == true) {
-          print('SECOND');
+          // print('SECOND');
           if (item.deliveryCharge == 0) {
             filterData.add(item);
+            filterData.toSet().toList();
             // }
           }
         } else if (filter1.value == true && filter3.value == true) {
-          print('THIRD');
+          // print('THIRD');
           if (item.deliveryCharge == 0 && item.shopStatus == 2) {
             filterData.add(item);
+            filterData.toSet().toList();
             // }
           }
         }
 
         if (item.deliveryCharge == 0) {
-          print(item.name);
+          // print(item.name);
           filterData.add(item);
+          filterData.toSet().toList();
           // }
         }
-        print('OUT');
+        print('OUT from filter');
+        filterData.toSet().toList();
         filterlength.value = filterData.length;
         Get.off(SearchResult());
       }

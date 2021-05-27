@@ -46,18 +46,17 @@ class SearchResult extends StatelessWidget {
         ),
         backgroundColor: Color(Helper.getHexToInt("#11C7A1")),
         elevation: 0.0,
-        title: Text(
-            text('search_result'),
+        title: Text(text('search_result'),
             style: TextStyle(
                 fontFamily: 'Poppins', fontSize: 18.0, color: Colors.white)),
         centerTitle: true,
         actions: [
-          IconButton(
-              icon: Icon(
-                Icons.search,
-                color: white,
-              ),
-              onPressed: () {}),
+          // IconButton(
+          //     icon: Icon(
+          //       Icons.search,
+          //       color: white,
+          //     ),
+          //     onPressed: () {}),
           IconButton(
               icon: Icon(
                 Icons.filter_list,
@@ -82,16 +81,17 @@ class SearchResult extends StatelessWidget {
                         new Row(
                           children: [
                             // Expanded(
-                            Container(
+                            Obx(() => Container(
                                 margin: EdgeInsets.only(
                                     left: 20, bottom: 10, top: 20),
                                 child: Text(
-                                  '${searchCont.filterlength} '+text('restaurant_found_near_you'),
+                                  '${searchCont.filterlength.value} ' +
+                                      text('restaurant_found_near_you'),
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
-                                )),
+                                )))
                           ],
                         ),
                         new Container(
@@ -210,8 +210,7 @@ class SearchResult extends StatelessWidget {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(
-                                  text('currently_open_restaurants'),
+                              title: Text(text('currently_open_restaurants'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,
@@ -241,8 +240,7 @@ class SearchResult extends StatelessWidget {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(
-                                  text('restaurant_offering_discount'),
+                              title: Text(text('restaurant_offering_discount'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,
@@ -272,8 +270,7 @@ class SearchResult extends StatelessWidget {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(
-                                  text('free_delivery'),
+                              title: Text(text('free_delivery'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,
@@ -303,184 +300,184 @@ class SearchResult extends StatelessWidget {
                         SizedBox(
                           height: 15,
                         ),
-                        Container(
-                          padding: EdgeInsets.only(left: 25),
-                          child: Text(
-                            text('filter_by_menu'),
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: 'TTCommonsm',
-                                color: Color(Helper.getHexToInt("#C4C4C4"))),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          height: 5,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(Helper.getHexToInt("#707070"))
-                                .withOpacity(0.1),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            child: CheckboxListTile(
-                              title: Text(
-                                  text('fries_&_wedges'),
-                                  style: TextStyle(
-                                      fontFamily: 'TTCommonsm',
-                                      fontSize: 16.0,
-                                      color: Color(
-                                          Helper.getHexToInt("#6F6F6F")))),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: searchCont.filter4.value,
-                              onChanged: (bool value) {
-                                // Get.find<TestController>().filter1.toggle();
-                                searchCont.filter4.toggle();
-                                print(value);
-                              },
-                              activeColor: theamColor,
-                              // checkColor: theamColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 3,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(Helper.getHexToInt("#707070"))
-                                .withOpacity(0.1),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            child: CheckboxListTile(
-                              title: Text(
-                                  text('thai_food'),
-                                  style: TextStyle(
-                                      fontFamily: 'TTCommonsm',
-                                      fontSize: 16.0,
-                                      color: Color(
-                                          Helper.getHexToInt("#6F6F6F")))),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: searchCont.filter6.value,
-                              onChanged: (bool value) {
-                                // Get.find<TestController>().filter1.toggle();
-                                searchCont.filter6.toggle();
-                                print(value);
-                              },
-                              activeColor: theamColor,
-                              // checkColor: theamColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 3,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(Helper.getHexToInt("#707070"))
-                                .withOpacity(0.1),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            child: CheckboxListTile(
-                              title: Text(
-                                  text('italian_food'),
-                                  style: TextStyle(
-                                      fontFamily: 'TTCommonsm',
-                                      fontSize: 16.0,
-                                      color: Color(
-                                          Helper.getHexToInt("#6F6F6F")))),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: searchCont.filter7.value,
-                              onChanged: (bool value) {
-                                // Get.find<TestController>().filter1.toggle();
-                                searchCont.filter7.toggle();
-                                print(value);
-                              },
-                              activeColor: theamColor,
-                              // checkColor: theamColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 3,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(Helper.getHexToInt("#707070"))
-                                .withOpacity(0.1),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            child: CheckboxListTile(
-                              title: Text(
-                                  text('indian'),
-                                  style: TextStyle(
-                                      fontFamily: 'TTCommonsm',
-                                      fontSize: 16.0,
-                                      color: Color(
-                                          Helper.getHexToInt("#6F6F6F")))),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: searchCont.filter8.value,
-                              onChanged: (bool value) {
-                                // Get.find<TestController>().filter1.toggle();
-                                searchCont.filter8.toggle();
-                                print(value);
-                              },
-                              activeColor: theamColor,
-                              // checkColor: theamColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 3,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(Helper.getHexToInt("#707070"))
-                                .withOpacity(0.1),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            child: CheckboxListTile(
-                              title: Text(
-                                  text('chains_items'),
-                                  style: TextStyle(
-                                      fontFamily: 'TTCommonsm',
-                                      fontSize: 16.0,
-                                      color: Color(
-                                          Helper.getHexToInt("#6F6F6F")))),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: searchCont.filter9.value,
-                              onChanged: (bool value) {
-                                // Get.find<TestController>().filter1.toggle();
-                                searchCont.filter9.toggle();
-                                print(value);
-                              },
-                              activeColor: theamColor,
-                              // checkColor: theamColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 3,
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Divider(
-                            thickness: 1,
-                            color: Color(Helper.getHexToInt("#707070"))
-                                .withOpacity(0.1),
-                          ),
-                        ),
                         // Container(
+                        //   padding: EdgeInsets.only(left: 25),
+                        //   child: Text(
+                        //     text('filter_by_menu'),
+                        //     style: TextStyle(
+                        //         fontSize: 17,
+                        //         fontFamily: 'TTCommonsm',
+                        //         color: Color(Helper.getHexToInt("#C4C4C4"))),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 15,
+                        // ),
+                        // Container(
+                        //   height: 5,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   child: Divider(
+                        //     thickness: 1,
+                        //     color: Color(Helper.getHexToInt("#707070"))
+                        //         .withOpacity(0.1),
+                        //   ),
+                        // ),
+                        // Obx(
+                        //   () => Container(
+                        //     child: CheckboxListTile(
+                        //       title: Text(
+                        //           text('fries_&_wedges'),
+                        //           style: TextStyle(
+                        //               fontFamily: 'TTCommonsm',
+                        //               fontSize: 16.0,
+                        //               color: Color(
+                        //                   Helper.getHexToInt("#6F6F6F")))),
+                        //       controlAffinity: ListTileControlAffinity.leading,
+                        //       value: searchCont.filter4.value,
+                        //       onChanged: (bool value) {
+                        //         // Get.find<TestController>().filter1.toggle();
+                        //         searchCont.filter4.toggle();
+                        //         print(value);
+                        //       },
+                        //       activeColor: theamColor,
+                        //       // checkColor: theamColor,
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 3,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   child: Divider(
+                        //     thickness: 1,
+                        //     color: Color(Helper.getHexToInt("#707070"))
+                        //         .withOpacity(0.1),
+                        //   ),
+                        // ),
+                        // Obx(
+                        //   () => Container(
+                        //     child: CheckboxListTile(
+                        //       title: Text(
+                        //           text('thai_food'),
+                        //           style: TextStyle(
+                        //               fontFamily: 'TTCommonsm',
+                        //               fontSize: 16.0,
+                        //               color: Color(
+                        //                   Helper.getHexToInt("#6F6F6F")))),
+                        //       controlAffinity: ListTileControlAffinity.leading,
+                        //       value: searchCont.filter6.value,
+                        //       onChanged: (bool value) {
+                        //         // Get.find<TestController>().filter1.toggle();
+                        //         searchCont.filter6.toggle();
+                        //         print(value);
+                        //       },
+                        //       activeColor: theamColor,
+                        //       // checkColor: theamColor,
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 3,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   child: Divider(
+                        //     thickness: 1,
+                        //     color: Color(Helper.getHexToInt("#707070"))
+                        //         .withOpacity(0.1),
+                        //   ),
+                        // ),
+                        // Obx(
+                        //   () => Container(
+                        //     child: CheckboxListTile(
+                        //       title: Text(
+                        //           text('italian_food'),
+                        //           style: TextStyle(
+                        //               fontFamily: 'TTCommonsm',
+                        //               fontSize: 16.0,
+                        //               color: Color(
+                        //                   Helper.getHexToInt("#6F6F6F")))),
+                        //       controlAffinity: ListTileControlAffinity.leading,
+                        //       value: searchCont.filter7.value,
+                        //       onChanged: (bool value) {
+                        //         // Get.find<TestController>().filter1.toggle();
+                        //         searchCont.filter7.toggle();
+                        //         print(value);
+                        //       },
+                        //       activeColor: theamColor,
+                        //       // checkColor: theamColor,
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 3,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   child: Divider(
+                        //     thickness: 1,
+                        //     color: Color(Helper.getHexToInt("#707070"))
+                        //         .withOpacity(0.1),
+                        //   ),
+                        // ),
+                        // Obx(
+                        //   () => Container(
+                        //     child: CheckboxListTile(
+                        //       title: Text(
+                        //           text('indian'),
+                        //           style: TextStyle(
+                        //               fontFamily: 'TTCommonsm',
+                        //               fontSize: 16.0,
+                        //               color: Color(
+                        //                   Helper.getHexToInt("#6F6F6F")))),
+                        //       controlAffinity: ListTileControlAffinity.leading,
+                        //       value: searchCont.filter8.value,
+                        //       onChanged: (bool value) {
+                        //         // Get.find<TestController>().filter1.toggle();
+                        //         searchCont.filter8.toggle();
+                        //         print(value);
+                        //       },
+                        //       activeColor: theamColor,
+                        //       // checkColor: theamColor,
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 3,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   child: Divider(
+                        //     thickness: 1,
+                        //     color: Color(Helper.getHexToInt("#707070"))
+                        //         .withOpacity(0.1),
+                        //   ),
+                        // ),
+                        // Obx(
+                        //   () => Container(
+                        //     child: CheckboxListTile(
+                        //       title: Text(
+                        //           text('chains_items'),
+                        //           style: TextStyle(
+                        //               fontFamily: 'TTCommonsm',
+                        //               fontSize: 16.0,
+                        //               color: Color(
+                        //                   Helper.getHexToInt("#6F6F6F")))),
+                        //       controlAffinity: ListTileControlAffinity.leading,
+                        //       value: searchCont.filter9.value,
+                        //       onChanged: (bool value) {
+                        //         // Get.find<TestController>().filter1.toggle();
+                        //         searchCont.filter9.toggle();
+                        //         print(value);
+                        //       },
+                        //       activeColor: theamColor,
+                        //       // checkColor: theamColor,
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 3,
+                        //   padding: EdgeInsets.only(left: 20, right: 20),
+                        //   child: Divider(
+                        //     thickness: 1,
+                        //     color: Color(Helper.getHexToInt("#707070"))
+                        //         .withOpacity(0.1),
+                        //   ),
+                        // ),
+                        // // Container(
                         //   padding: EdgeInsets.only(left: 20, right: 20),
                         //   child: getFilter(),
                         // )
@@ -510,6 +507,7 @@ class SearchResult extends StatelessWidget {
       // },
       child: InkWell(
         onTap: () {
+          searchCont.filter('delivery_charge');
           Get.back();
         },
         child: Container(
