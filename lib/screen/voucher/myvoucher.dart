@@ -80,12 +80,14 @@ class MyVoucher extends StatelessWidget {
                                           titleTextStyle: Theme.of(context)
                                               .typography
                                               .dense
+                                              // ignore: deprecated_member_use
                                               .display1
                                               .copyWith(
                                                   color: Color(0xff9da9c7)),
                                           subtitleTextStyle: Theme.of(context)
                                               .typography
                                               .dense
+                                              // ignore: deprecated_member_use
                                               .body2
                                               .copyWith(
                                                   color: Color(0xffabb8d6)))),
@@ -175,6 +177,7 @@ class MyVoucher extends StatelessWidget {
                           voucherController.advoucher();
                         },
                         child: Stack(
+                          // ignore: deprecated_member_use
                           overflow: Overflow.visible,
                           children: [
                             Positioned(

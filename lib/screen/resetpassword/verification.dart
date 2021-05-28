@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class Verification extends StatelessWidget {
   final resetController = Get.put(ResetController());
+  // ignore: unused_field
   final _formKey = GlobalKey<FormState>();
   List<TextEditingController> textFieldControllers = [];
 
@@ -19,6 +21,7 @@ class Verification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final node = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -43,8 +46,7 @@ class Verification extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text(
-            text('verification_code'),
+        title: Text(text('verification_code'),
             style: TextStyle(
                 fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
         centerTitle: true,

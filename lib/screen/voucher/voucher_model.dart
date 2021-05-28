@@ -109,11 +109,13 @@ class Cupon {
   int discount;
   int type;
   DateTime validity;
+  // ignore: non_constant_identifier_names
   int minimum_spent;
   Cupon({
     this.discount,
     this.type,
     this.validity,
+    // ignore: non_constant_identifier_names
     this.minimum_spent,
   });
 

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'offerModel.dart';
 
 class OfferController extends GetxController {
+  // ignore: deprecated_member_use
   var allOffertems = List<Offer>().obs;
   var isLoading = true.obs;
   CartController ccont = Get.find();
@@ -29,15 +30,12 @@ class OfferController extends GetxController {
     }
   }
 
-  void setoffercode(var offerprice, var minimumSpent){
-    try{
-      ccont.offer.value= offerprice;
+  void setoffercode(var offerprice, var minimumSpent) {
+    try {
+      ccont.offer.value = offerprice;
       ccont.minimumSpent.value = minimumSpent;
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
   }
-
-
 }

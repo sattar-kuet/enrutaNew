@@ -1,8 +1,10 @@
 import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/near_by_place_data.dart';
+// ignore: unused_import
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/menuandreviewpage.dart';
+// ignore: unused_import
 import 'package:enruta/screen/myFavorite/myFavorite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -31,8 +33,11 @@ class ItemListView extends StatefulWidget {
 class _ItemListViewState extends State<ItemListView> {
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final tController = Get.put(TestController());
+    // ignore: unused_local_variable
     final pcontroller = Get.put(ProductController());
+    // ignore: unused_local_variable
     final controller = Get.find<TestController>();
     return Container(
       height: 255,

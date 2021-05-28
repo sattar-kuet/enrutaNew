@@ -28,6 +28,7 @@ class _MyMapState extends State<MyMap> {
   LatLng _center = const LatLng(45.521563, -122.677433);
   LatLng get initialPos => _center;
   bool buscando = false;
+  // ignore: unused_element
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
@@ -142,6 +143,7 @@ class _MyMapState extends State<MyMap> {
     }
   }
 
+  // ignore: unused_element
   _handleTap(LatLng tappedPoint) {
     setState(() {
       myMarker = [];

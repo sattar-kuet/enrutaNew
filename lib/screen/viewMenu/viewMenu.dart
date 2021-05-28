@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 
 import '../cartPage.dart';
 
+// ignore: must_be_immutable
 class ViewMenuPage extends StatelessWidget {
   final mController = Get.put(MenuController());
   final CartController cartCont = Get.put(CartController());

@@ -1,6 +1,7 @@
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/style.dart';
+// ignore: unused_import
 import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
 import 'package:enruta/screen/searchResult/searchController.dart';
@@ -34,7 +35,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   var selectedCards = 'WEIGHT';
 
-  RxList<Datum> itemList = List<Datum>().obs;
+  //RxList<Datum> itemList = List<Datum>().obs;
+
   final language = Get.put(LanguageController());
 
   String text(String key) {
@@ -43,19 +45,22 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (itemList.isEmpty == true) {
+    if (tController.nearbycat.isEmpty == true) {
       tController.getnearByPlace();
       // itemList.refresh();
       tController.nearbyres.forEach((u) {
-        print('loop = = $u');
-        itemList.add(u);
+        if (u.catId == widget.pageType) {
+          tController.nearbycat.add(u);
+        }
       });
     } else {
       //  tController.getPopularOrder();
       //itemList.refresh();
-      itemList.clear();
+      tController.nearbycat.clear();
       tController.nearbyres.forEach((u) {
-        itemList.add(u);
+        if (u.catId == widget.pageType) {
+          tController.nearbycat.add(u);
+        }
       });
     }
 
@@ -64,8 +69,8 @@ class _CategoryPageState extends State<CategoryPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            itemList.clear();
-            itemList.refresh();
+            tController.nearbycat.clear();
+            tController.nearbycat.refresh();
             Navigator.of(context).pop();
           },
           icon: Icon(Icons.arrow_back_ios),
@@ -145,7 +150,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             ),
                             new Container(
                               child: Obx(() {
-                                return itemList.length >
+                                return tController.nearbycat.length >
                                         0 //tController.datum.length >0
                                     ? GridView.builder(
                                         gridDelegate:
@@ -159,11 +164,12 @@ class _CategoryPageState extends State<CategoryPage> {
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         padding: EdgeInsets.all(15),
-                                        itemCount: itemList.length,
+                                        itemCount: tController.nearbycat.length,
                                         itemBuilder: (context, index) {
                                           //  print('FAVOURITE ==$}');
                                           return CategoryListView(
-                                            itemData: itemList[index],
+                                            itemData:
+                                                tController.nearbycat[index],
                                           );
                                         },
                                       )
@@ -442,7 +448,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(text('currently_open_restaurants'),
+                              title: Text(text('Currently open'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,
@@ -472,7 +478,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(text('restaurant_offering_discount'),
+                              title: Text(text('Offering discount'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,
@@ -732,6 +738,7 @@ class _CategoryPageState extends State<CategoryPage> {
         // mymapcont.savelocation(addrestype);
         //searchCont.itemList.where(() => );
         print('RES LIST =}');
+
         searchCont.filter('delivery_charge');
         //  searchCont.searchData(searchController.text);
         // searchCont.searchData('');

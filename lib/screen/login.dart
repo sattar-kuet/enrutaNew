@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:enruta/Animation/FadeAnimation.dart';
 
 import 'package:get/get.dart';
+// ignore: unused_import
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../helper/helper.dart';
@@ -61,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 
   String name = '', image;
+  // ignore: unused_field
   String _message = 'Log in/out by pressing the buttons below.';
 
   final _formkey = GlobalKey<FormState>();
@@ -72,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
   void checkloginstutas() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var email = prefs.getString('email');
+    // ignore: unused_local_variable
     int islogin = prefs.getInt('islogin');
 
     if (email == null) {
@@ -81,7 +84,9 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  // ignore: unused_field
   GoogleSignInAccount _currentUser;
+  // ignore: unused_field
   String _contactText = '';
 
   @override
@@ -111,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
     // googleSignIn.signInSilently();
   }
 
+  // ignore: unused_element
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
     setState(() {
       _contactText = "Loading contact info...";
@@ -593,13 +599,14 @@ class _LoginPageState extends State<LoginPage> {
     try {
       print("login");
       handleSignOut();
-      await googleSignIn.signIn();
+      //await googleSignIn.signIn();
       if (currentUser != null) {
         handleSignOut();
       }
       if (lController.currentUser != null) {
         handleSignOut();
       }
+      await googleSignIn.signIn();
     } catch (error) {
       print(error);
     }
@@ -661,6 +668,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  // ignore: unused_element
   void _showMessage(String message) {
     setState(() {
       _message = message;

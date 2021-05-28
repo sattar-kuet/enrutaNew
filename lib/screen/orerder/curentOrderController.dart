@@ -1,7 +1,7 @@
 import 'package:enruta/api/service.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/all_order_model.dart';
-import 'package:enruta/model/near_by_place_data.dart';
+//import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/model/popular_shop.dart';
 import 'package:enruta/screen/myMap/mapController.dart';
 import 'package:enruta/screen/orderStutas/orderStatus.dart';
@@ -14,7 +14,9 @@ import 'orderDetailsModel.dart';
 
 class CurentOrderController extends GetxController {
   final tController = Get.put(TestController());
+  // ignore: deprecated_member_use
   var allCurentOrderList = List<OrderModel>().obs;
+  // ignore: deprecated_member_use
   var polularShopList = List<Datums>().obs;
   var curentOrder = OrderModel().obs;
 
@@ -22,7 +24,6 @@ class CurentOrderController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     getPopularOrder();
     getCurentOrder();
     super.onInit();
@@ -81,8 +82,10 @@ class CurentOrderController extends GetxController {
       await Future.delayed(Duration(seconds: 1));
       Service.getCurentOrder(id).then((values) {
         allCurentOrderList.value = values.orders.toList();
+        // ignore: invalid_use_of_protected_member
         if (allCurentOrderList.value.length > 0) {
           curentOrder.value =
+              // ignore: invalid_use_of_protected_member
               allCurentOrderList.value[allCurentOrderList.value.length - 1];
         }
         print(allCurentOrderList.length);
@@ -125,6 +128,7 @@ class CurentOrderController extends GetxController {
     print("call api");
     print(la);
     await Future.delayed(Duration(seconds: 1));
+    // ignore: unused_local_variable
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     final coordi = new Coordinates(lg, la);

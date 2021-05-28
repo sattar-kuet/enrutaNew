@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as h;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartController extends GetxController {
@@ -26,8 +26,10 @@ class CartController extends GetxController {
   // ignore: deprecated_member_use
   var cartList = List<Product>().obs;
   // var paymentOption = ''.obs;
+  // ignore: non_constant_identifier_names
   var shop_category = ''.obs;
   var deliverOption = ''.obs;
+  // ignore: non_constant_identifier_names
   var user_id = ''.obs;
   var order = SendOrderModel();
   var newOrder = 0.obs;
@@ -55,8 +57,8 @@ class CartController extends GetxController {
   var grandTotalprice = 0.0.obs;
   var tax = 0.obs;
 
-  var cuppon = 0.obs;
-  var cuponholder = 0.obs;
+  var cuppon = 0.0.obs;
+  var cuponholder = 0.0.obs;
   var cupponMinimum = 0.obs;
   //for voucher
   var shopvoucher = 0.obs;
@@ -137,6 +139,7 @@ class CartController extends GetxController {
     super.onInit();
   }
 
+  // ignore: deprecated_member_use
   var suggetItems = List<Product>().obs;
   var isLoading = true.obs;
 
@@ -184,22 +187,25 @@ class CartController extends GetxController {
           content: Text(
               "Your previous cart will be cleared if you proceed with this shop"),
           actions: [
+            // ignore: deprecated_member_use
             RaisedButton(
                 child: Text("Cancel"),
                 color: Colors.redAccent,
                 onPressed: () {
                   Get.back();
                 }),
+            // ignore: deprecated_member_use
             RaisedButton(
                 child: Text("Ok"),
                 color: theamColor,
                 onPressed: () {
+                  // ignore: deprecated_member_use
                   cartList.value = List<Product>().obs;
                   prefs.setString('shopid', shop);
                   prefs.setInt("vat", vats);
                   prefs.setInt("deliveryCharge", deliveryC);
                   voucher.value = 0;
-                  cuppon.value = 0;
+                  cuppon.value = 0.0;
                   prefs.setString("categoryName",
                       Get.find<MenuController>().categoryName.value);
                   Get.find<SuggestController>().getsuggetItems();
@@ -221,11 +227,20 @@ class CartController extends GetxController {
 
   void getplist() {
     List storedCartList = GetStorage().read<List>('cartList');
-    print(storedCartList);
+
+    // try {
+    //   storedCartList.map((e) => print("abc"));
+    // } catch (e) {
+    //   print("eror abc");
+    // }
 
     if (storedCartList.length > 0) {
+      // ignore: deprecated_member_use
       cartList = List<Product>().obs;
+
       cartList = storedCartList.map((e) => Product.fromJson(e)).toList().obs;
+      // storedCartList.map((e) => Product.fromJson(e)).toList().obs;
+
       print(cartList.toList());
     }
     ever(cartList, (_) {
@@ -255,6 +270,7 @@ class CartController extends GetxController {
     } else {
       for (var i = 0; i < cartList.length; i++) {
         if (item.id != 0 && item.id == cartList[i].id) {
+          // ignore: invalid_use_of_protected_member
           cartList.value[i].qty = item.qty;
           // Get.snackbar(" add", "item alrady added");
           Get.snackbar("Cart", "Added to cart");
@@ -263,6 +279,7 @@ class CartController extends GetxController {
         }
       }
     }
+    // ignore: invalid_use_of_protected_member
     print("value value value" + '${cartList.value}');
     if (check == false) {
       cartList.add(item);
@@ -313,12 +330,14 @@ class CartController extends GetxController {
           content: Text(
               "Your previous cart will be cleared if you proceed with this shop"),
           actions: [
+            // ignore: deprecated_member_use
             RaisedButton(
                 child: Text("Cancel"),
                 color: Colors.redAccent,
                 onPressed: () {
                   Get.back();
                 }),
+            // ignore: deprecated_member_use
             RaisedButton(
                 child: Text("Ok"),
                 color: theamColor,
@@ -327,6 +346,7 @@ class CartController extends GetxController {
                   Get.back();
                   print(box.read("shopid"));
                   cartList.value = box.read('cartList');
+                  // ignore: deprecated_member_use
                   cartList.value = List<Product>();
                 })
           ]);
@@ -377,8 +397,11 @@ class CartController extends GetxController {
       cartList.add(item);
       print("when 0");
     }
+    // ignore: invalid_use_of_protected_member
     for (var i = 0; i < menuItems.value.length; i++) {
+      // ignore: invalid_use_of_protected_member
       if (menuItems.value[i].id == item.id) {
+        // ignore: invalid_use_of_protected_member
         menuItems.value[i].pqty.value = item.qty;
       }
     }
@@ -405,10 +428,10 @@ class CartController extends GetxController {
         cupponMinimum.value = a.offer.minimum_spent;
         cupontype.value = a.offer.type;
         if (cupontype.value == 1) {
-          cuponholder.value = a.offer.discount;
+          cuponholder.value = a.offer.discount.toDouble();
           print("c holder type 0 ${cuponholder.value}");
         } else if (cupontype.value == 2) {
-          cuponholder.value = ((subTprice * a.offer.discount) / 100).toInt();
+          cuponholder.value = (subTprice * a.offer.discount) / 100;
           print("c holder type 1 ${cuponholder.value}");
         }
       }
@@ -417,7 +440,7 @@ class CartController extends GetxController {
 
       checkOffer.value = 1;
       cuponholder.value = 0;
-      cuppon.value = 0;
+      cuppon.value = 0.0;
       print("check offer ${checkOffer.value}");
       print(cuponerrortxt.value);
     }
@@ -500,7 +523,7 @@ class CartController extends GetxController {
     GetStorage box = GetStorage();
     SharedPreferences pre = await SharedPreferences.getInstance();
     SendOrderModel sendOrder = new SendOrderModel();
-    Item p = new Item();
+    //Item p = new Item();
     // var pList = List<Item>();
     List<Item> pList = [];
 
@@ -526,7 +549,7 @@ class CartController extends GetxController {
     sendOrder.lat = selectLat.value.toString();
 
     sendOrder.lng = selectLng.value.toString();
-    print("cartListcartListcartListcartList" + cartList.value.toString());
+    //print("cartListcartListcartListcartList" + cartList.value.toString());
     for (var item in cartList) {
       Item p = new Item();
       p.productId = item.id;
@@ -543,7 +566,7 @@ class CartController extends GetxController {
     // order.items = cartList.toList();
 
     sendOrder.tax = vatPrice;
-    sendOrder.coupon = cuppon.value ?? 0;
+    sendOrder.coupon = cuppon.value ?? 0.0;
     sendOrder.voucher = voucher.value ?? 0;
     sendOrder.offer = discount.value ?? 0;
 
@@ -556,8 +579,8 @@ class CartController extends GetxController {
     await Future.delayed(Duration(seconds: 1));
 
     Service.sendorder(sendOrder).then((values) {
-      Response res = values;
-      String responseCode = res.statusCode.toString();
+      h.Response res = values;
+      //String responseCode = res.statusCode.toString();
       if (res.statusCode == 200) {
         submitorderstatus.value = true;
         sendOrder = new SendOrderModel();
@@ -598,7 +621,7 @@ class CartController extends GetxController {
     subTprice.value = 0;
     tvatprice.value = 0;
     deliveryCharge.value = 0;
-    cuppon.value = 0;
+    cuppon.value = 0.0;
     voucher.value = 0;
     discount.value = 0;
     grandTotalprice.value = 0;
@@ -629,13 +652,19 @@ class CartController extends GetxController {
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();
           print(menuItemsTemp.length);
+          // ignore: invalid_use_of_protected_member
           cartLists.value = cartList.value.toList();
+          // ignore: invalid_use_of_protected_member
           if (cartList.value.length > 0) {
+            // ignore: invalid_use_of_protected_member
             for (var j = 0; j < menuItemsTemp.value.length; j++) {
               for (var i = 0; i < cartList.length; i++) {
+                // ignore: invalid_use_of_protected_member
                 if (menuItemsTemp.value[j].id != 0 &&
+                    // ignore: invalid_use_of_protected_member
                     menuItemsTemp.value[j].id == cartList[i].id) {
                   // cartList.value[i].qty =item.qty;
+                  // ignore: invalid_use_of_protected_member
                   menuItemsTemp.value[j].pqty.value = cartList[i].qty;
                   // Get.snackbar(" add", "item alrady added");
 
@@ -643,6 +672,7 @@ class CartController extends GetxController {
               }
             }
           }
+          // ignore: invalid_use_of_protected_member
           menuItems.value = menuItemsTemp.value;
           // update();
 

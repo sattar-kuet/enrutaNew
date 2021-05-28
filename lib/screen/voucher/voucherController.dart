@@ -15,7 +15,6 @@ class VoucherController extends GetxController {
   var vdata = 0.obs;
   @override
   void onInit() {
-    // TODO: implement onInit
     getvoucher();
     super.onInit();
   }
@@ -39,6 +38,7 @@ class VoucherController extends GetxController {
   void advoucher() {
     String miniprice = minimum.value.toString();
 
+    // ignore: unused_local_variable
     var pk = miniprice.toDouble();
 
     ccont.shopvoucher.value = discount.value;

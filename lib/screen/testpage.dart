@@ -9,6 +9,7 @@ import 'package:enruta/view/menu_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class TestPage extends StatelessWidget {
   final tController = Get.put(TestController());
   List<ItemListData> itemList = ItemListData.itemList;

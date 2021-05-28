@@ -20,6 +20,7 @@ class MenuItemView extends StatelessWidget {
   final Animation<dynamic> animation;
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final controller = Get.find<TestController>();
     return Container(
       child: InkWell(

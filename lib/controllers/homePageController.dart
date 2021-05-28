@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 class HomePageController extends GetxController {
 // static const String url = 'http://enruta.itscholarbd.com/api/v2/categories';
 
+  // ignore: deprecated_member_use
   var category = List<Category>().obs;
 
   final address = ''.obs;

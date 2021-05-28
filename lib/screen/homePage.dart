@@ -336,6 +336,7 @@ class HomePage extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width -
                                           10,
                                       child: Obx(
+                                        // ignore: invalid_use_of_protected_member
                                         () => tController.polularShopList.value
                                                     .length >
                                                 0
@@ -354,11 +355,15 @@ class HomePage extends StatelessWidget {
                                                     right: 10,
                                                     left: 10),
                                                 children: List.generate(
-                                                    tController.polularShopList
-                                                        .value.length, (index) {
+                                                    tController
+                                                        .polularShopList
+                                                        // ignore: invalid_use_of_protected_member
+                                                        .value
+                                                        .length, (index) {
                                                   return PopularShopListView(
                                                     itemData: tController
                                                         .polularShopList
+                                                        // ignore: invalid_use_of_protected_member
                                                         .value[index],
                                                   );
                                                 }),
@@ -382,11 +387,13 @@ class HomePage extends StatelessWidget {
                                       titleTextStyle: Theme.of(context)
                                           .typography
                                           .dense
+                                          // ignore: deprecated_member_use
                                           .display1
                                           .copyWith(color: Color(0xff9da9c7)),
                                       subtitleTextStyle: Theme.of(context)
                                           .typography
                                           .dense
+                                          // ignore: deprecated_member_use
                                           .body2
                                           .copyWith(color: Color(0xffabb8d6)))),
                             );
@@ -433,6 +440,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // ignore: missing_return
   Widget showSuccessfullyBottompopup(BuildContext context) {
     showModalBottomSheet(
         context: context,

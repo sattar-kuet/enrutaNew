@@ -16,11 +16,14 @@ import 'package:get/get.dart';
 
 import 'cartPage.dart';
 
+// ignore: must_be_immutable
 class MenuAndReviewPage extends StatelessWidget {
   final mController = Get.put(MenuController());
   final cartCont = Get.put(CartController());
   final SuggestController suggestCont = Get.put(SuggestController());
+  // ignore: non_constant_identifier_names
   var shop_id = 0;
+  // ignore: non_constant_identifier_names
   var shop_name = "";
   var vat = 0;
   var deliveryCharge = 0;

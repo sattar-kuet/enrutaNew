@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SuggestController extends GetxController {
   var shopid = "".obs;
+  // ignore: deprecated_member_use
   var suggetItems = List<Product>().obs;
   var isLoading = true.obs;
   final vats = 0.obs;

@@ -9,6 +9,7 @@ import 'package:enruta/view/category_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class SearchResult extends StatelessWidget {
   // final pageTitle;
   // final int pageType;
@@ -86,7 +87,7 @@ class SearchResult extends StatelessWidget {
                                     left: 20, bottom: 10, top: 20),
                                 child: Text(
                                   '${searchCont.filterlength.value} ' +
-                                      text('restaurant_found_near_you'),
+                                      text('found near you'),
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -210,7 +211,7 @@ class SearchResult extends StatelessWidget {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(text('currently_open_restaurants'),
+                              title: Text(text('Currently Open'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,
@@ -240,7 +241,7 @@ class SearchResult extends StatelessWidget {
                         Obx(
                           () => Container(
                             child: CheckboxListTile(
-                              title: Text(text('restaurant_offering_discount'),
+                              title: Text(text('Offering discount'),
                                   style: TextStyle(
                                       fontFamily: 'TTCommonsm',
                                       fontSize: 16.0,

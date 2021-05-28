@@ -7,6 +7,7 @@ import 'package:enruta/view/item_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class MyFavorite extends StatelessWidget {
   // List<VoucherListData> voucherList = VoucherListData.voucherList;
   //List<ItemListData> itemList = ItemListData.itemList;
@@ -17,6 +18,7 @@ class MyFavorite extends StatelessWidget {
   }
 
   final tController = Get.put(TestController());
+  // ignore: deprecated_member_use
   RxList<Datum> itemList = List<Datum>().obs;
 
   @override

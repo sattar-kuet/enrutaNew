@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderStatus extends StatelessWidget {
-  @override
-
   final language = Get.put(LanguageController());
   String text(String key) {
     return language.text(key);
   }
 
+  @override
   Widget build(BuildContext context) {
     final detailsController = Get.put(CurentOrderController());
 

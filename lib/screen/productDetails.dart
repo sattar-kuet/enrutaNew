@@ -355,6 +355,7 @@ class WidgetDescription extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _buildWidgetProductInfo(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
@@ -366,11 +367,13 @@ class WidgetDescription extends StatelessWidget {
                   'it is elegance meets... ',
               style: Theme.of(context)
                   .textTheme
+                  // ignore: deprecated_member_use
                   .body1
                   .merge(TextStyle(fontSize: 16.0)),
             ),
             TextSpan(
                 text: 'More',
+                // ignore: deprecated_member_use
                 style: Theme.of(context).textTheme.body1.merge(
                       TextStyle(
                         fontSize: 16.0,

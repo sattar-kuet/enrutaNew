@@ -10,8 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TestController extends GetxController {
   static const String url = 'http://enruta.itscholarbd.com/api/v2/categories';
 
+  // ignore: deprecated_member_use
   var category = List<Category>().obs;
+  // ignore: deprecated_member_use
   var nearbyres = List<Datum>().obs;
+  // ignore: deprecated_member_use
+  var nearbycat = List<Datum>().obs;
+  // ignore: deprecated_member_use
   var polularShopList = List<Datums>().obs;
 
   final address = ''.obs;
@@ -105,8 +110,9 @@ class TestController extends GetxController {
   }
 
   _getLocation() async {
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator().getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
     final coordinates = new Coordinates(position.latitude, position.longitude);
     userlat.value = position.latitude;
     userlong.value = position.longitude;

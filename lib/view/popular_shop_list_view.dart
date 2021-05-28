@@ -1,5 +1,6 @@
 import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/controllers/textController.dart';
+// ignore: unused_import
 import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/model/popular_shop.dart';
 import 'package:enruta/screen/menuandreviewpage.dart';
@@ -133,6 +134,7 @@ class PopularShopListView extends StatelessWidget {
                                           ),
                                     onPressed: () async {
                                       print(itemData.shopId);
+                                      // ignore: unused_local_variable
                                       List fav = [];
                                       var status =
                                           itemData.isFavorite.value ? 0 : 1;

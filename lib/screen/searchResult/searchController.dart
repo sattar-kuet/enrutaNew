@@ -4,10 +4,16 @@ import 'package:enruta/screen/searchResult/searchResult.dart';
 import 'package:get/get.dart';
 
 class SearchController extends GetxController {
+  // ignore: deprecated_member_use
   var cartLists = List<Datum>().obs;
+  // ignore: deprecated_member_use
   var filterData = List<Datum>().obs;
+  // ignore: deprecated_member_use
   var datum = List<Datum>().obs;
   var filterlength = 0.obs;
+  // ignore: deprecated_member_use
+  var tempfilterData = List<Datum>();
+  // ignore: deprecated_member_use
   RxList<Datum> itemList = List<Datum>().obs;
   RxBool filter1 = false.obs;
   RxBool filter2 = false.obs;
@@ -25,9 +31,9 @@ class SearchController extends GetxController {
   }
 
   void clearFilter() {
-    filter1.value = false;
-    filter2.value = false;
-    filter3.value = false;
+    filter1.value = false; //currenty open
+    filter2.value = false; //offering discount
+    filter3.value = false; //free delevery
     // filter4.value = false;
     // filter5.value = false;
     // filter6.value = false;
@@ -40,12 +46,12 @@ class SearchController extends GetxController {
     final tController = Get.put(TestController());
 
     if (itemList.isEmpty == true) {
-      tController.nearbyres.forEach((u) {
+      tController.nearbycat.forEach((u) {
         itemList.add(u);
       });
     } else {
       itemList.clear();
-      tController.nearbyres.forEach((u) {
+      tController.nearbycat.forEach((u) {
         itemList.add(u);
       });
     }
@@ -69,14 +75,15 @@ class SearchController extends GetxController {
 
   void filter(String name) {
     final tController = Get.put(TestController());
+    filterData.clear();
 
-    if (itemList.isEmpty == true) {
-      tController.nearbyres.forEach((u) {
+    if (tController.nearbycat.isEmpty == true) {
+      tController.nearbycat.forEach((u) {
         itemList.add(u);
       });
     } else {
       itemList.clear();
-      tController.nearbyres.forEach((u) {
+      tController.nearbycat.forEach((u) {
         itemList.add(u);
       });
     }
@@ -85,40 +92,50 @@ class SearchController extends GetxController {
     var searchData = name.length > 0 ? true : false;
 
     if (searchData) {
-      itemList
-          .where((item) => item.deliveryCharge.toString().toLowerCase() == '0');
+      // itemList
+      //     .where((item) => item.deliveryCharge.toString().toLowerCase() == '0');
       for (var item in itemList) {
         //  String pname = item.deliveryCharge.toString().toLowerCase();
         // print('LENGTH == ${item.deliveryCharge}');
-        if (filter1.value == true && filter3.value == false) {
+
+        if (filter1.value == true) {
+          //&& filter3.value == false
           // print('FIRST');
+          //SHOP OPEN
           if (item.shopStatus == 2) {
             filterData.add(item);
             filterData.toSet().toList();
             // }
           }
-        } else if (filter1.value == false && filter3.value == true) {
+        }
+        if (filter2.value == true) {
+          //filter1.value == false && filter3.value == true
           // print('SECOND');
-          if (item.deliveryCharge == 0) {
+
+          if (item.discountOffer != 0) {
             filterData.add(item);
             filterData.toSet().toList();
             // }
           }
-        } else if (filter1.value == true && filter3.value == true) {
+        }
+        if (filter3.value == true) {
+          //filter1.value == true &&
           // print('THIRD');
-          if (item.deliveryCharge == 0 && item.shopStatus == 2) {
+          //FREE DELEVERy
+          if (item.deliveryCharge == 0) {
+            // && item.shopStatus == 2
             filterData.add(item);
             filterData.toSet().toList();
             // }
           }
         }
 
-        if (item.deliveryCharge == 0) {
-          // print(item.name);
-          filterData.add(item);
-          filterData.toSet().toList();
-          // }
-        }
+        // if (item.deliveryCharge == 0) {
+        //   // print(item.name);
+        //   filterData.add(item);
+        //   filterData.toSet().toList();
+        //   // }
+        // }
         print('OUT from filter');
         filterData.toSet().toList();
         filterlength.value = filterData.length;

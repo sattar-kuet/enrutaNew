@@ -21,6 +21,7 @@ class AllOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     List<MyorderListData> orderList = MyorderListData.curentOorderList;
 
     detailsController.getCurentOrder();
@@ -47,8 +48,7 @@ class AllOrder extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text(
-              text('my_current_order'),
+          title: Text(text('my_current_order'),
               style: TextStyle(
                   fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
           centerTitle: true,
@@ -76,38 +76,65 @@ class AllOrder extends StatelessWidget {
                                       .withOpacity(0.8)),
                             ),
                           ),
-                         Obx(()=>
-                             detailsController.allCurentOrderList.value.length>0?
-                             ListView(
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            children: List.generate(1, (index){
-                              return CurentOrderView(
-                                orderModel: detailsController.allCurentOrderList.value[0],
-                                    );
-                            })
+                          Obx(() =>
+                              // ignore: invalid_use_of_protected_member
+                              detailsController
+                                          // ignore: invalid_use_of_protected_member
+                                          .allCurentOrderList
+                                          // ignore: invalid_use_of_protected_member
+                                          .value
+                                          .length >
+                                      0
+                                  ? ListView(
+                                      shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
+                                      children: List.generate(1, (index) {
+                                        return CurentOrderView(
+                                          // ignore: invalid_use_of_protected_member
+                                          orderModel: detailsController
+                                              // ignore: invalid_use_of_protected_member
+                                              .allCurentOrderList
+                                              // ignore: invalid_use_of_protected_member
+                                              .value[0],
+                                        );
+                                      })
 
-
-                            // List.generate(orderList.length, (index) {
-                            //   return CurentOrderView(
-                            //     orderData: orderList[index],
-                            //   );
-                            // }),
-                          ):Container(
-                               margin: EdgeInsets.all(50),
-                               child: Center(
-                                   child: EmptyListWidget(
-                                       title: text('no_order'),
-                                       subTitle: text('no_current_order_available_yet'),
-                                       // image: 'assets/images/userIcon.png',
-                                       image : null,
-                                       packageImage: PackageImage.Image_2,
-                                       titleTextStyle: Theme.of(context).typography.dense.display1.copyWith(color: Color(0xff9da9c7)),
-                                       subtitleTextStyle: Theme.of(context).typography.dense.body2.copyWith(color: Color(0xffabb8d6))
-                                   )
-                               ),
-                             )
-                         )
+                                      // List.generate(orderList.length, (index) {
+                                      //   return CurentOrderView(
+                                      //     orderData: orderList[index],
+                                      //   );
+                                      // }),
+                                      )
+                                  : Container(
+                                      margin: EdgeInsets.all(50),
+                                      child: Center(
+                                          child: EmptyListWidget(
+                                              title: text('no_order'),
+                                              subTitle: text(
+                                                  'no_current_order_available_yet'),
+                                              // image: 'assets/images/userIcon.png',
+                                              image: null,
+                                              packageImage:
+                                                  PackageImage.Image_2,
+                                              // ignore: deprecated_member_use
+                                              titleTextStyle: Theme.of(context)
+                                                  .typography
+                                                  .dense
+                                                  // ignore: deprecated_member_use
+                                                  .display1
+                                                  .copyWith(
+                                                      color: Color(0xff9da9c7)),
+                                              // ignore: deprecated_member_use
+                                              subtitleTextStyle: Theme.of(
+                                                      context)
+                                                  .typography
+                                                  .dense
+                                                  // ignore: deprecated_member_use
+                                                  .body2
+                                                  .copyWith(
+                                                      color:
+                                                          Color(0xffabb8d6)))),
+                                    ))
                         ],
                       ),
                     ),

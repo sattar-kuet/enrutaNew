@@ -65,11 +65,11 @@ class MyMapController extends GetxController {
     print(address);
   }
 
-
   getpointerLocation(double let, double lo) async {
     print("call api");
     print(let);
     await Future.delayed(Duration(seconds: 1));
+    // ignore: unused_local_variable
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     final coordi = new Coordinates(let, lo);
@@ -83,9 +83,6 @@ class MyMapController extends GetxController {
 
     // print(pointAddress);
   }
-
-
-
 
   getpoitlocation() {
     getpointerLocation(pointLat.value, pointLong.value);

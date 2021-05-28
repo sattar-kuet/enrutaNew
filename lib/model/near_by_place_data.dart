@@ -32,6 +32,7 @@ class Datum {
     this.shopStatus,
     this.catId,
     this.userId,
+    this.discountOffer,
     this.name,
     this.vat,
     this.deliveryCharge,
@@ -49,6 +50,7 @@ class Datum {
   int shopStatus;
   int catId;
   int userId;
+  int discountOffer;
   String name;
   int vat;
   int deliveryCharge;
@@ -68,6 +70,8 @@ class Datum {
         catId: json["catId"],
         userId: json["userId"],
         name: json["name"],
+        discountOffer:
+            json["discountOffer"] == null ? 0 : json["discountOffer"],
         vat: json["vat"] == null ? 0 : json["vat"].toInt(),
         deliveryCharge: json["delivery_charge"],
         favorite: json["favorite"],
@@ -89,6 +93,7 @@ class Datum {
         "vat": vat,
         "delivery_charge": deliveryCharge,
         "favorite": favorite,
+        "discountOffer": discountOffer,
         "time": time,
         "logo": logo,
         "totalReview": totalReview,

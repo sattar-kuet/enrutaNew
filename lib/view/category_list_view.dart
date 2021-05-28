@@ -36,8 +36,15 @@ class CategoryListView extends StatelessWidget {
       child: InkWell(
         onTap: () {
           print(itemData.shopId);
-          Get.to(MenuAndReviewPage(itemData.shopId, itemData.vat,
-              itemData.deliveryCharge, itemData.name));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MenuAndReviewPage(
+                      itemData.shopId,
+                      itemData.vat.toInt(),
+                      itemData.deliveryCharge,
+                      itemData.name,
+                      itemData.address)));
           // Navigator.push(context,
           //     MaterialPageRoute(builder: (context) => MenuAndReviewPage()));
         },
@@ -114,6 +121,7 @@ class CategoryListView extends StatelessWidget {
                                             size: 15,
                                           ),
                                     onPressed: () async {
+                                      // ignore: unused_local_variable
                                       List fav = [];
                                       var status =
                                           itemData.isFavorite.value ? 0 : 1;

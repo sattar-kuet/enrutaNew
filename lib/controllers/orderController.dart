@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderController extends GetxController {
+  // ignore: deprecated_member_use
   var allOrderList = List<OrderModel>().obs;
   var isLoading = true.obs;
   @override

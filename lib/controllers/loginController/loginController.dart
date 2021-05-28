@@ -174,6 +174,7 @@ class LoginController extends GetxController {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
+        // ignore: non_constant_identifier_names
         int Xid = int.parse(id.toString());
         await sharedPreferences.setInt("id", Xid);
 
@@ -227,5 +228,6 @@ class LoginController extends GetxController {
     await googleSignIn.disconnect();
   }
 
+  // ignore: unused_element
   Future<void> _handleSignOut() async => await googleSignIn.disconnect();
 }

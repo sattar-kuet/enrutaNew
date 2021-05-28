@@ -5,16 +5,20 @@ import 'package:enruta/model/review_model.dart';
 import 'package:get/get.dart';
 
 class MenuController extends GetxController {
+  // ignore: deprecated_member_use
   var menuItems = List<Product>().obs;
   // ignore: deprecated_member_use
   var reviewItems = List<Review>().obs;
-  final cartController  = Get.put(CartController());
+  final cartController = Get.put(CartController());
 
+  // ignore: deprecated_member_use
   var cartList = List<Product>().obs;
 
+  // ignore: deprecated_member_use
   var menuItemsTemp = List<Product>().obs;
 
   var categoryName = ''.obs;
+  // ignore: deprecated_member_use
   var cartLists = List<Product>().obs;
   var qty = 0.obs;
 
@@ -33,39 +37,49 @@ class MenuController extends GetxController {
       isLoading(true);
       await Future.delayed(Duration(seconds: 1));
       Service.menulist(id).then((va) {
-       if(va != null){
-         menuItemsTemp.value = va.products.toList();
-         categoryName.value = va.categoryName.toString();
-         print(menuItemsTemp.length);
-         cartLists.value = cartController.cartList.value;
-         if(cartController.cartList.value.length>0){
-           for(var j=0; j<menuItemsTemp.value.length; j++){
-             for (var i = 0; i < cartController.cartList.length; i++) {
-               if (menuItemsTemp.value[j].id != 0 && menuItemsTemp.value[j].id == cartController.cartList[i].id) {
-                 // cartList.value[i].qty = item.qty;
-                 menuItemsTemp.value[j].pqty.value = cartController.cartList[i].qty;
-                 // Get.snackbar(" add", "item alrady added");
+        if (va != null) {
+          menuItemsTemp.value = va.products.toList();
+          categoryName.value = va.categoryName.toString();
+          print(menuItemsTemp.length);
+          // ignore: invalid_use_of_protected_member
+          cartLists.value = cartController.cartList.value;
+          // ignore: invalid_use_of_protected_member
+          if (cartController.cartList.value.length > 0) {
+            // ignore: invalid_use_of_protected_member
+            for (var j = 0; j < menuItemsTemp.value.length; j++) {
+              for (var i = 0; i < cartController.cartList.length; i++) {
+                // ignore: invalid_use_of_protected_member
+                if (menuItemsTemp.value[j].id != 0 &&
+                    // ignore: invalid_use_of_protected_member
+                    menuItemsTemp.value[j].id ==
+                        cartController.cartList[i].id) {
+                  // cartList.value[i].qty = item.qty;
+                  // ignore: invalid_use_of_protected_member
+                  menuItemsTemp.value[j].pqty.value =
+                      cartController.cartList[i].qty;
+                  // Get.snackbar(" add", "item alrady added");
 
-               }
-             }
-           }
+                }
+              }
+            }
+          }
+          // ignore: invalid_use_of_protected_member
+          menuItems.value = menuItemsTemp.value;
+          // update();
 
-         }
-         menuItems.value = menuItemsTemp.value;
-         // update();
-
-
-
-       }
+        }
       });
     } catch (e) {} finally {
       isLoading(false);
     }
   }
 
-  void incrementqty(var id, var positon){
-    for(int i =0; i<menuItems.value.length; i++){
-      if(menuItems.value[i].id== id){
+  void incrementqty(var id, var positon) {
+    // ignore: invalid_use_of_protected_member
+    for (int i = 0; i < menuItems.value.length; i++) {
+      // ignore: invalid_use_of_protected_member
+      if (menuItems.value[i].id == id) {
+        // ignore: invalid_use_of_protected_member
         menuItems.value[i].qty++;
       }
     }
@@ -74,12 +88,16 @@ class MenuController extends GetxController {
     // }
   }
 
-  void diCrement(var id, var positon){
-    for(int i =0; i<menuItems.value.length; i++){
-      if(menuItems.value[i].id== id){
-       if( menuItems.value[i].qty>0){
-         menuItems.value[i].qty--;
-       }
+  void diCrement(var id, var positon) {
+    // ignore: invalid_use_of_protected_member
+    for (int i = 0; i < menuItems.value.length; i++) {
+      // ignore: invalid_use_of_protected_member
+      if (menuItems.value[i].id == id) {
+        // ignore: invalid_use_of_protected_member
+        if (menuItems.value[i].qty > 0) {
+          // ignore: invalid_use_of_protected_member
+          menuItems.value[i].qty--;
+        }
       }
     }
     // if(menuItems.value.length>0){

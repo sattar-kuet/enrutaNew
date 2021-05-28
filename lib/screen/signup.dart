@@ -37,6 +37,7 @@ class _SignUpState extends State<SignUp> {
   // var selectedCard = 'WEIGHT';
   static final FacebookLogin facebookSignIn = new FacebookLogin();
   String name = '', image;
+  // ignore: unused_field
   String _message = 'Log in/out by pressing the buttons below.';
   bool _isHidden = true;
   void _toggleVisibility() {
@@ -52,9 +53,11 @@ class _SignUpState extends State<SignUp> {
   final nameController = TextEditingController();
   final addressController = TextEditingController();
   GoogleSignInAccount currentUser;
+  // ignore: unused_field
   PickedFile _imageFile;
   var imageF;
   bool imagepassed = false;
+  // ignore: unused_field
   final ImagePicker _picker = ImagePicker();
 
   String message = '';
@@ -623,6 +626,7 @@ class _SignUpState extends State<SignUp> {
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            // ignore: deprecated_member_use
             FlatButton.icon(
               icon: Icon(Icons.camera),
               onPressed: () {
@@ -630,6 +634,7 @@ class _SignUpState extends State<SignUp> {
               },
               label: Text(text('camera')),
             ),
+            // ignore: deprecated_member_use
             FlatButton.icon(
               icon: Icon(Icons.image),
               onPressed: () {
@@ -644,7 +649,10 @@ class _SignUpState extends State<SignUp> {
   }
 
   void takePhoto(ImageSource source) async {
+    // ignore: unused_local_variable
+    // ignore: unused_local_variable
     SharedPreferences pref = await SharedPreferences.getInstance();
+    // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(
         source: source, maxHeight: 400, maxWidth: 300);
     // final pickedFile = await _picker.getImage(

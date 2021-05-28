@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 // @immutable
+// ignore: must_be_immutable
 class BottomNavigation extends StatelessWidget {
   int _currentIndex = 0;
   // void onTabTappeds(BuildContext context) {

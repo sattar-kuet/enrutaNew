@@ -40,6 +40,7 @@ class CurentOrderView extends StatelessWidget {
         child: Obx(
           () =>
               // this.orderModel !=null? Text("YOU HAVE NOT ANY CURRENT ORDER "):
+              // ignore: invalid_use_of_protected_member
               detailsController.allCurentOrderList.value.length == 0
                   ? Text(text('YOU_HAVE_NOT_ANY_CURRENT_ORDER'))
                   : InkWell(

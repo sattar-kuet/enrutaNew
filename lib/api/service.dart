@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/Response.dart';
@@ -66,6 +65,7 @@ class Service {
     }
   }
 
+  // ignore: missing_return
   static Future<MenuModel> menulist(var x) async {
     print("menu item id $x");
     if (x != null) {
@@ -199,7 +199,11 @@ class Service {
   }
 
   static Future<CuponModel> getCuppons(
-      String shop_id, String user_id, String code) async {
+      // ignore: non_constant_identifier_names
+      String shop_id,
+      // ignore: non_constant_identifier_names
+      String user_id,
+      String code) async {
     try {
       final response = await http.post(
         baseUrl + "applyCode",

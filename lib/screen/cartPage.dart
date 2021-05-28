@@ -7,7 +7,7 @@ import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/cart_list_data.dart';
 import 'package:enruta/model/review_list_data.dart';
 import 'package:enruta/screen/resetpassword/resetController.dart';
-import 'package:enruta/screen/viewMenu/viewMenu.dart';
+//import 'package:enruta/screen/viewMenu/viewMenu.dart';
 import 'package:enruta/screen/voucher/myvoucher.dart';
 import 'package:enruta/view/cart_list_view.dart';
 import 'package:enruta/view/cart_slid_view.dart';
@@ -120,6 +120,7 @@ class CartPage extends StatelessWidget {
                                 cartCont.totalcalculate();
                                 Get.snackbar(
                                     '', text('item_successfully_removed'),
+                                    // ignore: deprecated_member_use
                                     mainButton: FlatButton(
                                       child: Text(text('undo')),
                                       onPressed: () {
@@ -800,26 +801,26 @@ class CartPage extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-                bottom: 10,
-                top: 10,
-                right: 10,
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      // Get.to();
-                      Get.to(ViewMenuPage());
-                      print("view all ");
-                    },
-                    child: Text(
-                      text('view_menu'),
-                      style: TextStyle(
-                          fontFamily: "TTCommonsd",
-                          fontSize: 14,
-                          color: Color(Helper.getHexToInt("#3AD8B4"))),
-                    ),
-                  ),
-                )),
+            // Positioned(
+            //     bottom: 10,
+            //     top: 10,
+            //     right: 10,
+            //     child: Center(
+            //       child: InkWell(
+            //         onTap: () {
+            //           // Get.to();
+            //           Get.to(ViewMenuPage());
+            //           print("view all ");
+            //         },
+            //         child: Text(
+            //           text('view_menu'),
+            //           style: TextStyle(
+            //               fontFamily: "TTCommonsd",
+            //               fontSize: 14,
+            //               color: Color(Helper.getHexToInt("#3AD8B4"))),
+            //         ),
+            //       ),
+            //     )),
           ],
         ),
       ),
@@ -1370,6 +1371,7 @@ class CartPage extends StatelessWidget {
     );
   }
 
+  // ignore: missing_return
   Widget showSuccessfullyBottompopup(BuildContext context) {
     showModalBottomSheet(
         context: context,

@@ -14,6 +14,7 @@ class ProductController extends GetxController {
 
   addProduct() {
     try {
+      // ignore: unused_local_variable
       CartItemModel cartItem = cController.cartItems.firstWhere((cartItem) {
         return cartItem.product.id == this.product.id;
       });

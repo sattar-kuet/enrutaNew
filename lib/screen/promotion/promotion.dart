@@ -20,7 +20,6 @@ class Promotion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 90,
@@ -45,8 +44,7 @@ class Promotion extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text(
-              text('promotion'),
+          title: Text(text('promotion'),
               style: TextStyle(
                   fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
           centerTitle: true,
@@ -80,26 +78,39 @@ class Promotion extends StatelessWidget {
                 if (offerController.allOffertems.length == 0)
                   return Center(child: CircularProgressIndicator());
                 else
-                  return offerController.allOffertems.length !=0 ? ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: offerController.allOffertems.length,
-                    itemBuilder: (context, index) =>
-                        promotionsimage(offerController.allOffertems[index]),
-                  ):Container(
-                    margin: EdgeInsets.all(50),
-                    child: Center(
-                        child: EmptyListWidget(
-                            title: text('no_offer'),
-                            subTitle: text('no_current_offer_available_yet'),
-                            // image: 'assets/images/userIcon.png',
-                            image : null,
-                            packageImage: PackageImage.Image_2,
-                            titleTextStyle: Theme.of(context).typography.dense.display1.copyWith(color: Color(0xff9da9c7)),
-                            subtitleTextStyle: Theme.of(context).typography.dense.body2.copyWith(color: Color(0xffabb8d6))
+                  return offerController.allOffertems.length != 0
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: offerController.allOffertems.length,
+                          itemBuilder: (context, index) => promotionsimage(
+                              offerController.allOffertems[index]),
                         )
-                    ),
-                  );
+                      : Container(
+                          margin: EdgeInsets.all(50),
+                          child: Center(
+                              child: EmptyListWidget(
+                                  title: text('no_offer'),
+                                  subTitle:
+                                      text('no_current_offer_available_yet'),
+                                  // image: 'assets/images/userIcon.png',
+                                  image: null,
+                                  packageImage: PackageImage.Image_2,
+                                  // ignore: deprecated_member_use
+                                  titleTextStyle: Theme.of(context)
+                                      .typography
+                                      .dense
+                                      // ignore: deprecated_member_use
+                                      .display1
+                                      .copyWith(color: Color(0xff9da9c7)),
+                                  // ignore: deprecated_member_use
+                                  subtitleTextStyle: Theme.of(context)
+                                      .typography
+                                      .dense
+                                      // ignore: deprecated_member_use
+                                      .body2
+                                      .copyWith(color: Color(0xffabb8d6)))),
+                        );
               }),
 
               // Wrap(
@@ -126,29 +137,29 @@ class Promotion extends StatelessWidget {
 
   Widget promotionsimage(Offer model) {
     return Container(
-      width: Get.width,
-      height: 220,
-      padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-      // child: Image.asset(
-      //   'assets/icons/offer2.png',
-      //   fit: BoxFit.fill,
-      // ),
-      child: InkWell(
-        onTap: (){
-          offerController.setoffercode(model.discount,model.minimumSpent);
+        width: Get.width,
+        height: 220,
+        padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        // child: Image.asset(
+        //   'assets/icons/offer2.png',
+        //   fit: BoxFit.fill,
+        // ),
+        child: InkWell(
+          onTap: () {
+            offerController.setoffercode(model.discount, model.minimumSpent);
 
-          Get.to(MenuAndReviewPage(model.shopId,model.shop.vat,model.shop.deliveryCharge,model.shop.name, model.shop.address));
-        },
-        child:  Image.network(
-          model.image,
-          fit: BoxFit.fill,
-        ),
-      )
-
-
-
-
-    );
+            Get.to(MenuAndReviewPage(
+                model.shopId,
+                model.shop.vat,
+                model.shop.deliveryCharge,
+                model.shop.name,
+                model.shop.address));
+          },
+          child: Image.network(
+            model.image,
+            fit: BoxFit.fill,
+          ),
+        ));
   }
 
   Widget promotionsimage2() {

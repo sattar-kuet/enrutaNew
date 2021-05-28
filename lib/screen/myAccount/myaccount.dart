@@ -344,6 +344,7 @@ class _MyAccountState extends State<MyAccount> {
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            // ignore: deprecated_member_use
             FlatButton.icon(
               icon: Icon(Icons.camera),
               onPressed: () {
@@ -354,6 +355,7 @@ class _MyAccountState extends State<MyAccount> {
               },
               label: Text(text('camera')),
             ),
+            // ignore: deprecated_member_use
             FlatButton.icon(
               icon: Icon(Icons.image),
               onPressed: () {
@@ -371,7 +373,9 @@ class _MyAccountState extends State<MyAccount> {
   var path;
   void takePhoto(ImageSource source, context) async {
     final dController = Get.find<MyAccountController>();
+    // ignore: non_constant_identifier_names
     final Controller = Get.find<ResetController>();
+    // ignore: deprecated_member_use
     path = await ImagePicker.pickImage(
             source: source, maxHeight: 400, maxWidth: 300)
         .then((value) async {
@@ -452,6 +456,7 @@ class _MyAccountState extends State<MyAccount> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Container GetImage(imageF) {
     return Container(
       height: 120,

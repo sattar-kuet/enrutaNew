@@ -7,6 +7,7 @@ import 'package:enruta/helper/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class AddNewMethod extends StatelessWidget {
   List imgList = [0, 1, 2];
   final pController = Get.put(ProductController());
