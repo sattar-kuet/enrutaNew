@@ -35,10 +35,11 @@ class LocationListView extends StatelessWidget {
           print("object");
 
           var a = locationData.locationTitle;
-          print(a);
+
           var b = locationData.lat;
           var c = locationData.lng;
           controller.setAddress(a, b, c);
+          print("set address done");
         },
         child: Stack(
           children: [

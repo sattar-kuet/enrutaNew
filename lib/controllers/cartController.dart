@@ -4,6 +4,7 @@ import 'package:enruta/controllers/menuController.dart';
 import 'package:enruta/controllers/suggestController.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/Product_model.dart';
+import 'package:enruta/model/address_model.dart';
 import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/cart/cart_model.dart';
 import 'package:enruta/screen/cartPage.dart';
@@ -487,17 +488,22 @@ class CartController extends GetxController {
 
   setAddress(var a, var b, var c) {
     GetStorage box = GetStorage();
-    print(a);
-    print(b);
-    print(c);
+    // print(a);
+    // print(b);
+    // print(c);
+    List<Addres> addresslist =
+        box.read('adress_list') ? box.read('adress_list') : [];
+    Addres adst = Addres(uLat: double.parse(b), ulong: double.parse(c));
+    addresslist.add(adst);
 
-    box.write("selectLet", b);
-    box.write("selectLng", c);
+    // box.write("selectLet", b);
+    // box.write("selectLng", c);
+    box.write("adress_list", addresslist);
     selectAddress.value = a;
     selectLat.value = b;
     selectLng.value = c;
 
-    print(a);
+    print("writtrn in strg");
 
     Get.back();
   }

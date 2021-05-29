@@ -273,8 +273,9 @@ class _MyMapState extends State<MyMap> {
                                           onTap: () {
                                             var addrestype =
                                                 textController.text;
-                                            Get.back();
+
                                             mymapcont.savelocation(addrestype);
+                                            Get.back();
                                           },
                                           child: Container(
                                             height: 50,
@@ -365,8 +366,11 @@ class _MyMapState extends State<MyMap> {
                           var a = mymapcont.pointAddress.value;
                           var b = mymapcont.pointLat.value.toString();
                           var c = mymapcont.pointLong.value.toString();
-                          // final controller = Get.put(CartController());
-                          Get.find<CartController>().setAddress(a, b, c);
+                          //final controller = Get.put(CartController());
+                          print("Btn pressed");
+                          var addrestype = textController.text;
+                          Get.put(CartController()).setAddress(a, b, c);
+                          //Get.put(MyMapController()).savelocation(addrestype);
                           Get.back();
                         },
                         child: Container(

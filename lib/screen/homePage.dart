@@ -5,6 +5,7 @@ import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/item_list_data.dart';
 import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
+import 'package:enruta/screen/myMap/mapController.dart';
 import 'package:enruta/screen/orerder/curentOrderController.dart';
 import 'package:enruta/screen/resetpassword/resetController.dart';
 import 'package:enruta/screen/setLocation.dart';
@@ -38,6 +39,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(MyMapController());
     tController.getmenulist();
     language.loadLanguage();
     return Scaffold(

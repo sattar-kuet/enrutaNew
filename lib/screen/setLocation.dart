@@ -20,6 +20,7 @@ class SetLocation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    addressController.getlocationlist();
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 90,
@@ -60,8 +61,10 @@ class SetLocation extends StatelessWidget {
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         children: [
-                          Obx(
-                            () => ListView.separated(
+                          Obx(() {
+                            print(
+                                "From widget addresslenght ${addressController.cheker}");
+                            return ListView.separated(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               physics: ClampingScrollPhysics(),
@@ -103,8 +106,8 @@ class SetLocation extends StatelessWidget {
                               separatorBuilder: (context, index) {
                                 return Text("");
                               },
-                            ),
-                          ),
+                            );
+                          }),
 // /**/                          ListView(
 //                               shrinkWrap: true,
 //                               physics: ClampingScrollPhysics(),

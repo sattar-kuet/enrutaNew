@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:enruta/screen/myMap/address_model.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,6 +16,7 @@ class MyMapController extends GetxController {
   var userlat = 0.0.obs;
   var userlong = 0.0.obs;
   var pointLat = 0.0.obs;
+  var cheker = 0.obs;
   var pointLong = 0.0.obs;
   var pointAddress = "".obs;
 
@@ -98,8 +101,19 @@ class MyMapController extends GetxController {
     });
   }
 
+  void getlocationlist() {
+    GetStorage box = GetStorage();
+    List a = box.read('addressList');
+    print("from storage $a");
+    if (a != null) {
+      print("from storage $a");
+
+      addressList.value = a.map((data) => AddressModel.fromJson(data)).toList();
+    }
+  }
+
   void savelocation(var addrestype) {
-    print(addrestype);
+    print("save location called");
     AddressModel addressModel = new AddressModel();
     // List addresssList = GetStorage().read<List>('addressList');
 
@@ -162,13 +176,35 @@ class MyMapController extends GetxController {
 
     GetStorage box = GetStorage();
     addressList.add(addressModel);
-    Get.back();
+    //print("from direct ${addressList.value}");
     box.write("addressList", addressList);
-    addressList = GetStorage().read<RxList>('addressList');
-    print(addressList);
 
-    print(pointAddress.value);
-    print(pointLat);
-    print(pointLat);
+    //addressList = GetStorage().read<RxList>('addressList');
+
+    List a = box.read('addressList');
+    print("from storage $a");
+    if (a != null) {
+      print("from storage $a");
+
+      addressList.value = a.map((data) => AddressModel.fromJson(data)).toList();
+    }
+
+    //     .toList();
+    //addressList.value = a ;
+
+    // addressList = GetStorage().read<Rxlist>('addressList');
+    // addressList.value = (json.decode(a.toString()) as RxList)
+    //     .map((data) => AddressModel.fromJson(data))
+    //     .toList();
+
+    // print("running upto here");
+    //print(addressList[1].lat);
+    cheker.value = addressList.length;
+    Get.back();
+    //print("fron fn addlist lenth = $cheker");
+
+    // print(pointAddress.value);
+    // print(pointLat);
+    // print(pointLat);
   }
 }
