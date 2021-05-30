@@ -26,7 +26,7 @@ class CartListView extends StatelessWidget {
     final CartController cartController = Get.find();
     // cartData.pqty.value = cartData.qty;
     var qt = cartData.qty.obs;
-    var subtotal = 0.obs;
+    var subtotal = 0.0.obs;
     cartData.qty = qt.value;
     if (cartData.qty != null && cartData.price != null) {
       subtotal.value = (cartData.qty * cartData.price);

@@ -6,7 +6,7 @@ class Product {
   int id;
   String title;
   String subTxt;
-  int price;
+  double price;
   String logo;
   var qty = 1;
   var pqty = 1.obs;
@@ -15,7 +15,7 @@ class Product {
         id: json["id"],
         title: json["title"],
         subTxt: json["subTxt"],
-        price: json["price"],
+        price: json["price"].toDouble(),
         logo: json["logo"],
         qty: json["qty"],
       );
