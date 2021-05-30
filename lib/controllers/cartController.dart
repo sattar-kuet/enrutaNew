@@ -2,6 +2,7 @@ import 'package:enruta/api/service.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/controllers/menuController.dart';
 import 'package:enruta/controllers/suggestController.dart';
+import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/Product_model.dart';
 import 'package:enruta/model/address_model.dart';
@@ -495,15 +496,17 @@ class CartController extends GetxController {
     // List<AddressModel> addresslist =
     //     box.read('addressList') ? box.read('addressList') : [];
 
-    // box.write("selectLet", b);
-    // box.write("selectLng", c);
-    //box.write("adress_list", addresslist);
+    box.write("selectLet", lat.toString());
+    box.write("selectLng", long.toString());
+    print("lat lang written finished");
+    box.write("adress_list", addressdetails);
 
     selectAddress.value = addressdetails.toString();
     selectLat.value = lat.toString();
     selectLng.value = long.toString();
 
     print("from set -- ${selectAddress.value}");
+    Get.put(TestController()).getLocation();
 
     Get.back();
   }

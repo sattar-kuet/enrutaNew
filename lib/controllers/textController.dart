@@ -5,6 +5,7 @@ import 'package:enruta/model/popular_shop.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TestController extends GetxController {
@@ -31,7 +32,7 @@ class TestController extends GetxController {
   void onInit() {
     super.onInit();
     getmenulist();
-    _getLocation();
+    getLocation();
   }
 
   RxBool filter1 = true.obs;
@@ -109,20 +110,36 @@ class TestController extends GetxController {
     });
   }
 
-  _getLocation() async {
-    Position position = await Geolocator().getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    userlat.value = position.latitude;
-    userlong.value = position.longitude;
+  getLocation() async {
+    GetStorage box = GetStorage();
+    Coordinates coordinates;
+    Position position;
+    if (box.read("selectLet") != null) {
+      userlat.value = double.parse(box.read("selectLet"));
+      userlong.value = double.parse(box.read("selectLng"));
+      print(userlat.value);
+      print(userlong.value);
+      coordinates = new Coordinates(userlat.value, userlong.value);
+
+      print("Got from storage");
+    } else {
+      position = await Geolocator().getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      userlat.value = position.latitude;
+      userlat.value = position.longitude;
+      coordinates = new Coordinates(position.latitude, position.longitude);
+      print("Got from Onilne");
+    }
+
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     address.value = first.addressLine;
     address(first.addressLine);
 
-    print(address);
+    //print(address);
     getnearByPlace();
     getPopularShops();
   }
