@@ -38,7 +38,11 @@ class LocationListView extends StatelessWidget {
 
           var b = locationData.lat;
           var c = locationData.lng;
-          controller.setAddress(a, b, c);
+          print("a=$a b=$b c= $c ");
+          controller.setdeleveryAddress(
+              addressdetails: locationData.locationDetails,
+              lat: locationData.lat,
+              long: locationData.lng);
           print("set address done");
         },
         child: Stack(

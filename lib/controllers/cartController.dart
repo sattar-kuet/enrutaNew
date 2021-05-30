@@ -9,6 +9,7 @@ import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/cart/cart_model.dart';
 import 'package:enruta/screen/cartPage.dart';
 import 'package:enruta/screen/homePage.dart';
+import 'package:enruta/screen/myMap/address_model.dart';
 import 'package:enruta/screen/voucher/voucher_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -486,24 +487,23 @@ class CartController extends GetxController {
     shopid.value = prefs.getString("shopid");
   }
 
-  setAddress(var a, var b, var c) {
-    GetStorage box = GetStorage();
-    // print(a);
-    // print(b);
-    // print(c);
-    List<Addres> addresslist =
-        box.read('adress_list') ? box.read('adress_list') : [];
-    Addres adst = Addres(uLat: double.parse(b), ulong: double.parse(c));
-    addresslist.add(adst);
+  setdeleveryAddress({var addressdetails, var lat, var long}) {
+    // GetStorage box = GetStorage();
+    // // print(a);
+    // // print(b);
+    // // print(c);
+    // List<AddressModel> addresslist =
+    //     box.read('addressList') ? box.read('addressList') : [];
 
     // box.write("selectLet", b);
     // box.write("selectLng", c);
-    box.write("adress_list", addresslist);
-    selectAddress.value = a;
-    selectLat.value = b;
-    selectLng.value = c;
+    //box.write("adress_list", addresslist);
 
-    print("writtrn in strg");
+    selectAddress.value = addressdetails.toString();
+    selectLat.value = lat.toString();
+    selectLng.value = long.toString();
+
+    print("from set -- ${selectAddress.value}");
 
     Get.back();
   }
