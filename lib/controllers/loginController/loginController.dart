@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
@@ -99,8 +100,13 @@ class LoginController extends GetxController {
         sharedPreferences.setString("username", username);
         sharedPreferences.setString("phone", phone);
         sharedPreferences.setString("profileImage", avatar);
-
-        Get.offAll(HomePage());
+        await Geolocator().getCurrentPosition();
+        var permission = await Geolocator().checkGeolocationPermissionStatus();
+        if (permission != GeolocationStatus.denied) {
+          Get.offAll(HomePage());
+        } else {
+          Get.defaultDialog(title: "Please give Permission first");
+        }
       }
 
       // UserArr user = await convertedDatatojson['user_arr'];

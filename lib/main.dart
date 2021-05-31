@@ -5,6 +5,7 @@ import 'package:enruta/controllers/loginController/loginBinding.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -80,9 +81,15 @@ class _SplashScreenState extends State<SplashScreen> {
     print(islogin);
     // islogin ==1?Get.offAll(HomePage()):Get.offAll(LoginPage());
     if (checkLogin == "a") {
-      Get.put(TestController());
-      Get.put(CartController());
-      Get.offAll(HomePage());
+      // Get.put(TestController());
+      // Get.put(CartController());
+      await Geolocator().getCurrentPosition();
+      var permission = await Geolocator().checkGeolocationPermissionStatus();
+      if (permission != GeolocationStatus.denied) {
+        Get.offAll(HomePage());
+      } else {
+        Get.defaultDialog(title: "Please give Permission first");
+      }
     } else {
       Get.offAll(LoginPage());
     }

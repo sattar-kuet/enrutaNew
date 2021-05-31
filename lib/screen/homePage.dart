@@ -871,3 +871,14 @@ class HomePage extends StatelessWidget {
         });
   }
 }
+
+class Askpermission extends StatelessWidget {
+  const Askpermission({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.greenAccent,
+    );
+  }
+}

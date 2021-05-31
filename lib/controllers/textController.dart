@@ -23,6 +23,7 @@ class TestController extends GetxController {
   final address = ''.obs;
   var userlat = 0.0.obs;
   var userlong = 0.0.obs;
+  var locationpermision = false.obs;
   var st = 0.obs;
   RxBool spin = false.obs;
   var isLoading = true.obs;
@@ -123,14 +124,18 @@ class TestController extends GetxController {
 
       print("Got from storage");
     } else {
-      position = await Geolocator().getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      var permission = await Geolocator().checkGeolocationPermissionStatus();
+      if (permission != GeolocationStatus.denied) {
+        locationpermision.value = true;
+        position = await Geolocator().getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
 
-      userlat.value = position.latitude;
-      userlong.value = position.longitude;
-      coordinates = new Coordinates(position.latitude, position.longitude);
-      print("Got from Onilne");
+        userlat.value = position.latitude;
+        userlong.value = position.longitude;
+        coordinates = new Coordinates(position.latitude, position.longitude);
+        print("Got from Onilne");
+      } else {}
     }
 
     var addresses =

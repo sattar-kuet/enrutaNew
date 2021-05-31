@@ -10,6 +10,7 @@ import 'package:enruta/screen/signup.dart';
 
 import 'package:flutter/material.dart';
 import 'package:enruta/Animation/FadeAnimation.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:get/get.dart';
 // ignore: unused_import
@@ -80,7 +81,14 @@ class _LoginPageState extends State<LoginPage> {
     if (email == null) {
       print(email);
     } else {
-      Get.offAll(HomePage());
+      await Geolocator().getCurrentPosition();
+      var permission = await Geolocator().checkGeolocationPermissionStatus();
+      if (permission != GeolocationStatus.denied) {
+        Get.offAll(HomePage());
+      } else {
+        Get.defaultDialog(title: "Please give Permission first");
+      }
+      //Get.offAll(HomePage());
     }
   }
 
@@ -606,6 +614,7 @@ class _LoginPageState extends State<LoginPage> {
       if (lController.currentUser != null) {
         handleSignOut();
       }
+      await Geolocator().getCurrentPosition();
       await googleSignIn.signIn();
     } catch (error) {
       print(error);
@@ -615,6 +624,7 @@ class _LoginPageState extends State<LoginPage> {
   // LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
   Future<Null> faceBookLogin() async {
+    await Geolocator().getCurrentPosition();
     facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
     // final result = await facebookSignIn.logInWithReadPermissions(['email']);
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);

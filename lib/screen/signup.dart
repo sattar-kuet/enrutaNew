@@ -11,6 +11,7 @@ import 'package:enruta/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -707,7 +708,13 @@ class _SignUpState extends State<SignUp> {
         print(name);
 
         print(image);
-        Get.offAll(HomePage());
+        await Geolocator().getCurrentPosition();
+        var permission = await Geolocator().checkGeolocationPermissionStatus();
+        if (permission != GeolocationStatus.denied) {
+          Get.offAll(HomePage());
+        } else {
+          Get.defaultDialog(title: "Please give Permission first");
+        }
 
         print('''
          Logged in!

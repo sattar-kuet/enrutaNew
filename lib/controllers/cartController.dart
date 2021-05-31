@@ -5,12 +5,12 @@ import 'package:enruta/controllers/suggestController.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/Product_model.dart';
-import 'package:enruta/model/address_model.dart';
+
 import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/cart/cart_model.dart';
 import 'package:enruta/screen/cartPage.dart';
 import 'package:enruta/screen/homePage.dart';
-import 'package:enruta/screen/myMap/address_model.dart';
+
 import 'package:enruta/screen/voucher/voucher_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
