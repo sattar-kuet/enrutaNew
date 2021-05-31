@@ -128,7 +128,7 @@ class TestController extends GetxController {
       );
 
       userlat.value = position.latitude;
-      userlat.value = position.longitude;
+      userlong.value = position.longitude;
       coordinates = new Coordinates(position.latitude, position.longitude);
       print("Got from Onilne");
     }

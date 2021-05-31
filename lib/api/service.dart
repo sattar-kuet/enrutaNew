@@ -285,6 +285,7 @@ class Service {
 
     if (response.statusCode == 200) {
       print('SUCCESSFUL: ');
+
       return NearByPlace.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to create album.');

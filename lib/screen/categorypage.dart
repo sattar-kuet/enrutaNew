@@ -127,7 +127,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           // ],
                           // ),
                           ),
-                      showHotList(widget.pageType),
+                      //showHotList(widget.pageType),
                       Container(
                         color: Color(Helper.getHexToInt("#F8F9FF")),
                         padding: EdgeInsets.only(bottom: 80),
@@ -199,32 +199,32 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  Widget showHotList(int type) {
-    if (type == 1) {
-      return Container(
-        padding: EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 20),
-        color: Colors.white,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: <Widget>[
-              scrolview("Vegan", "assets/icons/food1.svg"),
-              scrolview("Vegetarian", "assets/icons/foodrestaurant.svg"),
-              scrolview("Pescatarian", "assets/icons/vegetable.svg"),
-              scrolview("Low Carb", "assets/icons/dinner.svg"),
-              scrolview("Keto", "assets/icons/food1.svg"),
-              scrolview("35-40 min", "assets/icons/dinner.svg"),
-              scrolview("35-40 min", "assets/icons/food1.svg"),
-              scrolview("35-40 min", "assets/icons/food1.svg"),
-              scrolview("35-40 min", "assets/icons/food1.svg"),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
+  // Widget showHotList(int type) {
+  //   if (type == 1) {
+  //     return Container(
+  //       padding: EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 20),
+  //       color: Colors.white,
+  //       child: SingleChildScrollView(
+  //         scrollDirection: Axis.horizontal,
+  //         child: Row(
+  //           children: <Widget>[
+  //             scrolview("Vegan", "assets/icons/food1.svg"),
+  //             scrolview("Vegetarian", "assets/icons/foodrestaurant.svg"),
+  //             scrolview("Pescatarian", "assets/icons/vegetable.svg"),
+  //             scrolview("Low Carb", "assets/icons/dinner.svg"),
+  //             scrolview("Keto", "assets/icons/food1.svg"),
+  //             scrolview("35-40 min", "assets/icons/dinner.svg"),
+  //             scrolview("35-40 min", "assets/icons/food1.svg"),
+  //             scrolview("35-40 min", "assets/icons/food1.svg"),
+  //             scrolview("35-40 min", "assets/icons/food1.svg"),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 
   Widget buidTextfield3(String hintText, BuildContext context) {
     final searchController = TextEditingController();
