@@ -11,6 +11,7 @@ import 'package:enruta/screen/resetpassword/resetController.dart';
 import 'package:enruta/screen/voucher/myvoucher.dart';
 import 'package:enruta/view/cart_list_view.dart';
 import 'package:enruta/view/cart_slid_view.dart';
+import 'package:enruta/widgetview/custom_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -829,12 +830,15 @@ class CartPage extends StatelessWidget {
   }
 
   Widget buidbottomfield(BuildContext context) {
-    return InkWell(
-      onTap: () {
+    return CustomButton(
+      flatbtn: true,
+      onclick: () {
         pmController.totalPayment.value = cartCont.gTotal;
         if (cartCont.cartList.length > 0) {
           Get.bottomSheet(showBottompopup(context) ?? error());
-        } else {}
+        } else {
+          Get.snackbar("No Item in Cart", "Add item in cart ");
+        }
       },
       child: Stack(
         children: [
@@ -1331,44 +1335,33 @@ class CartPage extends StatelessWidget {
   }
 
   Widget orderbottomfield(BuildContext context) {
-    return Stack(
-      children: [
-        InkWell(
-          onTap: () {
-            // cartCont.sendOrder();
-            cartCont.sendOrder(context);
-            // if(cartCont.submitorderstatus.value==true){
-            //   Navigator.pop(context);
-            //   showSuccessfullyBottompopup(context);
-            // }else{
-            //   Get.snackbar("Warning", "Something Wrong");
-            // }
-          },
-          child: Container(
-            height: 50,
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-                Color(Helper.getHexToInt("#11C7A1")),
-                // Colors.green[600],
-                Color(Helper.getHexToInt("#11E4A1"))
-              ]),
-              // color: Colors.white,
-              borderRadius: BorderRadius.circular(9),
-            ),
-            child: Center(
-                child: Text(
-              text('ORDER_DELIVERY'),
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontFamily: 'TTCommonsm',
-              ),
-            )),
+    return CustomButton(
+        loadingenabled: true,
+        child: Container(
+          height: 50,
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topLeft, colors: [
+              Color(Helper.getHexToInt("#11C7A1")),
+              // Colors.green[600],
+              Color(Helper.getHexToInt("#11E4A1"))
+            ]),
+            // color: Colors.white,
+            borderRadius: BorderRadius.circular(9),
           ),
+          child: Center(
+              child: Text(
+            text('ORDER_DELIVERY'),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+              fontFamily: 'TTCommonsm',
+            ),
+          )),
         ),
-      ],
-    );
+        onclick: () {
+          cartCont.sendOrder(context);
+        });
   }
 
   // ignore: missing_return

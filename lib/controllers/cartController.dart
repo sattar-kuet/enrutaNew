@@ -26,6 +26,8 @@ class CartController extends GetxController {
   var vat = 0.obs;
   var deliveryCharge = 0.obs;
   var grandTotal = 0.obs;
+  var shoptype = "assets/images/type0.jpg".obs;
+  var imageloader = false.obs;
   // ignore: deprecated_member_use
   var cartList = List<Product>().obs;
   // var paymentOption = ''.obs;
@@ -155,7 +157,7 @@ class CartController extends GetxController {
     try {
       suggetItems.value = [];
       isLoading(true);
-      await Future.delayed(Duration(seconds: 1));
+      // await Future.delayed(Duration(seconds: 1));
       Service.menulist(shopid.value).then((val) {
         if (val != null) {
           suggetItems.value = val.products.toList();
@@ -585,7 +587,7 @@ class CartController extends GetxController {
 
     newOrder.value = 1;
 
-    await Future.delayed(Duration(seconds: 1));
+    //await Future.delayed(Duration(seconds: 1));
 
     Service.sendorder(sendOrder).then((values) {
       h.Response res = values;
@@ -650,16 +652,32 @@ class CartController extends GetxController {
     }
   }
 
+  void getcoverPic(var id) async {
+    print(".....Shop cat id......");
+    try {
+      //await Future.delayed(Duration(seconds: 1));
+      Service.menulist(id).then((va) {
+        if (va != null) {}
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void getmenuItems(var id) async {
     // SharedPreferences pre = await SharedPreferences.getInstance();
     try {
       menuItems.value = [];
       isLoading(true);
-      await Future.delayed(Duration(seconds: 1));
+      imageloader(true);
+      // await Future.delayed(Duration(seconds: 1));
       Service.menulist(id).then((va) {
         if (va != null) {
+          shoptype.value = "assets/images/type${va.shopCategory}.jpg";
+
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();
+
           print(menuItemsTemp.length);
           // ignore: invalid_use_of_protected_member
           cartLists.value = cartList.value.toList();
@@ -683,13 +701,22 @@ class CartController extends GetxController {
           }
           // ignore: invalid_use_of_protected_member
           menuItems.value = menuItemsTemp.value;
+
           // update();
 
+        } else {
+          shoptype.value = "assets/images/type0.jpg";
         }
       });
-    } catch (e) {} finally {
+    } catch (e) {
+      shoptype.value = "assets/images/type0.jpg";
+      imageloader(false);
+    } finally {
       //print("get menu api end");
+
       isLoading(false);
+      await Future.delayed(Duration(milliseconds: 2000));
+      imageloader(false);
     }
   }
 }

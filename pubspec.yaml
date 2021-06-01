@@ -59,6 +59,9 @@ dependencies:
   dio: ^3.0.10
   empty_widget: ^0.0.1
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
+  loading_elevated_button: ^0.0.5
+  argon_buttons_flutter: ^1.1.0
+  animated_button: ^0.2.0
 
 
   # location: ^3.0.0

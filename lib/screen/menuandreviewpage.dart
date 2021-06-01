@@ -46,7 +46,9 @@ class MenuAndReviewPage extends StatelessWidget {
     reviewList = ReviewListData.reviewList;
     print(shop_id);
     cartCont.getmenuItems(shop_id);
+
     mController.getreview(shop_id);
+    print(" shop type  ${cartCont.shoptype}");
 
     return Scaffold(
         body: Container(
@@ -118,13 +120,21 @@ class MenuAndReviewPage extends StatelessWidget {
                                   left: 0,
                                   bottom: 0,
                                   right: 0,
-                                  child: Opacity(
-                                    opacity: 1,
-                                    child: Image.network(
-                                      "https://1.bp.blogspot.com/-y3B9YFnh0S4/WTrWPeodnmI/AAAAAAAAAKI/I9EfnPICQscVMyrGWRUPd7cxPHn5gHp3QCLcB/s320/IMG_3672_11.jpg",
-                                      fit: BoxFit.fill,
-                                    ),
-                                  )),
+                                  child: Obx(() {
+                                    if (cartCont.imageloader.value) {
+                                      return Center(
+                                          child: CircularProgressIndicator(
+                                        backgroundColor: Colors.black,
+                                      ));
+                                    } else
+                                      return Opacity(
+                                        opacity: 1,
+                                        child: Image.asset(
+                                          cartCont.shoptype.value,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      );
+                                  })),
                               Positioned(
                                 top: 0,
                                 left: 0,
