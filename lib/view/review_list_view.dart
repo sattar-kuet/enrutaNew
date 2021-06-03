@@ -40,11 +40,16 @@ class ReviewListView extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        // onTap: () {
-        //   Get.to(ProductDetails());
-        //   // Get.to(HomePage());
-        //   // _launchInWebViewOrVC("https://corona.gov.bd/");
-        // },
+        onTap: () {
+          if (menuitemdata.sizes != null || menuitemdata.colors != null) {
+            Get.to(ProductDetails(
+              menuitemdata: menuitemdata,
+            ));
+          }
+
+          // Get.to(HomePage());
+          // _launchInWebViewOrVC("https://corona.gov.bd/");
+        },
         child: Stack(
           children: [
             Positioned(
@@ -53,7 +58,13 @@ class ReviewListView extends StatelessWidget {
               bottom: 10,
               child: InkWell(
                 onTap: () {
-                  Get.to(ProductDetails());
+                  if (menuitemdata.sizes != null ||
+                      menuitemdata.colors != null) {
+                    Get.to(ProductDetails(
+                      menuitemdata: menuitemdata,
+                    ));
+                  }
+                  // Get.to(ProductDetails());
                 },
                 child: Container(
                   height: 92,

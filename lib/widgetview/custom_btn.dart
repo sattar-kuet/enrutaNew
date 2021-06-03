@@ -12,9 +12,11 @@ class CustomButton extends StatefulWidget {
   final Function onclick;
   final bool flatbtn;
   final bool loadingenabled;
+  final Color btncolor;
   const CustomButton(
       {@required this.child,
       @required this.onclick,
+      this.btncolor = Colors.green,
       this.flatbtn = false,
       this.loadingenabled = false});
   @override
@@ -32,9 +34,14 @@ class _CustomButtonState extends State<CustomButton> {
         onTap: () async {
           if (isenabled) {
             setState(() => isenabled = false);
-            await widget.onclick();
-
-            setState(() => isenabled = true);
+            try {
+              await widget.onclick();
+            } catch (e) {
+              print(e);
+              setState(() => isenabled = true);
+            } finally {
+              setState(() => isenabled = true);
+            }
           }
         },
         child: ColorFiltered(colorFilter: enablefilter, child: widget.child),
@@ -46,11 +53,15 @@ class _CustomButtonState extends State<CustomButton> {
           onTap: () async {
             if (!isloading) {
               setState(() => isloading = true);
-
-              await widget.onclick();
-              await Future.delayed(Duration(seconds: 3));
-
-              setState(() => isloading = false);
+              try {
+                await widget.onclick();
+                await Future.delayed(Duration(seconds: 3));
+              } catch (e) {
+                print(e);
+                setState(() => isloading = false);
+              } finally {
+                setState(() => isloading = false);
+              }
             }
           },
           child: ColorFiltered(
@@ -61,7 +72,9 @@ class _CustomButtonState extends State<CustomButton> {
                       margin: EdgeInsets.all(15),
                       child: Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Colors.greenAccent,
+                          backgroundColor: widget.btncolor,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                           strokeWidth: 5.0,
                         ),
                       ),
@@ -73,9 +86,14 @@ class _CustomButtonState extends State<CustomButton> {
           onTap: () async {
             if (isenabled) {
               setState(() => isenabled = false);
-              await widget.onclick();
-
-              setState(() => isenabled = true);
+              try {
+                await widget.onclick();
+              } catch (e) {
+                print(e);
+                setState(() => isenabled = true);
+              } finally {
+                setState(() => isenabled = true);
+              }
             }
           },
           child: ColorFiltered(

@@ -8,6 +8,7 @@ import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:enruta/widgetview/custom_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -145,8 +146,9 @@ class _SignUpState extends State<SignUp> {
                   ),
                   FadeAnimation(
                     1.6,
-                    GestureDetector(
-                      onTap: () async {
+                    CustomButton(
+                      loadingenabled: true,
+                      onclick: () async {
                         print("Container clicked");
 
                         if (_formkey.currentState.validate()) {
@@ -338,18 +340,20 @@ class _SignUpState extends State<SignUp> {
                       Expanded(
                         child: FadeAnimation(
                           1.9,
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Color(Helper.getHexToInt("#4267B2"))),
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  // Get.to(ProductDetails());
-                                  print("facebook");
-                                  faceBookLogin();
-                                },
+                          CustomButton(
+                            btncolor: Colors.blue,
+                            loadingenabled: true,
+                            onclick: () {
+                              // Get.to(ProductDetails());
+                              print("facebook");
+                              faceBookLogin();
+                            },
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Color(Helper.getHexToInt("#4267B2"))),
+                              child: Center(
                                 child: Text(
                                   "Facebook",
                                   style: TextStyle(
@@ -367,8 +371,10 @@ class _SignUpState extends State<SignUp> {
                       Expanded(
                         child: FadeAnimation(
                           2,
-                          GestureDetector(
-                            onTap: () {
+                          CustomButton(
+                            loadingenabled: true,
+                            btncolor: Colors.red,
+                            onclick: () {
                               print("google");
                               _handleSignIn();
                               // lController.handleSignIn();

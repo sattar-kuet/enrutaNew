@@ -7,6 +7,7 @@ import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/resetpassword/resetPassword.dart';
 
 import 'package:enruta/screen/signup.dart';
+import 'package:enruta/widgetview/custom_btn.dart';
 
 import 'package:flutter/material.dart';
 import 'package:enruta/Animation/FadeAnimation.dart';
@@ -343,67 +344,67 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               FadeAnimation(
-                1.6,
-                GestureDetector(
-                  onTap: () async {
-                    print("Container clicked");
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => HomePage()));
-
-                    if (_formkey.currentState.validate()) {
-                      var email = emailController.text;
-                      var password = passwordController.text;
-                      if (email.isEmpty) {
-                        Get.snackbar(text('please_enter_valid_email'), "",
-                            snackPosition: SnackPosition.BOTTOM);
-                        return;
-                      }
-                      if (password.isEmpty) {
-                        Get.snackbar(text('please_enter_valid_password'), "",
-                            snackPosition: SnackPosition.BOTTOM);
-                        return;
-                      }
-
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-
-                      print(email + "" + password);
-
-                      lController.login(email, password);
-
-                      Navigator.pop(context);
-                      // }
-                    }
-
-                    print("Container was tapped");
-                  },
-                  child: Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 2),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          colors: [
-                            Color(Helper.getHexToInt("#11CAA1")),
-                            Color(Helper.getHexToInt("#11E3A1"))
-                          ]),
-                    ),
-                    child: Center(
-                      child: Text(
-                        text('login'),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                  1.6,
+                  CustomButton(
+                    loadingenabled: true,
+                    child: Container(
+                      height: 50,
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            colors: [
+                              Color(Helper.getHexToInt("#11CAA1")),
+                              Color(Helper.getHexToInt("#11E3A1"))
+                            ]),
+                      ),
+                      child: Center(
+                        child: Text(
+                          text('login'),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
+                    onclick: () async {
+                      print("Container clicked");
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => HomePage()));
+
+                      if (_formkey.currentState.validate()) {
+                        var email = emailController.text;
+                        var password = passwordController.text;
+                        if (email.isEmpty) {
+                          Get.snackbar(text('please_enter_valid_email'), "",
+                              snackPosition: SnackPosition.BOTTOM);
+                          return;
+                        }
+                        if (password.isEmpty) {
+                          Get.snackbar(text('please_enter_valid_password'), "",
+                              snackPosition: SnackPosition.BOTTOM);
+                          return;
+                        }
+
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            });
+
+                        print(email + "" + password);
+
+                        lController.login(email, password);
+
+                        Navigator.pop(context);
+                        // }
+                      }
+
+                      print("Container was tapped");
+                    },
+                  )),
               SizedBox(
                 height: 20,
               ),
@@ -474,58 +475,60 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Expanded(
                     child: FadeAnimation(
-                      1.9,
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(Helper.getHexToInt("#4267B2"))),
-                        child: Center(
-                          child: InkWell(
-                            onTap: () {
-                              // Get.to(ProductDetails());
-                              print("facebook");
-                              faceBookLogin();
-                            },
-                            child: Text(
-                              "Facebook",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                        1.9,
+                        CustomButton(
+                          loadingenabled: true,
+                          btncolor: Colors.blue,
+                          onclick: () {
+                            print("facebook");
+
+                            faceBookLogin();
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Color(Helper.getHexToInt("#4267B2"))),
+                            child: Center(
+                              child: Text(
+                                "Facebook",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
+                        )),
                   ),
                   SizedBox(
                     width: 30,
                   ),
                   Expanded(
                     child: FadeAnimation(
-                      2,
-                      GestureDetector(
-                        onTap: () {
-                          print("google");
-                          _handleSignIn();
-                          // lController.handleSignIn();
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Color(Helper.getHexToInt("#EB4132"))),
-                          child: Center(
-                            child: Text(
-                              "Google",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                        2,
+                        CustomButton(
+                          loadingenabled: true,
+                          btncolor: Colors.red,
+                          onclick: () {
+                            print("google");
+                            _handleSignIn();
+                            // lController.handleSignIn();
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Color(Helper.getHexToInt("#EB4132"))),
+                            child: Center(
+                              child: Text(
+                                "Google",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
+                        )),
                   ),
                 ],
               ),
