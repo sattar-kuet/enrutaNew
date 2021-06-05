@@ -17,10 +17,14 @@ class Product {
   double price;
   String logo;
   List<String> sizes;
+  String selectSize;
+  String selectcolor;
   List<String> colors;
 
   var qty = 1;
   var pqty = 1.obs;
+  var psize = "".obs;
+  var pcolor = "".obs;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
@@ -30,10 +34,10 @@ class Product {
         logo: json["logo"],
         sizes: json["sizes"] != null
             ? List<String>.from(json["sizes"].map((x) => x))
-            : null,
+            : [],
         colors: json["colors"] != null
             ? List<String>.from(json["colors"].map((x) => x))
-            : null,
+            : [],
         qty: json["qty"],
       );
 

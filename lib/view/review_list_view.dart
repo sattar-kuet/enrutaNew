@@ -41,9 +41,14 @@ class ReviewListView extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          if (menuitemdata.sizes != null || menuitemdata.colors != null) {
+          if (menuitemdata.sizes.length != 0 ||
+              menuitemdata.colors.length != 0) {
+            print(shopid);
             Get.to(ProductDetails(
               menuitemdata: menuitemdata,
+              shopid: shopid,
+              vat: vat,
+              deliveryCharge: deliveryCharge,
             ));
           }
 
@@ -58,10 +63,14 @@ class ReviewListView extends StatelessWidget {
               bottom: 10,
               child: InkWell(
                 onTap: () {
-                  if (menuitemdata.sizes != null ||
-                      menuitemdata.colors != null) {
+                  //print("Size length ${menuitemdata.sizes.length}");
+                  if (menuitemdata.sizes.length != 0 ||
+                      menuitemdata.colors.length != 0) {
                     Get.to(ProductDetails(
                       menuitemdata: menuitemdata,
+                      shopid: shopid,
+                      vat: vat,
+                      deliveryCharge: deliveryCharge,
                     ));
                   }
                   // Get.to(ProductDetails());
@@ -230,18 +239,28 @@ class ReviewListView extends StatelessWidget {
               left: 250,
               child: InkWell(
                 onTap: () {
-                  cartController.additemtocarts(
-                      menuitemdata, shopid, vat, deliveryCharge);
-                  menuitemdata.qty = menuitemdata.pqty.toInt();
-                  // GetStorage box = GetStorage();
-                  // box.write("cartList", Get.find<CartController>().cartList);
-                  // box.write("shopid", shopid);
-                  // box.write("vat", vat);
-                  // box.write("deliveryCharge", deliveryCharge);
-                  // print(vat);
-                  // box.write("shopid", shopid);
-                  // print("object");
-                  cartController.isInChart(shopid, menuitemdata);
+                  if (menuitemdata.sizes.length != 0 ||
+                      menuitemdata.colors.length != 0) {
+                    Get.to(ProductDetails(
+                      menuitemdata: menuitemdata,
+                      shopid: shopid,
+                      vat: vat,
+                      deliveryCharge: deliveryCharge,
+                    ));
+                  } else {
+                    cartController.additemtocarts(
+                        menuitemdata, shopid, vat, deliveryCharge);
+                    menuitemdata.qty = menuitemdata.pqty.toInt();
+                    // GetStorage box = GetStorage();
+                    // box.write("cartList", Get.find<CartController>().cartList);
+                    // box.write("shopid", shopid);
+                    // box.write("vat", vat);
+                    // box.write("deliveryCharge", deliveryCharge);
+                    // print(vat);
+                    // box.write("shopid", shopid);
+                    // print("object");
+                    cartController.isInChart(shopid, menuitemdata);
+                  }
                 },
                 child: Container(
                   height: 25,

@@ -1,3 +1,4 @@
+import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
@@ -7,7 +8,11 @@ import 'package:get/get.dart';
 
 class ProductDetails extends StatelessWidget {
   final Product menuitemdata;
+  final String shopid;
+  final int vat;
+  final int deliveryCharge;
   final pController = Get.put(ProductController());
+  final cartController = Get.put(CartController());
   // final listImageHeader = [
   //   'assets/icons/photo.png',
   //   'assets/icons/photo.png',
@@ -15,7 +20,13 @@ class ProductDetails extends StatelessWidget {
   //   'assets/icons/photo.png',
   // ];
 
-  ProductDetails({Key key, this.menuitemdata}) : super(key: key);
+  ProductDetails({
+    Key key,
+    this.menuitemdata,
+    this.shopid,
+    this.vat,
+    this.deliveryCharge,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,6 +258,27 @@ class ProductDetails extends StatelessWidget {
     return InkWell(
       onTap: () {
         // Get.bottomSheet();
+        menuitemdata.selectcolor = menuitemdata.pcolor.value;
+        menuitemdata.selectSize = menuitemdata.psize.value;
+        print(
+            "shopid : $shopid  vat:$vat  Size : ${menuitemdata.selectSize} color: ${menuitemdata.selectcolor}");
+
+        cartController.additemtocarts(
+            menuitemdata, shopid, vat, deliveryCharge);
+        menuitemdata.qty = menuitemdata.pqty.toInt();
+        menuitemdata.selectcolor = menuitemdata.pcolor.value;
+        menuitemdata.selectSize = menuitemdata.psize.value;
+        cartController.isInChart(shopid, menuitemdata);
+        Get.back();
+
+        // GetStorage box = GetStorage();
+        // box.write("cartList", Get.find<CartController>().cartList);
+        // box.write("shopid", shopid);
+        // box.write("vat", vat);
+        // box.write("deliveryCharge", deliveryCharge);
+        // print(vat);
+        // box.write("shopid", shopid);
+        // print("object");
       },
       child: Stack(
         children: [
@@ -323,111 +355,115 @@ class ProductDetails extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget productColor(String color, int index) {
-  var pController = Get.put(ProductController());
+  Widget productColor(String color, int index) {
+    var pController = Get.put(ProductController());
 
-  return Obx(() {
-    bool isActive = pController.colorSelect.value == index;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTap: () {
-            pController.colorSelect(index);
-          },
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 250),
-            margin: EdgeInsets.symmetric(horizontal: 3.0),
-            height: isActive ? 40 : 40,
-            width: isActive ? 40 : 40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-                // color: isActive ? Color(Helper.getHexToInt("#11C4A1")) : null,
-                // image: isActive ? Icon(Icons.check_circle, color: white) :null,
-
-                // image: ImageIcon(Icons.ac_unit),
-                border: isActive
-                    ? Border.all(
-                        color: Colors.black,
-                        width: 3,
-                      )
-                    : Border.all(
-                        color: color == "#FFFFFF"
-                            ? Colors.black12
-                            : Color(Helper.getHexToInt(color)),
-                        width: 3,
-                      )),
-            padding: EdgeInsets.all(2),
-            child: Container(
-              width: isActive ? 40 : 40,
+    return Obx(() {
+      bool isActive = pController.colorSelect.value == index;
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () {
+              pController.colorSelect(index);
+              menuitemdata.pcolor(color);
+            },
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 250),
+              margin: EdgeInsets.symmetric(horizontal: 3.0),
               height: isActive ? 40 : 40,
+              width: isActive ? 40 : 40,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(50)),
-                  color: Color(Helper.getHexToInt(color))),
-              child: isActive
-                  ? Center(
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    )
-                  : null,
-            ),
-          ),
-        ),
-      ],
-    );
-  });
-}
+                  // color: isActive ? Color(Helper.getHexToInt("#11C4A1")) : null,
+                  // image: isActive ? Icon(Icons.check_circle, color: white) :null,
 
-Widget productSize(int index, String size) {
-  var pController = Get.put(ProductController());
-
-  return Obx(() {
-    bool isActive = pController.sizeSelect.value == index;
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            pController.sizeSelect(index);
-          },
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 250),
-            margin: EdgeInsets.symmetric(horizontal: 3.0),
-            height: isActive ? 40 : 40,
-            width: isActive ? 40 : 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: isActive
-                  ? Color(Helper.getHexToInt("#11E5A1"))
-                  : Color(Helper.getHexToInt("#F7F8FA")),
-              // border: isActive
-              //     ? Border.all(color: Color(Helper.getHexToInt("#F7F8FA")))
-              //     : null,
-            ),
-            padding: EdgeInsets.all(isActive ? 4.0 : 0.0),
-            child: Center(
-              child: Text(
-                size,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontFamily: 'TTCommonsm',
-                    color: isActive
-                        ? white
-                        : Color(Helper.getHexToInt("#8D92A3"))),
+                  // image: ImageIcon(Icons.ac_unit),
+                  border: isActive
+                      ? Border.all(
+                          color: Colors.black,
+                          width: 3,
+                        )
+                      : Border.all(
+                          color: color == "#FFFFFF"
+                              ? Colors.black12
+                              : Color(Helper.getHexToInt(color)),
+                          width: 3,
+                        )),
+              padding: EdgeInsets.all(2),
+              child: Container(
+                width: isActive ? 40 : 40,
+                height: isActive ? 40 : 40,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Color(Helper.getHexToInt(color))),
+                child: isActive
+                    ? Center(
+                        child: Icon(
+                          Icons.check,
+                          color: color == "#FFFFFF"
+                              ? Colors.black54
+                              : Colors.white,
+                          size: 25,
+                        ),
+                      )
+                    : null,
               ),
-              // width: isActive ? 40 : 40,
-              // height: isActive ? 40 : 40,
-              // decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.all(Radius.circular(20)),
-              //     color: Color(Helper.getHexToInt("#F7F8FA"))),
             ),
           ),
-        ),
-      ],
-    );
-  });
+        ],
+      );
+    });
+  }
+
+  Widget productSize(int index, String size) {
+    var pController = Get.put(ProductController());
+
+    return Obx(() {
+      bool isActive = pController.sizeSelect.value == index;
+      return Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              pController.sizeSelect(index);
+              menuitemdata.psize(size);
+            },
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 250),
+              margin: EdgeInsets.symmetric(horizontal: 3.0),
+              height: isActive ? 40 : 40,
+              width: isActive ? 40 : 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: isActive
+                    ? Color(Helper.getHexToInt("#11E5A1"))
+                    : Color(Helper.getHexToInt("#F7F8FA")),
+                // border: isActive
+                //     ? Border.all(color: Color(Helper.getHexToInt("#F7F8FA")))
+                //     : null,
+              ),
+              padding: EdgeInsets.all(isActive ? 4.0 : 0.0),
+              child: Center(
+                child: Text(
+                  size,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'TTCommonsm',
+                      color: isActive
+                          ? white
+                          : Color(Helper.getHexToInt("#8D92A3"))),
+                ),
+                // width: isActive ? 40 : 40,
+                // height: isActive ? 40 : 40,
+                // decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                //     color: Color(Helper.getHexToInt("#F7F8FA"))),
+              ),
+            ),
+          ),
+        ],
+      );
+    });
+  }
 }

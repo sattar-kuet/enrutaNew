@@ -173,7 +173,8 @@ class CartController extends GetxController {
       Product item, String shop, int vats, int deliveryC) async {
     print("shopid" '$shop');
     print(vats);
-    print(deliveryC);
+    print("deliveryC");
+    print("ADD ITEM TO CARD CALLED");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     shopid.value = prefs.getString('shopid');
@@ -185,6 +186,7 @@ class CartController extends GetxController {
       prefs.setInt("deliveryCharge", deliveryC);
       vat.value = vats;
       deliveryCharge.value = deliveryC;
+      print("............working so far......");
       productadded(item, shop);
     } else if (shopid.value != null && shopid.value != shop) {
       Get.defaultDialog(
@@ -226,11 +228,14 @@ class CartController extends GetxController {
                 })
           ]);
     } else if (shopid.value == shop) {
+      print("*********from Add to cart ********* ${item.selectcolor}");
       productadded(item, shop);
     }
   }
 
   void getplist() {
+    print(".....plist called...");
+
     List storedCartList = GetStorage().read<List>('cartList');
 
     // try {
@@ -254,6 +259,8 @@ class CartController extends GetxController {
   }
 
   void productadded(Product item, String shop) async {
+    print("Product Added Called............ + color : ${item.toJson().values}");
+
     GetStorage box = GetStorage();
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     checkshopId(shop);
@@ -264,22 +271,25 @@ class CartController extends GetxController {
       Get.snackbar("", "item added");
       cartList.add(item);
       box.write("shopcategory", categoryName.value);
-      box.write("cartList", Get.find<CartController>().cartList);
+      box.write("cartList", cartList);
       Get.find<SuggestController>().removeitemfromlist(item.id);
       var a = box.read("shopcategory");
       print("sssssss" + a);
       totalcalculate();
       getplist();
       check = true;
-      print("when 0");
+      print("when 0 ");
     } else {
       for (var i = 0; i < cartList.length; i++) {
         if (item.id != 0 && item.id == cartList[i].id) {
           // ignore: invalid_use_of_protected_member
           cartList.value[i].qty = item.qty;
+          cartList.value[i].selectcolor = item.selectcolor;
+          cartList.value[i].selectSize = item.selectSize;
           // Get.snackbar(" add", "item alrady added");
           Get.snackbar("Cart", "Added to cart");
           check = true;
+          print("................");
           return;
         }
       }
@@ -408,6 +418,10 @@ class CartController extends GetxController {
       if (menuItems.value[i].id == item.id) {
         // ignore: invalid_use_of_protected_member
         menuItems.value[i].pqty.value = item.qty;
+        // ignore: invalid_use_of_protected_member
+        menuItems.value[i].psize.value = item.selectSize;
+        // ignore: invalid_use_of_protected_member
+        menuItems.value[i].pcolor.value = item.selectcolor;
       }
     }
 
@@ -479,6 +493,12 @@ class CartController extends GetxController {
     subTprice.value = totalPrice;
     tvatprice.value = vatPrice;
     cuppon.value = cuponholder.value;
+    if (cuppon.value != 0) {
+      Get.snackbar(
+        "Couppon",
+        "Applied",
+      );
+    }
     grandTotalprice.value = gTotal;
     shopid.value = prefs.getString("shopid");
     print("totalcalculate working");
@@ -566,12 +586,14 @@ class CartController extends GetxController {
       p.productId = item.id;
       p.qty = item.qty;
       p.price = item.price.toDouble();
+      p.size = item.selectSize != null ? item.selectSize : "";
+      p.color = item.selectcolor != null ? item.selectcolor : "";
 
       pList.add(p);
       // order.items.add(item);
     }
     sendOrder.items = pList.toList();
-    print("cartListcartListcartListcartList" + sendOrder.items.toString());
+    // print("cartListcartListcartListcartList" + sendOrder.items[0].color);
     // order.items = cartList.toList();
 
     // order.items = cartList.toList();
@@ -586,6 +608,7 @@ class CartController extends GetxController {
     sendOrder.paymentOption = paymentoption.value.toString();
 
     newOrder.value = 1;
+    print(pList);
 
     //await Future.delayed(Duration(seconds: 1));
 

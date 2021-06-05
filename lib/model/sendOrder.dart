@@ -66,25 +66,26 @@ class SendOrderModel {
 }
 
 class Item {
-  Item({
-    this.productId,
-    this.price,
-    this.qty,
-  });
+  Item({this.productId, this.price, this.qty, this.color, this.size});
 
   int productId;
   double price;
   int qty;
+  String color = "";
+  String size = "";
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-        productId: json["product_id"],
-        price: json["price"],
-        qty: json["qty"],
-      );
+      productId: json["product_id"],
+      price: json["price"],
+      qty: json["qty"],
+      size: json["size"],
+      color: json["color"]);
 
   Map<String, dynamic> toJson() => {
         "product_id": productId,
         "price": price,
         "qty": qty,
+        "size": size,
+        "color": color
       };
 }
