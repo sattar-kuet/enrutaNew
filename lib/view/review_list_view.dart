@@ -248,9 +248,10 @@ class ReviewListView extends StatelessWidget {
                       deliveryCharge: deliveryCharge,
                     ));
                   } else {
+                    menuitemdata.qty = menuitemdata.pqty.toInt();
                     cartController.additemtocarts(
                         menuitemdata, shopid, vat, deliveryCharge);
-                    menuitemdata.qty = menuitemdata.pqty.toInt();
+
                     // GetStorage box = GetStorage();
                     // box.write("cartList", Get.find<CartController>().cartList);
                     // box.write("shopid", shopid);

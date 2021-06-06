@@ -262,12 +262,13 @@ class ProductDetails extends StatelessWidget {
         menuitemdata.selectSize = menuitemdata.psize.value;
         print(
             "shopid : $shopid  vat:$vat  Size : ${menuitemdata.selectSize} color: ${menuitemdata.selectcolor}");
+        menuitemdata.qty = menuitemdata.pqty.toInt();
 
         cartController.additemtocarts(
             menuitemdata, shopid, vat, deliveryCharge);
-        menuitemdata.qty = menuitemdata.pqty.toInt();
-        menuitemdata.selectcolor = menuitemdata.pcolor.value;
-        menuitemdata.selectSize = menuitemdata.psize.value;
+
+        // menuitemdata.selectcolor = menuitemdata.pcolor.value;
+        // menuitemdata.selectSize = menuitemdata.psize.value;
         cartController.isInChart(shopid, menuitemdata);
         Get.back();
 

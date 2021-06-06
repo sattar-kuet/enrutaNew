@@ -50,5 +50,7 @@ class Product {
         "sizes": List<dynamic>.from(sizes.map((x) => x)),
         "colors": List<dynamic>.from(colors.map((x) => x)),
         "qty": qty,
+        "selectSize": selectSize,
+        "selectcolor": selectcolor
       };
 }

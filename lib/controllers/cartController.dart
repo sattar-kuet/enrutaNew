@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:enruta/api/service.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/controllers/menuController.dart';
@@ -224,7 +226,7 @@ class CartController extends GetxController {
                   Get.back();
                   productadded(item, shop);
 
-                  getplist();
+                  //getplist();
                 })
           ]);
     } else if (shopid.value == shop) {
@@ -244,21 +246,23 @@ class CartController extends GetxController {
     //   print("eror abc");
     // }
 
-    if (storedCartList.length > 0) {
-      // ignore: deprecated_member_use
-      cartList = List<Product>().obs;
+    // if (storedCartList.length > 0) {
+    //   // ignore: deprecated_member_use
+    //   cartList = List<Product>().obs;
 
-      cartList = storedCartList.map((e) => Product.fromJson(e)).toList().obs;
-      // storedCartList.map((e) => Product.fromJson(e)).toList().obs;
+    //   cartList = storedCartList.map((e) => Product.fromJson(e)).toList().obs;
+    //   // storedCartList.map((e) => Product.fromJson(e)).toList().obs;
 
-      print(cartList.toList());
-    }
+    //   print(cartList.toList());
+    // }
     ever(cartList, (_) {
       GetStorage().write('cartList', cartList.toList());
     });
   }
 
   void productadded(Product item, String shop) async {
+    print(item.selectcolor);
+
     print("Product Added Called............ + color : ${item.toJson().values}");
 
     GetStorage box = GetStorage();
@@ -270,34 +274,42 @@ class CartController extends GetxController {
     if (cartList.length == 0) {
       Get.snackbar("", "item added");
       cartList.add(item);
+      print("cart len 0");
+      print(jsonEncode(cartList));
       box.write("shopcategory", categoryName.value);
       box.write("cartList", cartList);
       Get.find<SuggestController>().removeitemfromlist(item.id);
       var a = box.read("shopcategory");
       print("sssssss" + a);
       totalcalculate();
+
       getplist();
       check = true;
       print("when 0 ");
     } else {
+      //cartList.add(item);
+      print("cart len >0");
+
       for (var i = 0; i < cartList.length; i++) {
         if (item.id != 0 && item.id == cartList[i].id) {
           // ignore: invalid_use_of_protected_member
           cartList.value[i].qty = item.qty;
-          cartList.value[i].selectcolor = item.selectcolor;
-          cartList.value[i].selectSize = item.selectSize;
+          // cartList.value[i].selectcolor = item.selectcolor;
+          // cartList.value[i].selectSize = item.selectSize;
           // Get.snackbar(" add", "item alrady added");
           Get.snackbar("Cart", "Added to cart");
           check = true;
-          print("................");
           return;
         }
       }
+      print(jsonEncode(cartList));
     }
     // ignore: invalid_use_of_protected_member
     print("value value value" + '${cartList.value}');
     if (check == false) {
       cartList.add(item);
+      print("cart check false");
+      print(jsonEncode(cartList));
 
       box.write("cartList", Get.find<CartController>().cartList);
       Get.find<SuggestController>().removeitemfromlist(item.id);
@@ -419,9 +431,9 @@ class CartController extends GetxController {
         // ignore: invalid_use_of_protected_member
         menuItems.value[i].pqty.value = item.qty;
         // ignore: invalid_use_of_protected_member
-        menuItems.value[i].psize.value = item.selectSize;
-        // ignore: invalid_use_of_protected_member
-        menuItems.value[i].pcolor.value = item.selectcolor;
+        // menuItems.value[i].selectcolor = item.selectSize;
+        // // ignore: invalid_use_of_protected_member
+        // menuItems.value[i].selectSize = item.selectcolor;
       }
     }
 
@@ -550,6 +562,7 @@ class CartController extends GetxController {
   }
 
   sendOrder(BuildContext context) async {
+    print(jsonEncode(cartList));
     isLoding.value = true;
     GetStorage box = GetStorage();
     SharedPreferences pre = await SharedPreferences.getInstance();

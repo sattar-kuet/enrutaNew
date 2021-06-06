@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductController extends GetxController {
   var position = 0.obs;
-  var sizeSelect = 0.obs;
-  var colorSelect = 0.obs;
+  var sizeSelect = 10.obs;
+  var colorSelect = 10.obs;
 
   @override
   void onInit() {
