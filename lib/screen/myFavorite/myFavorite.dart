@@ -3,6 +3,7 @@ import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/near_by_place_data.dart';
+import 'package:enruta/view/category_list_view.dart';
 import 'package:enruta/view/item_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -124,7 +125,10 @@ class MyFavorite extends StatelessWidget {
                     itemCount: itemList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
-                      return ItemListView(
+                      // return ItemListView(
+                      //   itemData: itemList[index],
+                      // );
+                      return CategoryListView(
                         itemData: itemList[index],
                       );
                     }),
