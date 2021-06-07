@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:enruta/api/service.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
@@ -90,13 +91,17 @@ class CartController extends GetxController {
 
   double get vatPrice => totalPrice * vat.value / 100;
 
-  double get gTotal =>
-      totalPrice +
-      vatPrice +
-      deliveryCharge.value -
-      cuppon.value -
-      voucher.value -
-      discount.value;
+  double get gTotal {
+    var a = totalPrice +
+        vatPrice +
+        deliveryCharge.value -
+        cuppon.value -
+        voucher.value -
+        discount.value;
+    int fac = pow(10, 2);
+    a = (a * fac).round() / fac;
+    return a;
+  }
   // voucherMinimum.value>totalPrice?
 
   int get countqty => cartList.first.qty;
@@ -272,7 +277,11 @@ class CartController extends GetxController {
     // if (shopid.value != null) {
     var check = false;
     if (cartList.length == 0) {
-      Get.snackbar("", "item added");
+      Get.snackbar(
+        "",
+        "item added",
+        colorText: Colors.white,
+      );
       cartList.add(item);
       print("cart len 0");
       print(jsonEncode(cartList));
@@ -297,7 +306,11 @@ class CartController extends GetxController {
           // cartList.value[i].selectcolor = item.selectcolor;
           // cartList.value[i].selectSize = item.selectSize;
           // Get.snackbar(" add", "item alrady added");
-          Get.snackbar("Cart", "Added to cart");
+          Get.snackbar(
+            "Cart",
+            "Added to cart",
+            colorText: Colors.white,
+          );
           check = true;
           return;
         }
@@ -315,7 +328,11 @@ class CartController extends GetxController {
       Get.find<SuggestController>().removeitemfromlist(item.id);
       totalcalculate();
       getplist();
-      Get.snackbar(" add", "item added");
+      Get.snackbar(
+        " add",
+        "item added",
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -383,14 +400,22 @@ class CartController extends GetxController {
       checkshopId(s);
       var check = false;
       if (cartList.length == 0) {
-        Get.snackbar(" add", "item added");
+        Get.snackbar(
+          " add",
+          "item added",
+          colorText: Colors.white,
+        );
         cartList.add(item);
         print("when 0");
       }
       for (var i = 0; i < cartList.length; i++) {
         // print(cartList[i].id + item.id);
         if (item.id == cartList[i].id) {
-          Get.snackbar(" add", "item alrady added");
+          Get.snackbar(
+            " add",
+            "item alrady added",
+            colorText: Colors.white,
+          );
           // print(cartList[i].id + item.id);
           check = true;
           // return;
@@ -398,7 +423,11 @@ class CartController extends GetxController {
       }
       if (check == false) {
         cartList.add(item);
-        Get.snackbar(" add", "item added");
+        Get.snackbar(
+          " add",
+          "item added",
+          colorText: Colors.white,
+        );
       }
     }
   }
@@ -509,6 +538,7 @@ class CartController extends GetxController {
       Get.snackbar(
         "Couppon",
         "Applied",
+        colorText: Colors.white,
       );
     }
     grandTotalprice.value = gTotal;

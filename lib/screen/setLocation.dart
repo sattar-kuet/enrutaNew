@@ -85,6 +85,7 @@ class SetLocation extends StatelessWidget {
                                   // cartCont.totalcalculate();
                                   Get.snackbar('',
                                       text('the_address_successfully_removed'),
+                                      colorText: Colors.white,
                                       // ignore: deprecated_member_use
                                       mainButton: FlatButton(
                                         child: Text('Undo'),

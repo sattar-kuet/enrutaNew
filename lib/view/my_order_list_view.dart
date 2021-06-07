@@ -1,6 +1,7 @@
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/all_order_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyOrderListView extends StatelessWidget {
   const MyOrderListView(
@@ -70,7 +71,7 @@ class MyOrderListView extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 // padding: EdgeInsets.only(top: 10, left: 10),
-                width: 27,
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 height: 24,
                 decoration: BoxDecoration(
                     color: Color(Helper.getHexToInt("#FFF7E4")),
@@ -89,13 +90,13 @@ class MyOrderListView extends StatelessWidget {
             Positioned(
               top: 10,
               left: 113,
-              right: 30,
+              right: 50,
               child: Container(
-                // width: Get.width / 1.7,
-
+                width: Get.width / 2,
                 child: Text(
                   orderData.titleTxt,
-                  maxLines: 1,
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
                   style: TextStyle(
                       fontFamily: "TTCommonsd",
                       fontSize: 16,
@@ -112,6 +113,7 @@ class MyOrderListView extends StatelessWidget {
                   orderData.subTxt,
                   textAlign: TextAlign.left,
                   maxLines: 2,
+                  overflow: TextOverflow.fade,
                   style: TextStyle(
                     fontFamily: 'TTCommonsm',
                     color:

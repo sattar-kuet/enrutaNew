@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
@@ -74,7 +75,7 @@ class LoginController extends GetxController {
 
       if (result == 0) {
         Get.snackbar("Please Input Valid Email & password", "",
-            snackPosition: SnackPosition.BOTTOM);
+            colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
       } else {
         Map<String, dynamic> user = convertedDatatojson['user_arr'];
 
@@ -111,7 +112,8 @@ class LoginController extends GetxController {
 
       // UserArr user = await convertedDatatojson['user_arr'];
     } catch (e) {
-      Get.snackbar("error to login ", e.message,
+      Get.snackbar("error to login ", e.message
+      ,colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM);
     }
     // return convertedDatatojson;
@@ -160,7 +162,7 @@ class LoginController extends GetxController {
       // print("\n\n\n\n\n MAP: " + result.toString()+"\n\n\n\n\n\n");
 
       if (result == 0) {
-        Get.snackbar("Please Input Valid Email & password", "",
+        Get.snackbar("Please Input Valid Email & password", "",colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
         // Map<String, dynamic> user = await convertedDatatojson["user"];
@@ -191,6 +193,7 @@ class LoginController extends GetxController {
       print("\n\n\n\n\nErr: " + e.toString() + "\n\n\n\n\n\n");
 
       Get.snackbar("warning", e.toString(),
+      colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM);
     }
   }
@@ -208,6 +211,7 @@ class LoginController extends GetxController {
       var result = await convertedDatatojson['status'];
       if (result == 0) {
         Get.snackbar("Please Input Valid Email & password", "",
+        colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
       } else {
         Map<String, dynamic> user = convertedDatatojson['user'];
@@ -226,6 +230,7 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       Get.snackbar("warning", e.toString(),
+      
           snackPosition: SnackPosition.BOTTOM);
     }
   }

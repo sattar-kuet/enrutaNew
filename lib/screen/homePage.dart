@@ -5,6 +5,7 @@ import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/item_list_data.dart';
 import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
+import 'package:enruta/screen/categorypage.dart';
 import 'package:enruta/screen/myMap/mapController.dart';
 import 'package:enruta/screen/orerder/curentOrderController.dart';
 import 'package:enruta/screen/resetpassword/resetController.dart';
@@ -315,12 +316,26 @@ class HomePage extends StatelessWidget {
                                       Container(
                                           margin: EdgeInsets.only(
                                               right: 20, bottom: 10, top: 20),
-                                          child: IconButton(
+                                          child: TextButton(
                                             onPressed: () {
-                                              tController.getPopularShops();
+                                              Get.to(CategoryPage(
+                                                  pageTitle: tController
+                                                      .category[0].name,
+                                                  pageType: tController
+                                                      .category[0].id));
                                             },
-                                            icon: Icon(Icons.refresh),
-                                          ))
+                                            child: Text(
+                                              text('view_all'),
+                                              textAlign: TextAlign.end,
+                                              style: TextStyle(
+                                                  fontFamily: 'TTCommonsm',
+                                                  fontSize: 17,
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#11C4A1"))
+                                                      .withOpacity(1)),
+                                            ),
+                                          )),
                                       // child: Text(
                                       //   text('Reload'),
                                       //   textAlign: TextAlign.end,

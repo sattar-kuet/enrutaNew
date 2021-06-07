@@ -121,6 +121,8 @@ class CartPage extends StatelessWidget {
                                 cartCont.totalcalculate();
                                 Get.snackbar(
                                     '', text('item_successfully_removed'),
+                                    colorText: Colors.white,
+
                                     // ignore: deprecated_member_use
                                     mainButton: FlatButton(
                                       child: Text(text('undo')),
@@ -539,7 +541,7 @@ class CartPage extends StatelessWidget {
                                                                     .value !=
                                                                 null
                                                             ? Text(
-                                                                "\$" +
+                                                                "- \$" +
                                                                     cartCont
                                                                         .cuppon
                                                                         .value
@@ -549,12 +551,23 @@ class CartPage extends StatelessWidget {
                                                                         14,
                                                                     fontFamily:
                                                                         'TTCommonsd',
-                                                                    color: Color(Helper.getHexToInt(
-                                                                            "#000000"))
+                                                                    color: Colors
+                                                                        .red
                                                                         .withOpacity(
                                                                             0.4)),
                                                               )
-                                                            : Text("\$" + "0"),
+                                                            : Text(
+                                                                "\$" + "0",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontFamily:
+                                                                        'TTCommonsd',
+                                                                    color: Colors
+                                                                        .red
+                                                                        .withOpacity(
+                                                                            0.4)),
+                                                              ),
                                                       )
                                                     ],
                                                   ),
@@ -574,24 +587,20 @@ class CartPage extends StatelessWidget {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      Text(
-                                                        text('voucher'),
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontFamily:
-                                                                'TTCommonsd',
-                                                            color: Color(Helper
-                                                                    .getHexToInt(
-                                                                        "#000000"))
-                                                                .withOpacity(
-                                                                    0.4)),
-                                                      ),
+                                                      Text(text('voucher'),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontFamily:
+                                                                  'TTCommonsd',
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.4))),
                                                       Obx(
                                                         () => cartCont.voucher
                                                                     .value !=
                                                                 null
                                                             ? Text(
-                                                                "\$" +
+                                                                "- \$" +
                                                                     cartCont
                                                                         .voucher
                                                                         .value
@@ -601,11 +610,10 @@ class CartPage extends StatelessWidget {
                                                                         14,
                                                                     fontFamily:
                                                                         'TTCommonsd',
-                                                                    color: Color(Helper.getHexToInt(
-                                                                            "#000000"))
+                                                                    color: Colors
+                                                                        .red
                                                                         .withOpacity(
-                                                                            0.4)),
-                                                              )
+                                                                            0.4)))
                                                             : Text("\$" + "0"),
                                                       )
                                                     ],
@@ -639,11 +647,10 @@ class CartPage extends StatelessWidget {
                                                                     0.4)),
                                                       ),
                                                       Obx(
-                                                        () => cartCont.discount
-                                                                    .value !=
+                                                        () => cartCont.discount.value !=
                                                                 null
                                                             ? Text(
-                                                                "\$" +
+                                                                "- \$" +
                                                                     cartCont
                                                                         .discount
                                                                         .value
@@ -653,12 +660,22 @@ class CartPage extends StatelessWidget {
                                                                         14,
                                                                     fontFamily:
                                                                         'TTCommonsd',
-                                                                    color: Color(Helper.getHexToInt(
-                                                                            "#000000"))
+                                                                    color: Colors
+                                                                        .red
+                                                                        .withOpacity(
+                                                                            0.4)))
+                                                            : Text(
+                                                                "\$" + "0",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontFamily:
+                                                                        'TTCommonsd',
+                                                                    color: Colors
+                                                                        .red
                                                                         .withOpacity(
                                                                             0.4)),
-                                                              )
-                                                            : Text("\$" + "0"),
+                                                              ),
                                                       )
                                                     ],
                                                   ),
@@ -837,7 +854,11 @@ class CartPage extends StatelessWidget {
         if (cartCont.cartList.length > 0) {
           Get.bottomSheet(showBottompopup(context) ?? error());
         } else {
-          Get.snackbar("No Item in Cart", "Add item in cart ");
+          Get.snackbar(
+            "No Item in Cart",
+            "Add item in cart ",
+            colorText: Colors.white,
+          );
         }
       },
       child: Stack(

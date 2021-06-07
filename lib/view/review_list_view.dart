@@ -111,8 +111,9 @@ class ReviewListView extends StatelessWidget {
               left: 10,
               child: Container(
                 alignment: Alignment.center,
-                // padding: EdgeInsets.only(top: 10, left: 10),
-                width: 30,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+
+                //width: 30,
                 height: 24,
                 decoration: BoxDecoration(
                     color: Color(Helper.getHexToInt("#FFF7E4")),

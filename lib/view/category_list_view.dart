@@ -142,9 +142,11 @@ class CategoryListView extends StatelessWidget {
 
                                       itemData.isFavorite.value
                                           ? Get.snackbar(
-                                              'Added in Favourites', '')
+                                              'Added in Favourites', '',
+                                              colorText: Colors.white)
                                           : Get.snackbar(
-                                              'Removed from Favourites', '');
+                                              'Removed from Favourites', '',
+                                              colorText: Colors.white);
                                     },
                                   ),
                                 )))),

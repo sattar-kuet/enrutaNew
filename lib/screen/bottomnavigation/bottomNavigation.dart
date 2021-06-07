@@ -13,8 +13,7 @@ import 'package:get/get.dart';
 
 // @immutable
 // ignore: must_be_immutable
-class BottomNavigation extends StatelessWidget {
-  int _currentIndex = 0;
+class BottomNavigation extends StatefulWidget {
   // void onTabTappeds(BuildContext context) {
   //   if (_currentIndex == 0) {
   //     Navigator.pushAndRemoveUntil(
@@ -31,9 +30,15 @@ class BottomNavigation extends StatelessWidget {
   //   }
   // }
 
+  @override
+  _BottomNavigationState createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
   final search = Get.put(SearchController());
 
   final language = Get.put(LanguageController());
+
   String text(String key) {
     return language.text(key);
   }
@@ -55,12 +60,9 @@ class BottomNavigation extends StatelessWidget {
         //     (Route<dynamic> route) => false,
         //   );
         // }
-        if (bottomController.curentPage.value == 0) {
-          print(currentScrreen);
-          bottomController.curentPage.value = 1;
-          controller.getPopularShops();
-          Get.offAll(HomePage());
-        }
+
+        controller.getPopularShops();
+        Get.to(HomePage());
       } else if (index == 1) {
         print("one");
 
@@ -93,46 +95,82 @@ class BottomNavigation extends StatelessWidget {
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
-        // selectedItemColor: Color(Helper.getHexToInt("#6F6F6F")),
-        unselectedItemColor: Color(Helper.getHexToInt("#929292")),
+        // selectedIconTheme: IconThemeData(
+        //   color: Color(Helper.getHexToInt("#11C4A1")),
+        // ),
+        // unselectedIconTheme: IconThemeData(
+        //   color: Color(Helper.getHexToInt("#929292")),
+        // ),
+        // selectedItemColor: Color(Helper.getHexToInt("#11C4A1")),
+        // unselectedItemColor: Color(Helper.getHexToInt("#929292")),
 
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        onTap: onTabTapped, // new
+        // selectedLabelStyle: TextStyle(
+        //     color: Color(Helper.getHexToInt("#11C4A1")), fontSize: 10),
+        // unselectedLabelStyle: TextStyle(
+        //     color: Color(Helper.getHexToInt("#929292")), fontSize: 10),
+        onTap: (v) {
+          if (v != 4) {
+            bottomController.curentPage(v);
+          }
 
-        currentIndex:
-            _currentIndex, // this will be set when a new tab is tapped
+          onTabTapped(v);
+        }, // new
+
+        currentIndex: bottomController
+            .curentPage.value, // this will be set when a new tab is tapped
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               "assets/icons/home.svg",
-              color: Color(Helper.getHexToInt("#929292")),
+              color: bottomController.curentPage.value == 0
+                  ? Color(Helper.getHexToInt("#11C4A1"))
+                  : Color(Helper.getHexToInt("#929292")),
             ),
             label: text('home'),
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/heartq.svg",
-                height: 22,
-                width: 22,
-                color: Color(Helper.getHexToInt("#929292"))),
+            icon: SvgPicture.asset(
+              "assets/icons/heartq.svg",
+              height: 22,
+              width: 22,
+              color: bottomController.curentPage.value == 1
+                  ? Color(Helper.getHexToInt("#11C4A1"))
+                  : Color(Helper.getHexToInt("#929292")),
+
+              //color: Color(Helper.getHexToInt("#929292"))
+            ),
             label: text('Favourite'),
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/list.svg",
-                color: Color(Helper.getHexToInt("#929292"))),
+            icon: SvgPicture.asset(
+              "assets/icons/list.svg",
+              color: bottomController.curentPage.value == 2
+                  ? Color(Helper.getHexToInt("#11C4A1"))
+                  : Color(Helper.getHexToInt("#929292")),
+
+              //color: Color(Helper.getHexToInt("#929292"))
+            ),
             label: text('order'),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               "assets/icons/user.svg",
-              color: Color(Helper.getHexToInt("#929292")),
+              color: bottomController.curentPage.value == 3
+                  ? Color(Helper.getHexToInt("#11C4A1"))
+                  : Color(Helper.getHexToInt("#929292")),
+
+              //color: Color(Helper.getHexToInt("#929292")),
             ),
             label: text('account'),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               "assets/icons/menu.svg",
-              color: Color(Helper.getHexToInt("#929292")),
+              color: bottomController.curentPage.value == 4
+                  ? Color(Helper.getHexToInt("#11C4A1"))
+                  : Color(Helper.getHexToInt("#929292")),
+
+              //color: Color(Helper.getHexToInt("#929292")),
             ),
             label: text('menu'),
           ),

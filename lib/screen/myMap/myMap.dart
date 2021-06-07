@@ -186,17 +186,17 @@ class _MyMapState extends State<MyMap> {
                     color: Colors.white),
                 child: Row(
                   children: [
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Container(
-                    //     height: 30,
-                    //     width: 30,
-                    //     decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(8.0),
-                    //         color: Color(Helper.getHexToInt("#E8E8E8"))),
-                    //     child: Image.asset("assets/icons/star.png"),
-                    //   ),
-                    // ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Color(Helper.getHexToInt("#E8E8E8"))),
+                        child: Image.asset("assets/icons/star.png"),
+                      ),
+                    ),
                     Expanded(
                       child: Container(
                         height: 50,

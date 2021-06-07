@@ -92,10 +92,9 @@ class CartSlidView extends StatelessWidget {
               bottom: 5,
               left: 100,
               height: 25,
-              width: 35,
               child: Container(
                 alignment: Alignment.center,
-                width: 35,
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 height: 27,
                 decoration: BoxDecoration(
                     color: Color(Helper.getHexToInt("#FFF7E4")),

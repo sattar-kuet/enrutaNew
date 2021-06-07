@@ -95,7 +95,7 @@ class CurentOrderView extends StatelessWidget {
                             child: Container(
                               alignment: Alignment.center,
                               // padding: EdgeInsets.only(top: 10, left: 10),
-                              width: 27,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
                               height: 24,
                               decoration: BoxDecoration(
                                   color: Color(Helper.getHexToInt("#FFF7E4")),
@@ -114,9 +114,12 @@ class CurentOrderView extends StatelessWidget {
                           Positioned(
                             top: 10,
                             left: 113,
+                            width: 200,
                             child: Container(
                               child: Text(
                                 detailsController.curentOrder.value.titleTxt,
+                                maxLines: 2,
+                                overflow: TextOverflow.fade,
                                 style: TextStyle(
                                     fontFamily: "TTCommonsd",
                                     fontSize: 16,
@@ -125,13 +128,15 @@ class CurentOrderView extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Padding(padding: EdgeInsets.all(10)),
                           Positioned(
-                            top: 35,
+                            top: 40,
                             left: 113,
                             right: 90,
                             child: Container(
                               child: Text(
                                 detailsController.curentOrder.value.subTxt,
+                                overflow: TextOverflow.fade,
                                 textAlign: TextAlign.left,
                                 maxLines: 2,
                                 style: TextStyle(

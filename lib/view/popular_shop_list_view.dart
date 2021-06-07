@@ -154,9 +154,11 @@ class PopularShopListView extends StatelessWidget {
                                       controller.getnearByPlace();
                                       itemData.isFavorite.value
                                           ? Get.snackbar(
-                                              'Added in Favourites', '')
+                                              'Added in Favourites', '',
+                                              colorText: Colors.white)
                                           : Get.snackbar(
-                                              'Removed from Favourites', '');
+                                              'Removed from Favourites', '',
+                                              colorText: Colors.white);
                                     },
                                   ),
                                 )))),

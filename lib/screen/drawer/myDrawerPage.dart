@@ -111,6 +111,7 @@ class MyDrawerPage extends StatelessWidget {
               ),
             ),
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 // Navigator.of(context).pop();
@@ -143,6 +144,7 @@ class MyDrawerPage extends StatelessWidget {
               ),
             ),
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 Get.to(SetLocation());
@@ -175,6 +177,7 @@ class MyDrawerPage extends StatelessWidget {
               ),
             ),
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 Get.to(MyOrder());
@@ -204,6 +207,7 @@ class MyDrawerPage extends StatelessWidget {
               ),
             ),
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 Get.to(MyFavorite());
@@ -233,6 +237,7 @@ class MyDrawerPage extends StatelessWidget {
               ),
             ),
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 Get.to(MyVoucher());
@@ -262,6 +267,7 @@ class MyDrawerPage extends StatelessWidget {
               ),
             ),
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 pmController.totalPayment.value = 0;
@@ -291,35 +297,35 @@ class MyDrawerPage extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                Get.to(MyAccount());
-              },
-              child: Container(
-                padding: EdgeInsets.only(left: 20),
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Icon(SvgPicture.asset("assets/icons/home.svg"))
-                    Container(
-                      height: 20,
-                      width: 40,
-                      margin: EdgeInsets.only(right: 30),
-                      child: SvgPicture.asset("assets/icons/user1.svg"),
-                    ),
-                    Text(
-                      text('my_account'),
-                      style: TextStyle(
-                          fontFamily: "TTCommonsd",
-                          fontSize: 16,
-                          color: Color(Helper.getHexToInt("#8D92A3"))),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Get.to(MyAccount());
+            //   },
+            //   child: Container(
+            //     padding: EdgeInsets.only(left: 20),
+            //     height: 50,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         // Icon(SvgPicture.asset("assets/icons/home.svg"))
+            //         Container(
+            //           height: 20,
+            //           width: 40,
+            //           margin: EdgeInsets.only(right: 30),
+            //           child: SvgPicture.asset("assets/icons/user1.svg"),
+            //         ),
+            //         Text(
+            //           text('my_account'),
+            //           style: TextStyle(
+            //               fontFamily: "TTCommonsd",
+            //               fontSize: 16,
+            //               color: Color(Helper.getHexToInt("#8D92A3"))),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             // InkWell(
             //   onTap: () {},
             //   child: Container(
@@ -374,6 +380,7 @@ class MyDrawerPage extends StatelessWidget {
             // ),
 
             InkWell(
+              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
                 loginController.logout();

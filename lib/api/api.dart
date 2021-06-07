@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:enruta/model/Response.dart';
 import 'package:enruta/model/category_model.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart' as g;
 import 'package:get_storage/get_storage.dart' as gs;
@@ -43,11 +44,12 @@ Future<Response> sendForm(
     var convertedDatatojson = jsonDecode(response.toString());
     var a = convertedDatatojson["status"];
     if (a == 1) {
-      g.Get.snackbar("Wellcome", "Registration  success");
+      g.Get.snackbar("Wellcome", "Registration  success",
+          colorText: Colors.white);
       g.Get.offAll(LoginPage());
       return response;
     } else {
-      g.Get.snackbar(" ", "Something wrong");
+      g.Get.snackbar(" ", "Something wrong", colorText: Colors.white);
     }
     return response;
 
