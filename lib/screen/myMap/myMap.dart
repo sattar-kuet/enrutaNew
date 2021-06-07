@@ -1,3 +1,4 @@
+import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
@@ -187,7 +188,129 @@ class _MyMapState extends State<MyMap> {
                 child: Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  contentPadding: EdgeInsets.all(5.0),
+                                  backgroundColor: cardbackgroundColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7.0))),
+                                  content: Container(
+                                    height: Get.height / 2.6,
+                                    width: Get.width,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 30,
+                                          width: Get.width,
+
+                                          // alignment: Alignment.centerLeft,
+                                          child: Stack(
+                                            children: [
+                                              Positioned(
+                                                top: 0,
+                                                left: 0,
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 15, top: 10),
+                                                  child: Text(
+                                                    text(
+                                                        'save_favorite_location'),
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontFamily:
+                                                            'TTCommonsm',
+                                                        color: Color(
+                                                            Helper.getHexToInt(
+                                                                "#C4C4C4"))),
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                child: Container(
+                                                  height: 25,
+                                                  width: 25,
+                                                  alignment: Alignment.topRight,
+                                                  // color: Colors.black,
+                                                  child: InkWell(
+                                                    // onTap: Get.back(),
+
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: CircleAvatar(
+                                                      backgroundColor: Color(
+                                                          Helper.getHexToInt(
+                                                              "#F2F2F2")),
+                                                      child: Icon(
+                                                        Icons.close_rounded,
+                                                        color: theamColor,
+                                                        size: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          thickness: 1,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        addresstype(context),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            var addrestype =
+                                                textController.text;
+
+                                            mymapcont.savelocation(addrestype);
+                                            Get.back();
+                                          },
+                                          child: Container(
+                                            height: 50,
+                                            width: Get.width,
+                                            margin: EdgeInsets.only(
+                                                bottom: 5, left: 15, right: 15),
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  colors: [
+                                                    Color(Helper.getHexToInt(
+                                                        "#11C7A1")),
+                                                    Color(Helper.getHexToInt(
+                                                        "#11E4A1"))
+                                                  ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(9),
+                                            ),
+                                            child: Center(
+                                                child: Text(
+                                              text('save'),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontFamily: 'TTCommonsm',
+                                              ),
+                                            )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: []);
+                            });
+                      },
                       child: Container(
                         height: 30,
                         width: 30,
@@ -239,141 +362,22 @@ class _MyMapState extends State<MyMap> {
                     Expanded(
                       child: InkWell(
                         onTap: () {
+                          final controller = Get.put(CartController());
+                          controller.setdeleveryAddress(
+                              addressdetails: locationData.locationDetails,
+                              lat: locationData.lat,
+                              long: locationData.lng);
+                          print("set address done");
                           // // mymapcont.pointAddress.value,
                           // var a = mymapcont.pointAddress.value;
                           // var b = mymapcont.pointLat.value.toString();
                           // var c = mymapcont.pointLong.value.toString();
-                          // //final controller = Get.put(CartController());
+
                           // print("Btn pressed");
                           // var addrestype = textController.text;
                           // //Get.put(CartController()).setAddress(a, b, c);
                           // //Get.put(MyMapController()).savelocation(addrestype);
                           // Get.back();
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    contentPadding: EdgeInsets.all(5.0),
-                                    backgroundColor: cardbackgroundColor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(7.0))),
-                                    content: Container(
-                                      height: Get.height / 2.6,
-                                      width: Get.width,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: 30,
-                                            width: Get.width,
-
-                                            // alignment: Alignment.centerLeft,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  top: 0,
-                                                  left: 0,
-                                                  child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: 15, top: 10),
-                                                    child: Text(
-                                                      text(
-                                                          'save_favorite_location'),
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontFamily:
-                                                              'TTCommonsm',
-                                                          color: Color(Helper
-                                                              .getHexToInt(
-                                                                  "#C4C4C4"))),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  top: 0,
-                                                  right: 0,
-                                                  child: Container(
-                                                    height: 25,
-                                                    width: 25,
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    // color: Colors.black,
-                                                    child: InkWell(
-                                                      // onTap: Get.back(),
-
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: CircleAvatar(
-                                                        backgroundColor: Color(
-                                                            Helper.getHexToInt(
-                                                                "#F2F2F2")),
-                                                        child: Icon(
-                                                          Icons.close_rounded,
-                                                          color: theamColor,
-                                                          size: 20,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Divider(
-                                            thickness: 1,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          addresstype(context),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              var addrestype =
-                                                  textController.text;
-
-                                              mymapcont
-                                                  .savelocation(addrestype);
-                                              Get.back();
-                                            },
-                                            child: Container(
-                                              height: 50,
-                                              width: Get.width,
-                                              margin: EdgeInsets.only(
-                                                  bottom: 5,
-                                                  left: 15,
-                                                  right: 15),
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    colors: [
-                                                      Color(Helper.getHexToInt(
-                                                          "#11C7A1")),
-                                                      Color(Helper.getHexToInt(
-                                                          "#11E4A1"))
-                                                    ]),
-                                                borderRadius:
-                                                    BorderRadius.circular(9),
-                                              ),
-                                              child: Center(
-                                                  child: Text(
-                                                text('save'),
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white,
-                                                  fontFamily: 'TTCommonsm',
-                                                ),
-                                              )),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: []);
-                              });
                         },
                         child: Container(
                           height: 50,
