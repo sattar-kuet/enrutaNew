@@ -80,28 +80,32 @@ class ReviewListView extends StatelessWidget {
                   width: 80,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: menuitemdata.logo == null
+                    child: menuitemdata.logo.isEmpty
                         ? Center(
                             child: Image.asset(
                               "assets/icons/image.png",
                               scale: 5,
                             ),
                           )
-                        : Image.network(menuitemdata.logo, fit: BoxFit.cover,
+                        : Image.network(
+                            menuitemdata.logo[0],
+                            fit: BoxFit.cover,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace stackTrace) {
-                            return Center(
-                                child: Image.asset(
-                              "assets/icons/image.png",
-                              scale: 5,
-                            ));
-                          }
-                            // loadingBuilder: (context, child, progress) {
-                            //   return progress == null
-                            //       ? child
-                            //       : LinearProgressIndicator();
-                            // },
-                            ),
+                              return Center(
+                                  child: Image.asset(
+                                "assets/icons/image.png",
+                                scale: 5,
+                              ));
+                            },
+                            loadingBuilder: (context, child, progress) {
+                              return progress == null
+                                  ? child
+                                  : Center(
+                                      child: Center(
+                                          child: CircularProgressIndicator()));
+                            },
+                          ),
                   ),
                 ),
               ),

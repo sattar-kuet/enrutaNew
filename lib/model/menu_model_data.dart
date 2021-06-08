@@ -14,6 +14,7 @@ class MenuModel {
     this.deliveryCharge,
     this.shopCategory,
     this.categoryName,
+    this.shopcover,
     this.products,
   });
 
@@ -23,7 +24,8 @@ class MenuModel {
   int deliveryCharge;
   int shopCategory;
   String categoryName;
-  List<Product> products ;
+  String shopcover;
+  List<Product> products;
 
   factory MenuModel.fromJson(Map<String, dynamic> json) => MenuModel(
         status: json["status"],
@@ -32,6 +34,7 @@ class MenuModel {
         deliveryCharge: json["deliveryCharge"],
         shopCategory: json["shopCategory"],
         categoryName: json["categoryName"],
+        shopcover: json["shopcover"],
         products: List<Product>.from(
             json["products"].map((x) => Product.fromJson(x))),
       );
@@ -43,6 +46,7 @@ class MenuModel {
         "deliveryCharge": deliveryCharge,
         "shopCategory": shopCategory,
         "categoryName": categoryName,
+        "shopcover": shopcover,
         "products": List<dynamic>.from(products.map((x) => x.toJson())),
       };
 }

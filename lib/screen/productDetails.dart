@@ -13,12 +13,6 @@ class ProductDetails extends StatelessWidget {
   final int deliveryCharge;
   final pController = Get.put(ProductController());
   final cartController = Get.put(CartController());
-  // final listImageHeader = [
-  //   'assets/icons/photo.png',
-  //   'assets/icons/photo.png',
-  //   'assets/icons/photo.png',
-  //   'assets/icons/photo.png',
-  // ];
 
   ProductDetails({
     Key key,
@@ -311,24 +305,79 @@ class ProductDetails extends StatelessWidget {
   }
 
   Widget widgetPageViewHeader() {
+    final listImageHeader = menuitemdata.logo;
+
     var heightImage = Get.height / 1.3;
     return Container(
       height: heightImage,
-      child: Image.network(menuitemdata.logo,
-          fit: BoxFit.fill, width: Get.width, errorBuilder:
-              (BuildContext context, Object exception, StackTrace stackTrace) {
-        return Center(
-            child: Image.asset(
-          "assets/icons/image.png",
-          scale: 5,
-        ));
-      }
-          // loadingBuilder: (context, child, progress) {
-          //   return progress == null
-          //       ? child
-          //       : LinearProgressIndicator();
-          // },
+      child: Stack(
+        children: <Widget>[
+          PageView.builder(
+            itemBuilder: (context, index) {
+              return Image.network(
+                menuitemdata.logo[index],
+                fit: BoxFit.fill,
+                width: Get.width,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace stackTrace) {
+                  return Center(
+                      child: Image.asset(
+                    "assets/icons/image.png",
+                    scale: 5,
+                  ));
+                },
+                loadingBuilder: (context, child, progress) {
+                  return progress == null
+                      ? child
+                      : Center(child: LinearProgressIndicator());
+                },
+              );
+            },
+            itemCount: listImageHeader.length,
+            onPageChanged: (index) {
+              pController.changeIndex(index);
+              print(pController.position.value);
+              // setState(() {
+              //   _indexHeader = index;
+              // });
+            },
           ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: Get.height / 2.1,
+              right: 20,
+            ),
+            child: Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  for (int i = 0; i < listImageHeader.length; i++)
+                    if (i == pController.position.value)
+                      circleBar(true)
+                    else
+                      circleBar(false),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+
+      //  Image.network(menuitemdata.logo[0],
+      //     fit: BoxFit.fill, width: Get.width, errorBuilder:
+      //         (BuildContext context, Object exception, StackTrace stackTrace) {
+      //   return Center(
+      //       child: Image.asset(
+      //     "assets/icons/image.png",
+      //     scale: 5,
+      //   ));
+      // }
+      // loadingBuilder: (context, child, progress) {
+      //   return progress == null
+      //       ? child
+      //       : LinearProgressIndicator();
+      // },
+      // ),
     );
   }
 

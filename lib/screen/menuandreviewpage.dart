@@ -121,19 +121,45 @@ class MenuAndReviewPage extends StatelessWidget {
                                   bottom: 0,
                                   right: 0,
                                   child: Obx(() {
-                                    if (cartCont.imageloader.value) {
-                                      return Center(
-                                          child: CircularProgressIndicator(
-                                        backgroundColor: Colors.black,
-                                      ));
-                                    } else
-                                      return Opacity(
-                                        opacity: 1,
-                                        child: Image.asset(
-                                          cartCont.shoptype.value,
-                                          fit: BoxFit.fill,
-                                        ),
+                                    if (mController.menucover.value == "" ||
+                                        mController.menucover == null) {
+                                      if (cartCont.imageloader.value) {
+                                        return Center(
+                                            child: CircularProgressIndicator(
+                                          backgroundColor: Colors.black,
+                                        ));
+                                      } else
+                                        return Opacity(
+                                          opacity: 1,
+                                          child: Image.asset(
+                                            cartCont.shoptype.value,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        );
+                                    } else {
+                                      return Image.network(
+                                        mController.menucover.value,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace stackTrace) {
+                                          return Center(
+                                              child: Image.asset(
+                                            "assets/icons/image.png",
+                                            scale: 5,
+                                          ));
+                                        },
+                                        loadingBuilder:
+                                            (context, child, progress) {
+                                          return progress == null
+                                              ? child
+                                              : Center(
+                                                  child: Center(
+                                                      child:
+                                                          CircularProgressIndicator()));
+                                        },
                                       );
+                                    }
                                   })),
                               Positioned(
                                 top: 0,

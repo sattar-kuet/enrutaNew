@@ -15,7 +15,7 @@ class Product {
   String title;
   String subTxt;
   double price;
-  String logo;
+  List<String> logo;
   List<String> sizes;
   String selectSize;
   String selectcolor;
@@ -31,7 +31,9 @@ class Product {
         title: json["title"],
         subTxt: json["subTxt"],
         price: json["price"].toDouble(),
-        logo: json["logo"],
+        logo: json["logo"] != null
+            ? List<String>.from(json["logo"].map((x) => x))
+            : [],
         sizes: json["sizes"] != null
             ? List<String>.from(json["sizes"].map((x) => x))
             : [],
@@ -46,7 +48,7 @@ class Product {
         "title": title,
         "subTxt": subTxt,
         "price": price,
-        "logo": logo,
+        "logo": List<dynamic>.from(logo.map((x) => x)),
         "sizes": List<dynamic>.from(sizes.map((x) => x)),
         "colors": List<dynamic>.from(colors.map((x) => x)),
         "qty": qty,

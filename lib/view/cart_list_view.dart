@@ -62,17 +62,33 @@ class CartListView extends StatelessWidget {
                     // image: DecorationImage(
                     //     image: NetworkImage(cartData.logo), fit: BoxFit.cover),
                   ),
-                  child: cartData.logo == null
-                      ? Image.asset("assets/icons/image.png", fit: BoxFit.fill)
-                      : Image.network(cartData.logo, fit: BoxFit.fill,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace stackTrace) {
-                          return Center(
-                              child: Image.asset(
-                            "assets/icons/image.png",
-                            scale: 5,
-                          ));
-                        }),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: cartData.logo.isEmpty
+                        ? Center(
+                            child: Image.asset(
+                              "assets/icons/image.png",
+                              scale: 5,
+                            ),
+                          )
+                        : Image.network(
+                            cartData.logo[0],
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return Center(
+                                  child: Image.asset(
+                                "assets/icons/image.png",
+                                scale: 5,
+                              ));
+                            },
+                            loadingBuilder: (context, child, progress) {
+                              return progress == null
+                                  ? child
+                                  : Center(child: CircularProgressIndicator());
+                            },
+                          ),
+                  ),
                 ),
               ),
               Positioned(

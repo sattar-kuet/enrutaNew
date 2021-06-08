@@ -42,7 +42,7 @@ class CurentOrderController extends GetxController {
   void getorderStatus(int id) async {
     try {
       isLoading(true);
-      await Future.delayed(Duration(seconds: 1));
+
       Service().getOrderDetails(id).then((values) {
         detailsModel.value.order = values.order;
         order.value = values.order;
