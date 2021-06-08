@@ -31,6 +31,7 @@ class CartController extends GetxController {
   var grandTotal = 0.obs;
   var shoptype = "assets/images/type0.jpg".obs;
   var imageloader = false.obs;
+  var menucover = ''.obs;
   // ignore: deprecated_member_use
   var cartList = List<Product>().obs;
   // var paymentOption = ''.obs;
@@ -283,11 +284,12 @@ class CartController extends GetxController {
         colorText: Colors.white,
       );
       cartList.add(item);
+      suggetItems.remove(item);
       print("cart len 0");
       print(jsonEncode(cartList));
       box.write("shopcategory", categoryName.value);
       box.write("cartList", cartList);
-      Get.find<SuggestController>().removeitemfromlist(item.id);
+      //Get.find<SuggestController>().removeitemfromlist(item.id);
       var a = box.read("shopcategory");
       print("sssssss" + a);
       totalcalculate();
@@ -321,11 +323,12 @@ class CartController extends GetxController {
     print("value value value" + '${cartList.value}');
     if (check == false) {
       cartList.add(item);
+      suggetItems.remove(item);
       print("cart check false");
       print(jsonEncode(cartList));
 
       box.write("cartList", Get.find<CartController>().cartList);
-      Get.find<SuggestController>().removeitemfromlist(item.id);
+      //Get.find<SuggestController>().removeitemfromlist(item.id);
       totalcalculate();
       getplist();
       Get.snackbar(
@@ -406,6 +409,8 @@ class CartController extends GetxController {
           colorText: Colors.white,
         );
         cartList.add(item);
+        suggetItems.remove(item);
+        box.write("cartList", Get.find<CartController>().cartList);
         print("when 0");
       }
       for (var i = 0; i < cartList.length; i++) {
@@ -423,6 +428,8 @@ class CartController extends GetxController {
       }
       if (check == false) {
         cartList.add(item);
+        suggetItems.remove(item);
+        box.write("cartList", Get.find<CartController>().cartList);
         Get.snackbar(
           " add",
           "item added",
@@ -451,6 +458,8 @@ class CartController extends GetxController {
     var check = false;
     if (cartList.length == 0) {
       cartList.add(item);
+      suggetItems.remove(item);
+      box.write("cartList", Get.find<CartController>().cartList);
       print("when 0");
     }
     // ignore: invalid_use_of_protected_member
@@ -476,6 +485,8 @@ class CartController extends GetxController {
     }
     if (check == false) {
       cartList.add(item);
+      suggetItems.remove(item);
+      box.write("cartList", Get.find<CartController>().cartList);
     }
   }
 
@@ -740,6 +751,7 @@ class CartController extends GetxController {
       Service.menulist(id).then((va) {
         if (va != null) {
           shoptype.value = "assets/images/type${va.shopCategory}.jpg";
+          menucover.value = va.shopcover;
 
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();

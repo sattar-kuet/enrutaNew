@@ -41,8 +41,9 @@ class MenuController extends GetxController {
         if (va != null) {
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();
-          menucover.value = va.shopcover;
+
           print(menuItemsTemp.length);
+
           // ignore: invalid_use_of_protected_member
           cartLists.value = cartController.cartList.value;
           // ignore: invalid_use_of_protected_member

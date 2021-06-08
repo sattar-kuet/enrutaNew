@@ -15,8 +15,9 @@ class SuggestController extends GetxController {
   void onInit() {
     getsuggetItems();
     super.onInit();
+    
   }
-
+  
   void getsuggetItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     shopid.value = prefs.getString('shopid') ?? "1";

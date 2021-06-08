@@ -49,6 +49,7 @@ class MenuAndReviewPage extends StatelessWidget {
 
     mController.getreview(shop_id);
     print(" shop type  ${cartCont.shoptype}");
+    print("cover = ${cartCont.menucover}");
 
     return Scaffold(
         body: Container(
@@ -121,8 +122,8 @@ class MenuAndReviewPage extends StatelessWidget {
                                   bottom: 0,
                                   right: 0,
                                   child: Obx(() {
-                                    if (mController.menucover.value == "" ||
-                                        mController.menucover == null) {
+                                    if (cartCont.menucover.value == "" ||
+                                        cartCont.menucover == null) {
                                       if (cartCont.imageloader.value) {
                                         return Center(
                                             child: CircularProgressIndicator(
@@ -137,27 +138,30 @@ class MenuAndReviewPage extends StatelessWidget {
                                           ),
                                         );
                                     } else {
-                                      return Image.network(
-                                        mController.menucover.value,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (BuildContext context,
-                                            Object exception,
-                                            StackTrace stackTrace) {
-                                          return Center(
-                                              child: Image.asset(
-                                            "assets/icons/image.png",
-                                            scale: 5,
-                                          ));
-                                        },
-                                        loadingBuilder:
-                                            (context, child, progress) {
-                                          return progress == null
-                                              ? child
-                                              : Center(
-                                                  child: Center(
-                                                      child:
-                                                          CircularProgressIndicator()));
-                                        },
+                                      return Opacity(
+                                        opacity: 1,
+                                        child: Image.network(
+                                          cartCont.menucover.value,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace stackTrace) {
+                                            return Center(
+                                                child: Image.asset(
+                                              "assets/icons/image.png",
+                                              scale: 5,
+                                            ));
+                                          },
+                                          loadingBuilder:
+                                              (context, child, progress) {
+                                            return progress == null
+                                                ? child
+                                                : Center(
+                                                    child: Center(
+                                                        child:
+                                                            CircularProgressIndicator()));
+                                          },
+                                        ),
                                       );
                                     }
                                   })),
