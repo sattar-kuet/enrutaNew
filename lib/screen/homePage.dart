@@ -43,6 +43,7 @@ class HomePage extends StatelessWidget {
     Get.put(MyMapController());
     tController.getmenulist();
     language.loadLanguage();
+    popularController.getCurentOrder();
     return Scaffold(
       drawer: MyDrawerPage(),
       body: Container(
@@ -168,82 +169,109 @@ class HomePage extends StatelessWidget {
                       );
                     }),
                   ),
-                  // Obx(
-                  //   () => cartController.newOrder.value > 0
-                  //       ? Container(
-                  //           height: 120,
-                  //           width: MediaQuery.of(context).size.width,
-                  //           margin: EdgeInsets.only(
-                  //               top: 5, bottom: 5, left: 20, right: 20),
+                  Obx(() {
+                    String stattxt;
+                    var status = popularController
+                        // ignore: invalid_use_of_protected_member
+                        .curentOrder
+                        // ignore: invalid_use_of_protected_member
+                        .value
+                        .status;
+                    switch (status) {
+                      case "Pending":
+                        stattxt =
+                            "Your Order is Pending waiting for Processing";
+                        break;
+                      case "Processing":
+                        stattxt =
+                            "Your Order is Processing waiting for Delevery";
+                        break;
+                      case "On the way":
+                        stattxt = "Your Order is On the Way";
+                        break;
+                    }
 
-                  //           decoration: BoxDecoration(
-                  //             color: Colors.white,
-                  //             borderRadius: BorderRadius.circular(8),
-                  //           ),
-                  //           // child: Center(
-                  //           child: InkWell(
-                  //             onTap: () {
-                  //               // Get.to(AddNewMethod());
-                  //               showSuccessfullyBottompopup(context);
-                  //               // shoall(context);
-                  //               print("Add New Method");
-                  //             },
-                  //             child: Column(
-                  //               children: [
-                  //                 Container(
-                  //                   height: 20,
-                  //                   margin: EdgeInsets.only(top: 20),
-                  //                   padding:
-                  //                       EdgeInsets.only(left: 20, right: 20),
-                  //                   child: Row(
-                  //                     children: [
-                  //                       Image.asset(
-                  //                           "assets/icons/roundpoint.png"),
-                  //                       // Icon(Icons.radio_button_on_rounded),
-                  //                       Container(
-                  //                         padding: EdgeInsets.only(left: 10),
-                  //                         child: Text(
-                  //                           "Home Kitchen & Restaurant",
-                  //                           style: TextStyle(
-                  //                               fontFamily: 'TTCommonsm',
-                  //                               fontSize: 15,
-                  //                               color: Color(Helper.getHexToInt(
-                  //                                       "#11C4A1"))
-                  //                                   .withOpacity(0.8)),
-                  //                           textAlign: TextAlign.start,
-                  //                         ),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 Container(
-                  //                   margin: EdgeInsets.only(
-                  //                       top: 20, left: 20, right: 50),
-                  //                   child: Flexible(
-                  //                     // child: Text("data"),
-                  //                     child: RichText(
-                  //                       textAlign: TextAlign.center,
-                  //                       maxLines: 2,
-                  //                       text: TextSpan(
-                  //                           style: TextStyle(
-                  //                               fontFamily: 'TTCommonsm',
-                  //                               fontSize: 13.0,
-                  //                               color: Color(Helper.getHexToInt(
-                  //                                       "#808080"))
-                  //                                   .withOpacity(0.8)),
-                  //                           text:
-                  //                               'Restaurant preparing your food. Your rider will pic it once  ready'),
-                  //                     ),
-                  //                   ),
-                  //                 )
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         )
-                  //       : SizedBox(
-                  //           height: 0,
-                  //         ),
-                  // ),
+                    return status != "Canceled"
+                        ? Container(
+                            height: 120,
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.only(
+                                top: 5, bottom: 5, left: 20, right: 20),
+
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            // child: Center(
+                            child: InkWell(
+                              onTap: () async {
+                                try {
+                                  await popularController.getorderStatus(
+                                      popularController.curentOrder.value.id);
+
+                                  showSuccessfullyBottompopup(context);
+                                } catch (e) {}
+                                // Get.to(AddNewMethod());
+
+                                // shoall(context);
+                                print("Add New Method");
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    margin: EdgeInsets.only(top: 20),
+                                    padding:
+                                        EdgeInsets.only(left: 20, right: 20),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                            "assets/icons/roundpoint.png"),
+                                        // Icon(Icons.radio_button_on_rounded),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            popularController
+                                                .curentOrder.value.titleTxt,
+                                            style: TextStyle(
+                                                fontFamily: 'TTCommonsm',
+                                                fontSize: 15,
+                                                color: Color(Helper.getHexToInt(
+                                                        "#11C4A1"))
+                                                    .withOpacity(0.8)),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top: 20, left: 20, right: 50),
+                                    child: Flexible(
+                                      // child: Text("data"),
+                                      child: RichText(
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        text: TextSpan(
+                                            style: TextStyle(
+                                                fontFamily: 'TTCommonsm',
+                                                fontSize: 13.0,
+                                                color: Color(Helper.getHexToInt(
+                                                        "#808080"))
+                                                    .withOpacity(0.8)),
+                                            text: stattxt),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0,
+                          );
+                  }),
                   Container(
                     color: Colors.white,
                     padding: EdgeInsets.only(
@@ -512,25 +540,25 @@ class HomePage extends StatelessWidget {
                       fontFamily: 'TTCommonsm',
                       color: Color(Helper.getHexToInt("#959595"))),
                 ),
-                Container(
-                  height: 50,
-                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                  child: Flexible(
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      maxLines: 4,
-                      text: TextSpan(
-                          style: TextStyle(
-                              fontFamily: 'TTCommonsm',
-                              fontSize: 15.0,
-                              color: Color(Helper.getHexToInt("#808080"))
-                                  .withOpacity(0.8)),
-                          text:
-                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
-                              "s standard dummy text ever"),
-                    ),
-                  ),
-                ),
+                // Container(
+                //   height: 50,
+                //   margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                //   child: Flexible(
+                //     child: RichText(
+                //       textAlign: TextAlign.center,
+                //       maxLines: 4,
+                //       text: TextSpan(
+                //           style: TextStyle(
+                //               fontFamily: 'TTCommonsm',
+                //               fontSize: 15.0,
+                //               color: Color(Helper.getHexToInt("#808080"))
+                //                   .withOpacity(0.8)),
+                //           text:
+                //               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
+                //               "s standard dummy text ever"),
+                //     ),
+                //   ),
+                // ),
                 Divider(
                   thickness: 1,
                 ),
@@ -567,7 +595,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          text('veestro_healthy'),
+                          popularController.order.value.orderFrom,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 18,
@@ -599,7 +627,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "#u7vj-xsyf",
+                          popularController.order.value.number,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 18,
@@ -631,7 +659,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "Gulshan Avinew, Dhaka",
+                          popularController.address.value,
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -667,12 +695,12 @@ class HomePage extends StatelessWidget {
                                   fontSize: 18.0,
                                   color: Color(Helper.getHexToInt("#535353"))),
                               text:
-                                  "Beef Rejala, Plain Rice, Hisha Fish, Pabda Fish and Dal"),
+                                  popularController.order.value.orderItemNames),
                         ),
                       ),
                       Expanded(
                         child: Text(
-                          "\$" + "85",
+                          popularController.order.value.price,
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -710,7 +738,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "\$" + "85",
+                          popularController.order.value.price,
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -745,7 +773,8 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "\$" + "5",
+                          popularController.order.value.deliveryCharge
+                              .toString(),
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -780,7 +809,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "\$" + "-20",
+                          popularController.order.value.voucher.toString(),
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -818,7 +847,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "\$" + "70",
+                          popularController.gtotal.toString(),
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(

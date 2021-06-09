@@ -47,21 +47,23 @@ class MyOrderListView extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(orderData.imagePath, fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace stackTrace) {
-                    return Center(
-                        child: Image.asset(
-                      "assets/icons/image.png",
-                      scale: 5,
-                    ));
-                  }
-                      // loadingBuilder: (context, child, progress) {
-                      //   return progress == null
-                      //       ? child
-                      //       : LinearProgressIndicator();
-                      // },
-                      ),
+                  child: Image.network(
+                    orderData.imagePath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace stackTrace) {
+                      return Center(
+                          child: Image.asset(
+                        "assets/icons/image.png",
+                        scale: 5,
+                      ));
+                    },
+                    loadingBuilder: (context, child, progress) {
+                      return progress == null
+                          ? child
+                          : LinearProgressIndicator();
+                    },
+                  ),
                 ),
               ),
             ),
@@ -94,7 +96,7 @@ class MyOrderListView extends StatelessWidget {
               child: Container(
                 width: Get.width / 2,
                 child: Text(
-                  orderData.titleTxt,
+                  orderData.shopName,
                   maxLines: 2,
                   overflow: TextOverflow.fade,
                   style: TextStyle(
@@ -110,7 +112,7 @@ class MyOrderListView extends StatelessWidget {
               right: 90,
               child: Container(
                 child: Text(
-                  orderData.subTxt,
+                  orderData.titleTxt,
                   textAlign: TextAlign.left,
                   maxLines: 2,
                   overflow: TextOverflow.fade,

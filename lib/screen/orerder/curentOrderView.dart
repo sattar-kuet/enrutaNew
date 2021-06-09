@@ -2,6 +2,7 @@ import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/all_order_model.dart';
 import 'package:enruta/model/my_order_list_data.dart';
+import 'package:enruta/screen/orderStutas/orderStatus.dart';
 import 'package:enruta/screen/orerder/curentOrderController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,6 +48,7 @@ class CurentOrderView extends StatelessWidget {
                       onTap: () {
                         detailsController.getorderStatus(
                             detailsController.curentOrder.value.id);
+                        Get.to(OrderStatus());
 
                         // _launchInWebViewOrVC("https://corona.gov.bd/");
                       },
@@ -135,7 +137,7 @@ class CurentOrderView extends StatelessWidget {
                             right: 90,
                             child: Container(
                               child: Text(
-                                detailsController.curentOrder.value.subTxt,
+                                detailsController.curentOrder.value.shopName,
                                 overflow: TextOverflow.fade,
                                 textAlign: TextAlign.left,
                                 maxLines: 2,

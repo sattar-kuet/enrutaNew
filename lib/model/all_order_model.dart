@@ -27,14 +27,15 @@ class AllOrderModel {
 }
 
 class OrderModel {
-  OrderModel({
-    this.id,
-    this.titleTxt,
-    this.subTxt,
-    this.price,
-    this.imagePath,
-    this.date,
-  });
+  OrderModel(
+      {this.id,
+      this.titleTxt,
+      this.subTxt,
+      this.price,
+      this.imagePath,
+      this.date,
+      this.shopName,
+      this.status});
 
   int id;
   String titleTxt;
@@ -42,6 +43,8 @@ class OrderModel {
   String price;
   String imagePath;
   String date;
+  String shopName;
+  String status;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json["id"],
@@ -50,6 +53,8 @@ class OrderModel {
         price: json["price"],
         imagePath: json["imagePath"],
         date: json["date"],
+        shopName: json["shopName"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,5 +64,7 @@ class OrderModel {
         "price": price,
         "imagePath": imagePath,
         "date": date,
+        "status": status,
+        "shopName": shopName
       };
 }

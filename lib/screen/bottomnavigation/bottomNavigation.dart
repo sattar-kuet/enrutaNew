@@ -109,9 +109,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         // unselectedLabelStyle: TextStyle(
         //     color: Color(Helper.getHexToInt("#929292")), fontSize: 10),
         onTap: (v) {
-          if (v != 4) {
+          if (v == 0 || v == 3) {
             bottomController.curentPage(v);
           }
+          print("tapped $v");
 
           onTabTapped(v);
         }, // new

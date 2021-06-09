@@ -37,6 +37,7 @@ class CurentOrderController extends GetxController {
   var isLoading = false.obs;
   var detailsModel = OrderDetailsModel().obs;
   var order = Order().obs;
+  var orderall = List<Order>().obs;
   final address = ''.obs;
 
   void getorderStatus(int id) async {
@@ -50,8 +51,6 @@ class CurentOrderController extends GetxController {
         // cCont.getShopLocation(order.value.lat, order.value.lng);
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
         gettotal();
-
-        Get.to(OrderStatus());
       });
     } finally {
       isLoading(false);
@@ -82,6 +81,7 @@ class CurentOrderController extends GetxController {
       await Future.delayed(Duration(seconds: 1));
       Service.getCurentOrder(id).then((values) {
         allCurentOrderList.value = values.orders.toList();
+
         // ignore: invalid_use_of_protected_member
         if (allCurentOrderList.value.length > 0) {
           curentOrder.value =

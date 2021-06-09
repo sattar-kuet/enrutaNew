@@ -36,9 +36,8 @@ class OrderStatus extends StatelessWidget {
           Container(
               height: 120,
               width: MediaQuery.of(context).size.width,
-              child: Obx(() => detailsController.order.value.imagePath != null
-                  ? Image.network(detailsController.order.value.imagePath)
-                  : Image.asset("assets/icons/orderprocess.png"))),
+              child: Image.asset("assets/icons/orderprocess.png")),
+          Padding(padding: EdgeInsets.only(top: 10)),
           Center(
             child: Text(
               text('your_order_placed_successfully'),
@@ -76,23 +75,24 @@ class OrderStatus extends StatelessWidget {
           //     ),
           //   ),
           // ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                    fontFamily: 'TTCommonsm',
-                    fontSize: 15.0,
-                    color:
-                        Color(Helper.getHexToInt("#808080")).withOpacity(0.8)),
-                children: <TextSpan>[
-                  TextSpan(
-                      text:
-                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
-                          "s standard dummy text ever"),
-                ],
-              ),
-            ),
-          ),
+          // Container(
+          //   child: RichText(
+          //     text: TextSpan(
+          //       style: TextStyle(
+          //           fontFamily: 'TTCommonsm',
+          //           fontSize: 15.0,
+          //           color:
+          //               Color(Helper.getHexToInt("#808080")).withOpacity(0.8)),
+          //       children: <TextSpan>[
+          //         TextSpan(
+          //             text:
+          //                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
+          //                 "s standard dummy text ever"),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          Padding(padding: EdgeInsets.only(top: 50)),
           Divider(
             thickness: 1,
           ),
