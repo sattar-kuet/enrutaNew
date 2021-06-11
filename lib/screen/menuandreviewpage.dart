@@ -323,6 +323,7 @@ class MenuAndReviewPage extends StatelessWidget {
         // }
 
         suggestCont.getsuggetItems();
+        cartCont.suggestUpdate();
         // Get.find<SuggestController>().getsuggetItems();
         // Get.find<CartController>().vat.value = vat;
         // Get.find<CartController>().deliveryCharge.value = deliveryCharge;

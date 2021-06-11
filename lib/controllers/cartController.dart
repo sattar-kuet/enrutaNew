@@ -177,6 +177,19 @@ class CartController extends GetxController {
     }
   }
 
+  void suggestUpdate() {
+    List<int> tmp = [];
+    for (int i = 0; i < cartList.length; i++) {
+      tmp.add(cartList[i].id);
+    }
+    suggetItems.value = menuItems.value;
+
+    for (int j = 0; j < tmp.length; j++) {
+      suggetItems.removeWhere((item) => item.id == tmp[j]);
+    }
+    print("menuitems lenght = ${suggetItems.length}, in cart =$tmp");
+  }
+
   void additemtocarts(
       Product item, String shop, int vats, int deliveryC) async {
     print("shopid" '$shop');
@@ -284,7 +297,7 @@ class CartController extends GetxController {
         colorText: Colors.white,
       );
       cartList.add(item);
-      suggetItems.remove(item);
+
       print("cart len 0");
       print(jsonEncode(cartList));
       box.write("shopcategory", categoryName.value);
@@ -323,7 +336,7 @@ class CartController extends GetxController {
     print("value value value" + '${cartList.value}');
     if (check == false) {
       cartList.add(item);
-      suggetItems.remove(item);
+
       print("cart check false");
       print(jsonEncode(cartList));
 
@@ -409,7 +422,7 @@ class CartController extends GetxController {
           colorText: Colors.white,
         );
         cartList.add(item);
-        suggetItems.remove(item);
+
         box.write("cartList", Get.find<CartController>().cartList);
         print("when 0");
       }
@@ -428,7 +441,7 @@ class CartController extends GetxController {
       }
       if (check == false) {
         cartList.add(item);
-        suggetItems.remove(item);
+
         box.write("cartList", Get.find<CartController>().cartList);
         Get.snackbar(
           " add",
@@ -458,7 +471,7 @@ class CartController extends GetxController {
     var check = false;
     if (cartList.length == 0) {
       cartList.add(item);
-      suggetItems.remove(item);
+
       box.write("cartList", Get.find<CartController>().cartList);
       print("when 0");
     }
@@ -485,7 +498,7 @@ class CartController extends GetxController {
     }
     if (check == false) {
       cartList.add(item);
-      suggetItems.remove(item);
+
       box.write("cartList", Get.find<CartController>().cartList);
     }
   }

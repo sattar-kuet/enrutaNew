@@ -115,10 +115,13 @@ class CartPage extends StatelessWidget {
                               ),
                               key: UniqueKey(),
                               onDismissed: (_) {
+                                cartCont.suggetItems
+                                    .add(cartCont.cartList[index]);
                                 var removed = cartCont.cartList[index];
 
                                 cartCont.cartList.removeAt(index);
                                 cartCont.totalcalculate();
+
                                 Get.snackbar(
                                     '', text('item_successfully_removed'),
                                     colorText: Colors.white,
@@ -185,20 +188,19 @@ class CartPage extends StatelessWidget {
                                   child: Container(
                                     height: 110,
                                     decoration: BoxDecoration(),
-                                    child: Obx(() =>
-                                        suggestController.suggetItems != null
-                                            ? ListView.builder(
-                                                itemCount: suggestController
-                                                    .suggetItems.length,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemBuilder: (context, index) {
-                                                  return CartSlidView(
-                                                    cartData: suggestController
-                                                        .suggetItems[index],
-                                                  );
-                                                })
-                                            : null),
+                                    child: Obx(() => cartCont.suggetItems !=
+                                            null
+                                        ? ListView.builder(
+                                            itemCount:
+                                                cartCont.suggetItems.length,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              return CartSlidView(
+                                                cartData:
+                                                    cartCont.suggetItems[index],
+                                              );
+                                            })
+                                        : null),
                                   )),
                               Positioned(
                                 top: 123,

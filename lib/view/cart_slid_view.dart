@@ -2,6 +2,7 @@ import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/suggestController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/Product_model.dart';
+import 'package:enruta/screen/productDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +23,7 @@ class CartSlidView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartCont = Get.put(CartController());
     return Container(
       height: 120,
       width: MediaQuery.of(context).size.width / 1.3,
@@ -137,19 +139,32 @@ class CartSlidView extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   cartData.qty = 1;
-                  print(cartData.price);
-                  // // var shopids = suggestcont.shopid.value;
-                  // // var vat = suggestcont.vats.value;
-                  // // var deliveryCharge = suggestcont.dc.value;
-                  // print("shopid secd " '$shopids');
-                  // cartData.addtolist();
-                  // cartController.totalcalculate();
-                  // cartController.additemtocarts(
-                  //     cartData, shopids, vat, deliveryCharge);
-                  Get.find<SuggestController>().addtolist(cartData);
-                  Get.find<CartController>().totalcalculate();
-                  // Get.find<SuggestController>().removeitemfromlist(cartData.id);
-                  // suggestcont.addtolist(cartData);
+                  if (cartData.sizes.length != 0 ||
+                      cartData.colors.length != 0) {
+                    Get.to(ProductDetails(
+                      menuitemdata: cartData,
+                      shopid: cartCont.shopid.value,
+                      vat: cartCont.vat.value,
+                      deliveryCharge: cartCont.deliveryCharge.value,
+                    ));
+                  } else {
+                    cartData.qty = cartData.pqty.toInt();
+                    cartCont.additemtocarts(cartData, cartCont.shopid.value,
+                        cartCont.vat.value, cartCont.deliveryCharge.value);
+
+                    // GetStorage box = GetStorage();
+                    // box.write("cartList", Get.find<CartController>().cartList);
+                    // box.write("shopid", shopid);
+                    // box.write("vat", vat);
+                    // box.write("deliveryCharge", deliveryCharge);
+                    // print(vat);
+                    // box.write("shopid", shopid);
+                    // print("object");
+                    cartCont.isInChart(cartCont.shopid.value, cartData);
+
+                    cartCont.suggetItems
+                        .removeWhere((item) => item.id == cartData.id);
+                  }
                 },
                 child: Container(
                     alignment: Alignment.center,
