@@ -170,13 +170,21 @@ class HomePage extends StatelessWidget {
                     }),
                   ),
                   Obx(() {
-                    String stattxt;
+                    String stattxt = "";
                     var status = popularController
-                        // ignore: invalid_use_of_protected_member
-                        .curentOrder
-                        // ignore: invalid_use_of_protected_member
-                        .value
-                        .status;
+                                // ignore: invalid_use_of_protected_member
+                                .curentOrder
+                                // ignore: invalid_use_of_protected_member
+                                .value
+                                .status ==
+                            null
+                        ? "Canceled"
+                        : popularController
+                            // ignore: invalid_use_of_protected_member
+                            .curentOrder
+                            // ignore: invalid_use_of_protected_member
+                            .value
+                            .status;
                     switch (status) {
                       case "Pending":
                         stattxt =
@@ -209,7 +217,9 @@ class HomePage extends StatelessWidget {
                                   await popularController.getorderStatus(
                                       popularController.curentOrder.value.id);
 
-                                  showSuccessfullyBottompopup(context);
+                                  if (popularController.order.value != null) {
+                                    showSuccessfullyBottompopup(context);
+                                  }
                                 } catch (e) {}
                                 // Get.to(AddNewMethod());
 

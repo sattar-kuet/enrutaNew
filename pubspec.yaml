@@ -62,6 +62,7 @@ dependencies:
   loading_elevated_button: ^0.0.5
   argon_buttons_flutter: ^1.1.0
   animated_button: ^0.2.0
+  flutter_multi_formatter: ^2.2.0
 
 
   # location: ^3.0.0

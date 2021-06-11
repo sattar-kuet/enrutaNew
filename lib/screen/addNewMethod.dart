@@ -5,7 +5,9 @@ import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
 // ignore: must_be_immutable
 class AddNewMethod extends StatelessWidget {
@@ -123,9 +125,14 @@ class AddNewMethod extends StatelessWidget {
                         child: Container(
                           // height: 40,
                           // width: MediaQuery.of(context).size.width * 0.9,
-                          child: TextField(
+                          child: TextFormField(
+                            inputFormatters: [
+                              CreditCardNumberInputFormatter(),
+                            ],
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               hintText: "5560  1209  0987  4312",
+
                               hintStyle: TextStyle(
                                 color: Color(Helper.getHexToInt("#22242A"))
                                     .withOpacity(.1),
@@ -201,7 +208,11 @@ class AddNewMethod extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            CreditCardExpirationDateFormatter(),
+                          ],
                           decoration: InputDecoration(
                             hintText: "06/24",
                             hintStyle: TextStyle(
@@ -215,7 +226,11 @@ class AddNewMethod extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            CreditCardCvcInputFormatter(),
+                          ],
                           decoration: InputDecoration(
                             hintText: "556 ",
                             hintStyle: TextStyle(
@@ -258,9 +273,9 @@ class AddNewMethod extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://www.amexcommercial.com/wp-content/uploads/2020/09/Halley-Chase-bank....png'),
-                              // image: AssetImage('assets/icons/3515737.png'),
+                              // image: NetworkImage(
+                              //     'https://www.amexcommercial.com/wp-content/uploads/2020/09/Halley-Chase-bank....png'),
+                              image: AssetImage('assets/icons/3515737.png'),
                               scale: 1.0,
                               fit: BoxFit.fill),
                           boxShadow: <BoxShadow>[
