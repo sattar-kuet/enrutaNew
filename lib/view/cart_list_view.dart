@@ -73,7 +73,7 @@ class CartListView extends StatelessWidget {
                           )
                         : Image.network(
                             cartData.logo[0],
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace stackTrace) {
                               return Center(

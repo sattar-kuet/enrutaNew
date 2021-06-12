@@ -8,6 +8,7 @@ String menuModelToJson(MenuModel data) => json.encode(data.toJson());
 
 class MenuModel {
   MenuModel({
+    this.shopname,
     this.status,
     this.shopid,
     this.vat,
@@ -20,6 +21,7 @@ class MenuModel {
 
   int status;
   String shopid;
+  String shopname;
   int vat;
   int deliveryCharge;
   int shopCategory;
@@ -30,6 +32,7 @@ class MenuModel {
   factory MenuModel.fromJson(Map<String, dynamic> json) => MenuModel(
         status: json["status"],
         shopid: json["shopid"],
+        shopname: json["shopname"],
         vat: json["vat"],
         deliveryCharge: json["deliveryCharge"],
         shopCategory: json["shopCategory"],
@@ -42,6 +45,7 @@ class MenuModel {
   Map<String, dynamic> toJson() => {
         "status": status,
         "shopid": shopid,
+        "shopname": shopname,
         "vat": vat,
         "deliveryCharge": deliveryCharge,
         "shopCategory": shopCategory,

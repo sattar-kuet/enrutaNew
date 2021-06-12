@@ -28,9 +28,10 @@ class MenuAndReviewPage extends StatelessWidget {
   var vat = 0;
   var deliveryCharge = 0;
   var address = '';
+  String time;
 
   MenuAndReviewPage(this.shop_id, this.vat, this.deliveryCharge, this.shop_name,
-      [this.address]);
+      [this.address, this.time]);
 
   List<ReviewListData> reviewList;
   List<RatingListData> ratingList = RatingListData.ratingList;
@@ -321,7 +322,7 @@ class MenuAndReviewPage extends StatelessWidget {
         //   prefs.setInt('vat', vat);
         //   prefs.setInt("deliveryCharge", deliveryCharge);
         // }
-
+        cartCont.deleverytime.value = this.time;
         suggestCont.getsuggetItems();
         cartCont.suggestUpdate();
         // Get.find<SuggestController>().getsuggetItems();

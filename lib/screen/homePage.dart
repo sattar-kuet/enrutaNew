@@ -214,10 +214,11 @@ class HomePage extends StatelessWidget {
                             child: InkWell(
                               onTap: () async {
                                 try {
-                                  await popularController.getorderStatus(
+                                  popularController.getorderStatus(
                                       popularController.curentOrder.value.id);
 
-                                  if (popularController.order.value != null) {
+                                  if (popularController.order.value.status !=
+                                      null) {
                                     showSuccessfullyBottompopup(context);
                                   }
                                 } catch (e) {}

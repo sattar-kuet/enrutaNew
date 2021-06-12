@@ -32,6 +32,8 @@ class CartController extends GetxController {
   var shoptype = "assets/images/type0.jpg".obs;
   var imageloader = false.obs;
   var menucover = ''.obs;
+  var shopname = "".obs;
+  var deleverytime = "".obs;
   // ignore: deprecated_member_use
   var cartList = List<Product>().obs;
   // var paymentOption = ''.obs;
@@ -639,9 +641,11 @@ class CartController extends GetxController {
     if (sendOrder.userId == null) {
       logCont.checklogin();
     }
-    sendOrder.shopCategory = pre.getString("categoryName");
+    sendOrder.shop_category = pre.getString("categoryName");
     // if(sendOrder.shopCategory.isEmpty){
-    sendOrder.shopCategory = box.read("shopcategory");
+    sendOrder.shop_category = box.read("shopcategory");
+    sendOrder.shop_name = shopname.value;
+    sendOrder.delevery_address = selectAddress.value;
     // }
 
     sendOrder.lat = selectLat.value.toString();
@@ -673,6 +677,11 @@ class CartController extends GetxController {
     sendOrder.deliveryCharge = deliveryCharge.value.toDouble();
 
     sendOrder.paymentOption = paymentoption.value.toString();
+    sendOrder.delevery_time_in_minutes = 10;
+
+    deliveryType.value == 1
+        ? sendOrder.delevery_address = selectAddress.value
+        : "Pick UP";
 
     newOrder.value = 1;
     print(pList);
@@ -768,6 +777,7 @@ class CartController extends GetxController {
 
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();
+          shopname.value = va.shopname;
 
           print(menuItemsTemp.length);
           // ignore: invalid_use_of_protected_member

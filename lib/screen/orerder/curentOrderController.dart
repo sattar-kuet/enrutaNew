@@ -44,10 +44,10 @@ class CurentOrderController extends GetxController {
     try {
       isLoading(true);
 
-      Service().getOrderDetails(id).then((values) {
+      Service().getOrderDetails(id).then((values) async {
         detailsModel.value.order = values.order;
         order.value = values.order;
-        getpointerLocation(order.value.lat, order.value.lng);
+        await getpointerLocation(order.value.lat, order.value.lng);
         // cCont.getShopLocation(order.value.lat, order.value.lng);
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
         gettotal();
@@ -123,15 +123,15 @@ class CurentOrderController extends GetxController {
   }
 
   getpointerLocation(String lat, String lng) async {
-    double la = double.parse(lng);
-    double lg = double.parse(lat);
+    double lg = double.parse(lng);
+    double la = double.parse(lat);
     print("call api");
     print(la);
     await Future.delayed(Duration(seconds: 1));
     // ignore: unused_local_variable
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final coordi = new Coordinates(lg, la);
+    final coordi = new Coordinates(la, lg);
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordi);
     // var add = await Geocoder.google(your_API_Key).findAddressesFromCoordinates(coordinates);
     var first = addresses.first;

@@ -6,43 +6,48 @@ SendOrderModel sendOrderModelFromJson(String str) =>
 String sendOrderModelToJson(SendOrderModel data) => json.encode(data.toJson());
 
 class SendOrderModel {
-  SendOrderModel({
-    this.userId,
-    this.addressId,
-    this.tax,
-    this.deliveryCharge,
-    this.coupon,
-    this.voucher,
-    this.offer,
-    this.shopCategory,
-    this.paymentOption,
-    this.lng,
-    this.lat,
-    this.items,
-  });
+  SendOrderModel(
+      {this.userId,
+      this.delevery_address,
+      this.tax,
+      this.deliveryCharge,
+      this.coupon,
+      this.voucher,
+      this.offer,
+      this.shop_category,
+      this.paymentOption,
+      this.lng,
+      this.lat,
+      this.items,
+      this.shop_name,
+      this.delevery_time_in_minutes});
 
   int userId;
-  int addressId;
+  String delevery_address;
   double tax;
   double deliveryCharge;
   double coupon;
   int voucher;
   int offer;
-  String shopCategory;
+  String shop_category;
   String paymentOption;
+  String shop_name;
+  int delevery_time_in_minutes;
   String lng;
   String lat;
   List<Item> items;
 
   factory SendOrderModel.fromJson(Map<String, dynamic> json) => SendOrderModel(
         userId: json["user_id"],
-        addressId: json["address_id"],
+        delevery_address: json["delevery_address"],
         tax: json["tax"].toDouble(),
         deliveryCharge: json["delivery_charge"].toDouble(),
         coupon: json["coupon"],
         voucher: json["voucher"],
         offer: json["offer"],
-        shopCategory: json["shop_category"],
+        shop_name: json["shop_name"],
+        delevery_time_in_minutes: json["delevery_time_in_minutes"],
+        shop_category: json["shop_category"],
         paymentOption: json["payment_option"],
         lng: json["lng"],
         lat: json["lat"],
@@ -51,13 +56,15 @@ class SendOrderModel {
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
-        "address_id": addressId,
+        "delevery_address": delevery_address,
         "tax": tax,
         "delivery_charge": deliveryCharge,
         "coupon": coupon,
         "voucher": voucher,
         "offer": offer,
-        "shop_category": shopCategory,
+        "shop_name": shop_name,
+        "delevery_time_in_minutes": delevery_time_in_minutes,
+        "shop_category": shop_category,
         "payment_option": paymentOption,
         "lng": lng,
         "lat": lat,

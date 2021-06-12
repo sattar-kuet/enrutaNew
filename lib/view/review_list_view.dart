@@ -89,7 +89,7 @@ class ReviewListView extends StatelessWidget {
                           )
                         : Image.network(
                             menuitemdata.logo[0],
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace stackTrace) {
                               return Center(

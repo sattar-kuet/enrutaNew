@@ -52,7 +52,8 @@ class PopularShopListView extends StatelessWidget {
                       itemData.vat.toInt(),
                       itemData.deliveryCharge,
                       itemData.name,
-                      itemData.address)));
+                      itemData.address,
+                      itemData.time)));
         },
         child: Stack(
           children: [
