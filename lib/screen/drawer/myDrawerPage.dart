@@ -5,6 +5,7 @@ import 'package:enruta/controllers/paymentController.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
+import 'package:enruta/screen/bottomnavigation/bottomController.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/myAccount/myaccount.dart';
 import 'package:enruta/screen/myFavorite/myFavorite.dart';
@@ -32,6 +33,7 @@ class MyDrawerPage extends StatelessWidget {
     final dController = Get.put(ResetController());
     final pmController = Get.put(PaymentController());
     final tController = Get.put(TestController());
+    final bottomCont = Get.put(BottomController());
     Get.put(CartController());
     dController.getUserInfo();
     return Drawer(
@@ -114,6 +116,7 @@ class MyDrawerPage extends StatelessWidget {
               splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
               onTap: () {
                 Navigator.pop(context);
+                bottomCont..curentPage(0);
                 // Navigator.of(context).pop();
                 Get.to(HomePage());
               },

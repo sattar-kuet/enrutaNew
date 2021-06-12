@@ -44,6 +44,7 @@ class HomePage extends StatelessWidget {
     tController.getmenulist();
     language.loadLanguage();
     popularController.getCurentOrder();
+    popularController.getorderStatus(popularController.curentOrder.value.id);
     return Scaffold(
       drawer: MyDrawerPage(),
       body: Container(
@@ -170,37 +171,7 @@ class HomePage extends StatelessWidget {
                     }),
                   ),
                   Obx(() {
-                    String stattxt = "";
-                    var status = popularController
-                                // ignore: invalid_use_of_protected_member
-                                .curentOrder
-                                // ignore: invalid_use_of_protected_member
-                                .value
-                                .status ==
-                            null
-                        ? "Canceled"
-                        : popularController
-                            // ignore: invalid_use_of_protected_member
-                            .curentOrder
-                            // ignore: invalid_use_of_protected_member
-                            .value
-                            .status;
-                    switch (status) {
-                      case "Pending":
-                        stattxt =
-                            "Your Order is Pending waiting for Processing";
-                        break;
-                      case "Processing":
-                        stattxt =
-                            "Your Order is Processing waiting for Delevery";
-                        break;
-                      case "On the way":
-                        stattxt = "Your Order is On the Way";
-                        break;
-                    }
-
-                    if (status != "Canceled" &&
-                        popularController.order.value != null) {
+                    if (popularController.order.value.orderFrom != null) {
                       return Container(
                         height: 120,
                         width: MediaQuery.of(context).size.width,
@@ -241,8 +212,8 @@ class HomePage extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.only(left: 10),
                                       child: Text(
-                                        popularController
-                                            .curentOrder.value.titleTxt,
+                                        // popularController.order.value.orderFrom,
+                                        popularController.order.value.orderFrom,
                                         style: TextStyle(
                                             fontFamily: 'TTCommonsm',
                                             fontSize: 15,
@@ -270,7 +241,9 @@ class HomePage extends StatelessWidget {
                                             color: Color(Helper.getHexToInt(
                                                     "#808080"))
                                                 .withOpacity(0.8)),
-                                        text: stattxt),
+                                        text: "Your order is " +
+                                            popularController.order.value
+                                                .status), // + "${popularController.order.value.status}"
                                   ),
                                 ),
                               )

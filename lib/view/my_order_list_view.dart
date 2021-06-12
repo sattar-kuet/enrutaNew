@@ -61,7 +61,7 @@ class MyOrderListView extends StatelessWidget {
                     loadingBuilder: (context, child, progress) {
                       return progress == null
                           ? child
-                          : CircularProgressIndicator();
+                          : Center(child: CircularProgressIndicator());
                     },
                   ),
                 ),

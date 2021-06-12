@@ -45,8 +45,9 @@ class CurentOrderView extends StatelessWidget {
               detailsController.allCurentOrderList.value.length == 0
                   ? Text(text('YOU_HAVE_NOT_ANY_CURRENT_ORDER'))
                   : InkWell(
-                      onTap: () {
-                        detailsController.getorderStatus(
+                      onTap: () async {
+                        // ignore: await_only_futures
+                        await detailsController.getorderStatus(
                             detailsController.curentOrder.value.id);
                         Get.to(OrderStatus());
 

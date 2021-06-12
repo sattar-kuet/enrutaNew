@@ -23,9 +23,10 @@ class CurentOrderController extends GetxController {
   var gtotal = 0.0;
 
   @override
-  void onInit() {
-    getPopularOrder();
-    getCurentOrder();
+  void onInit() async {
+    await getPopularOrder();
+    await getCurentOrder();
+    await getorderStatus(curentOrder.value.id);
     super.onInit();
   }
 
@@ -47,7 +48,7 @@ class CurentOrderController extends GetxController {
       Service().getOrderDetails(id).then((values) async {
         detailsModel.value.order = values.order;
         order.value = values.order;
-        await getpointerLocation(order.value.lat, order.value.lng);
+        //await getpointerLocation(order.value.lat, order.value.lng);
         // cCont.getShopLocation(order.value.lat, order.value.lng);
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
         gettotal();
@@ -91,6 +92,7 @@ class CurentOrderController extends GetxController {
         print(allCurentOrderList.length);
       });
     } finally {
+      await getorderStatus(curentOrder.value.id);
       isLoading(false);
     }
   }
