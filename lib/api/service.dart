@@ -355,13 +355,16 @@ class Service {
 
   static Future<http.Response> sendorder(SendOrderModel order) async {
     var jsonData = order.toJson();
+    var a = json.encode(order);
+    print("to json");
     print(jsonData);
+    print(a);
 
     final response = await http.post(placeOrderurls,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: json.encode(jsonData));
+        body: a);
 
     if (response.statusCode == 200) {
       return response;

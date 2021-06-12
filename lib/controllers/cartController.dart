@@ -645,7 +645,7 @@ class CartController extends GetxController {
     // if(sendOrder.shopCategory.isEmpty){
     sendOrder.shop_category = box.read("shopcategory");
     sendOrder.shop_name = shopname.value;
-    sendOrder.delevery_address = selectAddress.value;
+    sendOrder.delivery_address = selectAddress.value;
     // }
 
     sendOrder.lat = selectLat.value.toString();
@@ -654,6 +654,7 @@ class CartController extends GetxController {
     //print("cartListcartListcartListcartList" + cartList.value.toString());
     for (var item in cartList) {
       Item p = new Item();
+      p.name = item.title;
       p.productId = item.id;
       p.qty = item.qty;
       p.price = item.price.toDouble();
@@ -674,13 +675,13 @@ class CartController extends GetxController {
     sendOrder.voucher = voucher.value ?? 0;
     sendOrder.offer = discount.value ?? 0;
 
-    sendOrder.deliveryCharge = deliveryCharge.value.toDouble();
+    sendOrder.delivery_charge = deliveryCharge.value.toDouble();
 
     sendOrder.paymentOption = paymentoption.value.toString();
-    sendOrder.delevery_time_in_minutes = 10;
+    sendOrder.delivery_time_in_minutes = 10;
 
     deliveryType.value == 1
-        ? sendOrder.delevery_address = selectAddress.value
+        ? sendOrder.delivery_address = selectAddress.value
         : "Pick UP";
 
     newOrder.value = 1;

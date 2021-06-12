@@ -8,9 +8,9 @@ String sendOrderModelToJson(SendOrderModel data) => json.encode(data.toJson());
 class SendOrderModel {
   SendOrderModel(
       {this.userId,
-      this.delevery_address,
+      this.delivery_address,
       this.tax,
-      this.deliveryCharge,
+      this.delivery_charge,
       this.coupon,
       this.voucher,
       this.offer,
@@ -20,33 +20,33 @@ class SendOrderModel {
       this.lat,
       this.items,
       this.shop_name,
-      this.delevery_time_in_minutes});
+      this.delivery_time_in_minutes});
 
   int userId;
-  String delevery_address;
+  String delivery_address;
   double tax;
-  double deliveryCharge;
+  double delivery_charge;
   double coupon;
   int voucher;
   int offer;
   String shop_category;
   String paymentOption;
   String shop_name;
-  int delevery_time_in_minutes;
+  int delivery_time_in_minutes;
   String lng;
   String lat;
   List<Item> items;
 
   factory SendOrderModel.fromJson(Map<String, dynamic> json) => SendOrderModel(
         userId: json["user_id"],
-        delevery_address: json["delevery_address"],
+        delivery_address: json["delivery_address"],
         tax: json["tax"].toDouble(),
-        deliveryCharge: json["delivery_charge"].toDouble(),
+        delivery_charge: json["delivery_charge"].toDouble(),
         coupon: json["coupon"],
         voucher: json["voucher"],
         offer: json["offer"],
         shop_name: json["shop_name"],
-        delevery_time_in_minutes: json["delevery_time_in_minutes"],
+        delivery_time_in_minutes: json["delivery_time_in_minutes"],
         shop_category: json["shop_category"],
         paymentOption: json["payment_option"],
         lng: json["lng"],
@@ -56,14 +56,14 @@ class SendOrderModel {
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
-        "delevery_address": delevery_address,
+        "delivery_address": delivery_address,
         "tax": tax,
-        "delivery_charge": deliveryCharge,
+        "delivery_charge": delivery_charge,
         "coupon": coupon,
         "voucher": voucher,
         "offer": offer,
         "shop_name": shop_name,
-        "delevery_time_in_minutes": delevery_time_in_minutes,
+        "delivery_time_in_minutes": delivery_time_in_minutes,
         "shop_category": shop_category,
         "payment_option": paymentOption,
         "lng": lng,
@@ -73,8 +73,9 @@ class SendOrderModel {
 }
 
 class Item {
-  Item({this.productId, this.price, this.qty, this.color, this.size});
-
+  Item(
+      {this.name, this.productId, this.price, this.qty, this.color, this.size});
+  String name;
   int productId;
   double price;
   int qty;
@@ -82,6 +83,7 @@ class Item {
   String size = "";
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
+      name: json["name"],
       productId: json["product_id"],
       price: json["price"],
       qty: json["qty"],
@@ -89,6 +91,7 @@ class Item {
       color: json["color"]);
 
   Map<String, dynamic> toJson() => {
+        "name": name,
         "product_id": productId,
         "price": price,
         "qty": qty,

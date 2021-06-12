@@ -199,89 +199,90 @@ class HomePage extends StatelessWidget {
                         break;
                     }
 
-                    return status != "Canceled"
-                        ? Container(
-                            height: 120,
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(
-                                top: 5, bottom: 5, left: 20, right: 20),
+                    if (status != "Canceled" &&
+                        popularController.order.value != null) {
+                      return Container(
+                        height: 120,
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.only(
+                            top: 5, bottom: 5, left: 20, right: 20),
 
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            // child: Center(
-                            child: InkWell(
-                              onTap: () async {
-                                try {
-                                  popularController.getorderStatus(
-                                      popularController.curentOrder.value.id);
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        // child: Center(
+                        child: InkWell(
+                          onTap: () async {
+                            try {
+                              popularController.getorderStatus(
+                                  popularController.curentOrder.value.id);
 
-                                  if (popularController.order.value.status !=
-                                      null) {
-                                    showSuccessfullyBottompopup(context);
-                                  }
-                                } catch (e) {}
-                                // Get.to(AddNewMethod());
+                              if (popularController.order.value.status !=
+                                  null) {
+                                showSuccessfullyBottompopup(context);
+                              }
+                            } catch (e) {}
+                            // Get.to(AddNewMethod());
 
-                                // shoall(context);
-                                print("Add New Method");
-                              },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 20,
-                                    margin: EdgeInsets.only(top: 20),
-                                    padding:
-                                        EdgeInsets.only(left: 20, right: 20),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                            "assets/icons/roundpoint.png"),
-                                        // Icon(Icons.radio_button_on_rounded),
-                                        Container(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            popularController
-                                                .curentOrder.value.titleTxt,
-                                            style: TextStyle(
-                                                fontFamily: 'TTCommonsm',
-                                                fontSize: 15,
-                                                color: Color(Helper.getHexToInt(
-                                                        "#11C4A1"))
-                                                    .withOpacity(0.8)),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        top: 20, left: 20, right: 50),
-                                    child: Flexible(
-                                      // child: Text("data"),
-                                      child: RichText(
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        text: TextSpan(
-                                            style: TextStyle(
-                                                fontFamily: 'TTCommonsm',
-                                                fontSize: 13.0,
-                                                color: Color(Helper.getHexToInt(
-                                                        "#808080"))
-                                                    .withOpacity(0.8)),
-                                            text: stattxt),
+                            // shoall(context);
+                            print("Add New Method");
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 20,
+                                margin: EdgeInsets.only(top: 20),
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                child: Row(
+                                  children: [
+                                    Image.asset("assets/icons/roundpoint.png"),
+                                    // Icon(Icons.radio_button_on_rounded),
+                                    Container(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        popularController
+                                            .curentOrder.value.titleTxt,
+                                        style: TextStyle(
+                                            fontFamily: 'TTCommonsm',
+                                            fontSize: 15,
+                                            color: Color(Helper.getHexToInt(
+                                                    "#11C4A1"))
+                                                .withOpacity(0.8)),
+                                        textAlign: TextAlign.start,
                                       ),
                                     ),
-                                  )
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        : SizedBox(
-                            height: 0,
-                          );
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: 20, left: 20, right: 50),
+                                child: Flexible(
+                                  // child: Text("data"),
+                                  child: RichText(
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    text: TextSpan(
+                                        style: TextStyle(
+                                            fontFamily: 'TTCommonsm',
+                                            fontSize: 13.0,
+                                            color: Color(Helper.getHexToInt(
+                                                    "#808080"))
+                                                .withOpacity(0.8)),
+                                        text: stattxt),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: 0,
+                      );
+                    }
                   }),
                   Container(
                     color: Colors.white,
