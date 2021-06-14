@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/style.dart';
+import 'package:enruta/model/all_order_model.dart';
 import 'package:enruta/model/item_list_data.dart';
 import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
 import 'package:enruta/screen/categorypage.dart';
@@ -23,19 +26,33 @@ import 'promotion/promotion.dart';
 import 'package:empty_widget/empty_widget.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatelessWidget {
-  final tController = Get.put(TestController());
-  final cartController = Get.put(CartController());
-  final dController = Get.put(ResetController());
-  final popularController = Get.put(CurentOrderController());
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-  // LatLng(tController.userlat.value, tController.userlong.value)
+class _HomePageState extends State<HomePage> {
+  final tController = Get.put(TestController());
+
+  final cartController = Get.put(CartController());
+
+  final dController = Get.put(ResetController());
+
+  final popularController = Get.put(CurentOrderController());
 
   List<ItemListData> itemList = ItemListData.itemList;
 
   final language = Get.put(LanguageController());
+
   String text(String key) {
     return language.text(key);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //callApi();
+    new Timer.periodic(Duration(seconds: 30), (Timer t) => setState(() {}));
   }
 
   @override
@@ -44,7 +61,7 @@ class HomePage extends StatelessWidget {
     tController.getmenulist();
     language.loadLanguage();
     popularController.getCurentOrder();
-    popularController.getorderStatus(popularController.curentOrder.value.id);
+    //popularController.getorderStatus(popularController.curentOrder.value.id);
     return Scaffold(
       drawer: MyDrawerPage(),
       body: Container(
@@ -170,93 +187,109 @@ class HomePage extends StatelessWidget {
                       );
                     }),
                   ),
-                  Obx(() {
-                    if (popularController.order.value.orderFrom != null) {
-                      return Container(
-                        height: 120,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(
-                            top: 5, bottom: 5, left: 20, right: 20),
+                  new FutureBuilder<OrderModel>(
+                      future: popularController.getCurentOrder(),
+                      builder: (context, snap) {
+                        if (snap.connectionState == ConnectionState.done) {
+                          if (snap.data.shopName != null) {
+                            return Container(
+                              height: 120,
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.only(
+                                  top: 5, bottom: 5, left: 20, right: 20),
 
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        // child: Center(
-                        child: InkWell(
-                          onTap: () async {
-                            try {
-                              popularController.getorderStatus(
-                                  popularController.curentOrder.value.id);
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              // child: Center(
+                              child: InkWell(
+                                onTap: () async {
+                                  try {
+                                    popularController.getorderStatus(
+                                        popularController.curentOrder.value.id);
 
-                              if (popularController.order.value.status !=
-                                  null) {
-                                showSuccessfullyBottompopup(context);
-                              }
-                            } catch (e) {}
-                            // Get.to(AddNewMethod());
+                                    if (popularController
+                                            .detailsModel.value.order !=
+                                        null) {
+                                      showSuccessfullyBottompopup(context);
+                                    }
+                                  } catch (e) {}
+                                  // Get.to(AddNewMethod());
 
-                            // shoall(context);
-                            print("Add New Method");
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 20,
-                                margin: EdgeInsets.only(top: 20),
-                                padding: EdgeInsets.only(left: 20, right: 20),
-                                child: Row(
+                                  // shoall(context);
+                                  print("Add New Method");
+                                },
+                                child: Column(
                                   children: [
-                                    Image.asset("assets/icons/roundpoint.png"),
-                                    // Icon(Icons.radio_button_on_rounded),
                                     Container(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        // popularController.order.value.orderFrom,
-                                        popularController.order.value.orderFrom,
-                                        style: TextStyle(
-                                            fontFamily: 'TTCommonsm',
-                                            fontSize: 15,
-                                            color: Color(Helper.getHexToInt(
-                                                    "#11C4A1"))
-                                                .withOpacity(0.8)),
-                                        textAlign: TextAlign.start,
+                                      height: 20,
+                                      margin: EdgeInsets.only(top: 20),
+                                      padding:
+                                          EdgeInsets.only(left: 20, right: 20),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                              "assets/icons/roundpoint.png"),
+                                          // Icon(Icons.radio_button_on_rounded),
+                                          Container(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              // popularController.order.value.orderFrom,
+                                              snap.data.shopName == null
+                                                  ? "Null"
+                                                  : snap.data.shopName,
+                                              style: TextStyle(
+                                                  fontFamily: 'TTCommonsm',
+                                                  fontSize: 15,
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#11C4A1"))
+                                                      .withOpacity(0.8)),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top: 20, left: 20, right: 50),
+                                      child: Flexible(
+                                        // child: Text("data"),
+                                        child: RichText(
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          text: TextSpan(
+                                              style: TextStyle(
+                                                  fontFamily: 'TTCommonsm',
+                                                  fontSize: 13.0,
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#808080"))
+                                                      .withOpacity(0.8)),
+                                              text: snap.data.status == null
+                                                  ? "Null"
+                                                  : snap.data
+                                                      .status), // + "${popularController.order.value.status}"
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    top: 20, left: 20, right: 50),
-                                child: Flexible(
-                                  // child: Text("data"),
-                                  child: RichText(
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    text: TextSpan(
-                                        style: TextStyle(
-                                            fontFamily: 'TTCommonsm',
-                                            fontSize: 13.0,
-                                            color: Color(Helper.getHexToInt(
-                                                    "#808080"))
-                                                .withOpacity(0.8)),
-                                        text: "Your order is " +
-                                            popularController.order.value
-                                                .status), // + "${popularController.order.value.status}"
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return SizedBox(
-                        height: 0,
-                      );
-                    }
-                  }),
+                            );
+                          } else {
+                            return SizedBox(
+                              height: 0,
+                            );
+                          }
+                        } else {
+                          return SizedBox(
+                            height: 0,
+                          );
+                        }
+                      }),
                   Container(
                     color: Colors.white,
                     padding: EdgeInsets.only(
@@ -470,7 +503,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // ignore: missing_return
   Widget showSuccessfullyBottompopup(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -580,7 +612,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          popularController.order.value.orderFrom,
+                          popularController.detailsModel.value.order.orderFrom,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 18,
@@ -612,7 +644,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          popularController.order.value.number,
+                          popularController.detailsModel.value.order.number,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 18,
@@ -679,13 +711,13 @@ class HomePage extends StatelessWidget {
                                   fontFamily: 'TTCommonsm',
                                   fontSize: 18.0,
                                   color: Color(Helper.getHexToInt("#535353"))),
-                              text:
-                                  popularController.order.value.orderItemNames),
+                              text: popularController
+                                  .detailsModel.value.order.orderItemNames),
                         ),
                       ),
                       Expanded(
                         child: Text(
-                          popularController.order.value.price,
+                          popularController.detailsModel.value.order.price,
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -723,7 +755,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          popularController.order.value.price,
+                          popularController.detailsModel.value.order.price,
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -758,7 +790,8 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          popularController.order.value.deliveryCharge
+                          popularController
+                              .detailsModel.value.order.deliveryCharge
                               .toString(),
                           maxLines: 1,
                           textAlign: TextAlign.right,
@@ -794,7 +827,8 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          popularController.order.value.voucher.toString(),
+                          popularController.detailsModel.value.order.voucher
+                              .toString(),
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(
@@ -832,7 +866,8 @@ class HomePage extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          popularController.gtotal.toString(),
+                          popularController.detailsModel.value.order.price
+                              .toString(),
                           maxLines: 1,
                           textAlign: TextAlign.right,
                           style: TextStyle(

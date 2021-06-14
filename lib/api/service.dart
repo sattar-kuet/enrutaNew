@@ -187,7 +187,7 @@ class Service {
         body: jsonEncode(<String, String>{"id": '$id'}),
       );
       if (response.statusCode == 200) {
-        //print(response.body);
+        print(response.body);
         return OrderDetailsModel.fromJson(jsonDecode(response.body));
       } else {
         print("data null");

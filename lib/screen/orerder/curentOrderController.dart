@@ -26,7 +26,7 @@ class CurentOrderController extends GetxController {
   void onInit() async {
     await getPopularOrder();
     await getCurentOrder();
-    await getorderStatus(curentOrder.value.id);
+
     super.onInit();
   }
 
@@ -39,7 +39,7 @@ class CurentOrderController extends GetxController {
   var detailsModel = OrderDetailsModel().obs;
   var order = Order().obs;
   var orderall = List<Order>().obs;
-  final address = ''.obs;
+  var address = ''.obs;
 
   void getorderStatus(int id) async {
     try {
@@ -47,11 +47,11 @@ class CurentOrderController extends GetxController {
 
       Service().getOrderDetails(id).then((values) async {
         detailsModel.value.order = values.order;
-        order.value = values.order;
-        //await getpointerLocation(order.value.lat, order.value.lng);
+        //order.value = values.order;
+        await getpointerLocation(values.order.lat, values.order.lng);
         // cCont.getShopLocation(order.value.lat, order.value.lng);
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
-        gettotal();
+        //gettotal();
       });
     } finally {
       isLoading(false);
@@ -72,7 +72,7 @@ class CurentOrderController extends GetxController {
     gtotal = as + b - c - d - e;
   }
 
-  getCurentOrder() async {
+  Future<OrderModel> getCurentOrder() async {
     SharedPreferences spreferences = await SharedPreferences.getInstance();
 
     var id = spreferences.getInt("id");
@@ -90,11 +90,12 @@ class CurentOrderController extends GetxController {
               allCurentOrderList.value[allCurentOrderList.value.length - 1];
         }
         print(allCurentOrderList.length);
+        getorderStatus(curentOrder.value.id);
       });
     } finally {
-      await getorderStatus(curentOrder.value.id);
       isLoading(false);
     }
+    return curentOrder.value;
   }
 
   getPopularOrder() async {
@@ -129,7 +130,7 @@ class CurentOrderController extends GetxController {
     double la = double.parse(lat);
     print("call api");
     print(la);
-    await Future.delayed(Duration(seconds: 1));
+    //await Future.delayed(Duration(seconds: 1));
     // ignore: unused_local_variable
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);

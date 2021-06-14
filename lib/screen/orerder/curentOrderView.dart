@@ -47,9 +47,13 @@ class CurentOrderView extends StatelessWidget {
                   : InkWell(
                       onTap: () async {
                         // ignore: await_only_futures
+                        print(detailsController.curentOrder.value.id);
                         await detailsController.getorderStatus(
                             detailsController.curentOrder.value.id);
-                        Get.to(OrderStatus());
+                        print(detailsController.detailsModel.value);
+                        if (detailsController.detailsModel.value != null) {
+                          Get.to(OrderStatus());
+                        }
 
                         // _launchInWebViewOrVC("https://corona.gov.bd/");
                       },
