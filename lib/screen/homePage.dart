@@ -19,9 +19,11 @@ import 'package:enruta/view/popular_shop_list_view.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helper/helper.dart';
 import 'drawer/myDrawerPage.dart';
+import 'getReview/getReview.dart';
 import 'promotion/promotion.dart';
 import 'package:empty_widget/empty_widget.dart';
 
@@ -51,6 +53,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     //callApi();
     new Timer.periodic(Duration(seconds: 30), (Timer t) => setState(() {}));
   }
@@ -61,6 +64,7 @@ class _HomePageState extends State<HomePage> {
     tController.getmenulist();
     language.loadLanguage();
     popularController.getCurentOrder();
+
     //popularController.getorderStatus(popularController.curentOrder.value.id);
     return Scaffold(
       drawer: MyDrawerPage(),
@@ -190,8 +194,15 @@ class _HomePageState extends State<HomePage> {
                   new FutureBuilder<OrderModel>(
                       future: popularController.getCurentOrder(),
                       builder: (context, snap) {
-                        if (snap.connectionState == ConnectionState.done) {
-                          if (snap.data.shopName != null) {
+                        if (snap.data != null) {
+                          if (snap.data.status != null &&
+                              snap.data.status != "Completed") {
+                            tController.completeOrder(
+                                popularController // TODO: Cng to  Complete
+                                    .detailsModel
+                                    .value
+                                    .order
+                                    .shopId);
                             return Container(
                               height: 120,
                               width: MediaQuery.of(context).size.width,
@@ -255,7 +266,7 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                       margin: EdgeInsets.only(
                                           top: 20, left: 20, right: 50),
-                                      child: Flexible(
+                                      child: Center(
                                         // child: Text("data"),
                                         child: RichText(
                                           textAlign: TextAlign.center,
@@ -278,6 +289,12 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
+                            );
+                          } else if (snap.data.status == "Completed") {
+                            tController.completeOrder(popularController
+                                .detailsModel.value.order.shopId);
+                            return SizedBox(
+                              height: 0,
                             );
                           } else {
                             return SizedBox(

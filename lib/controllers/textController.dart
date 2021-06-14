@@ -1,4 +1,5 @@
 import 'package:enruta/api/service.dart';
+import 'package:enruta/model/addReview.dart';
 import 'package:enruta/model/category_model.dart';
 import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/model/popular_shop.dart';
@@ -19,6 +20,7 @@ class TestController extends GetxController {
   var nearbycat = List<Datum>().obs;
   // ignore: deprecated_member_use
   var polularShopList = List<Datums>().obs;
+  Rx<int> orderCompletedShop;
 
   final address = ''.obs;
   var userlat = 0.0.obs;
@@ -59,6 +61,21 @@ class TestController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  completeOrder(int shopid) async {
+    SharedPreferences spreferences = await SharedPreferences.getInstance();
+    spreferences.setInt("OrderCompletedShop", shopid);
+    print("Complete Order called");
+  }
+
+  addrivew(int shopid, double rating, String comment) async {
+    SharedPreferences spreferences = await SharedPreferences.getInstance();
+    var id = spreferences.getInt("id");
+    var model = new AddReview(
+        user_id: id, shop_id: shopid, rating: rating, comment: comment);
+    var a = await Service.addorupdateReview(model);
+    print(a);
   }
 
   getPopularShops() async {

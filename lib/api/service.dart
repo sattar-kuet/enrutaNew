@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/Response.dart';
+import 'package:enruta/model/addReview.dart';
 import 'package:enruta/model/all_order_model.dart';
 import 'package:enruta/model/menu_model_data.dart';
 import 'package:enruta/model/near_by_place_data.dart';
@@ -47,6 +48,27 @@ class Service {
 
   static const String getVoucherUrl =
       'http://enruta.itscholarbd.com/api/v2/getVoucherByUserId';
+  static const String addorupdaterivew =
+      'http://enruta.itscholarbd.com/api/v2/addORupdateReview';
+
+  static Future<Respons> addorupdateReview(AddReview model) async {
+    var data = json.encode(model);
+    print(data);
+    try {
+      final response = await http.post(addorupdaterivew,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: data);
+      if (200 == response.statusCode) {
+        print(response.body);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
   static Future<Respons> getcategory() async {
     try {
