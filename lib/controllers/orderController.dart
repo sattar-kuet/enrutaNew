@@ -14,20 +14,20 @@ class OrderController extends GetxController {
   }
 
   void getAllOrder() async {
+    isLoading(true);
     SharedPreferences pre = await SharedPreferences.getInstance();
     var id = pre.getInt("id");
     // int pId = int.parse(id);
     print('pid is $id');
     try {
       allOrderList.value = [];
-      isLoading(true);
+
       await Future.delayed(Duration(seconds: 1));
       Service.getAllOrder(id).then((values) {
         allOrderList.value = values.orders.toList();
         print(allOrderList.length);
+        isLoading(false);
       });
-    } finally {
-      isLoading(false);
-    }
+    } finally {}
   }
 }

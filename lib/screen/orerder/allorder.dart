@@ -76,9 +76,11 @@ class AllOrder extends StatelessWidget {
                                       .withOpacity(0.8)),
                             ),
                           ),
-                          Obx(() =>
-                              // ignore: invalid_use_of_protected_member
-                              detailsController
+                          Obx(() {
+                            if (detailsController.isLoading.value) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              return detailsController
                                           // ignore: invalid_use_of_protected_member
                                           .allCurentOrderList
                                           // ignore: invalid_use_of_protected_member
@@ -134,7 +136,10 @@ class AllOrder extends StatelessWidget {
                                                   .copyWith(
                                                       color:
                                                           Color(0xffabb8d6)))),
-                                    ))
+                                    );
+                            }
+                            // ignore: invalid_use_of_protected_member
+                          })
                         ],
                       ),
                     ),

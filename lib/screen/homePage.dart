@@ -279,10 +279,8 @@ class _HomePageState extends State<HomePage> {
                                                           Helper.getHexToInt(
                                                               "#808080"))
                                                       .withOpacity(0.8)),
-                                              text: snap.data.status == null
-                                                  ? "Null"
-                                                  : snap.data
-                                                      .status), // + "${popularController.order.value.status}"
+                                              text:
+                                                  "Restaurant preparing your food. Your rider will pic it once it's ready"), // + "${popularController.order.value.status}"
                                         ),
                                       ),
                                     )

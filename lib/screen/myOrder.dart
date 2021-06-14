@@ -1,3 +1,4 @@
+import 'package:empty_widget/empty_widget.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/orderController.dart';
 import 'package:enruta/helper/helper.dart';
@@ -46,8 +47,7 @@ class _MyOrderState extends State<MyOrder> {
           ),
           backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text(
-              text('my_orders'),
+          title: Text(text('my_orders'),
               style: TextStyle(
                   fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
           centerTitle: true,
@@ -76,28 +76,51 @@ class _MyOrderState extends State<MyOrder> {
                             ),
                           ),
 
-                          Obx((){
-                            if(orderController.isLoading.value){
+                          Obx(() {
+                            if (orderController.isLoading.value) {
                               return Center(child: CircularProgressIndicator());
-                            }else
-                              if(orderController.allOrderList.length > 0){
-                              return  ListView(
-                                              shrinkWrap: true,
-                                              physics: ClampingScrollPhysics(),
-                                              children: List.generate(
-                                                  orderController.allOrderList.length,
-                                                  (index) {
-                                                return MyOrderListView(
-                                                  orderData:
-                                                      orderController.allOrderList[index],
-                                                );
-                                              }),
-                                            );
-                              }else{
-                                return SizedBox(
-                                            height: 0,
-                                          );
-                              }
+                            } else if (orderController.allOrderList.length >
+                                0) {
+                              return ListView(
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                children: List.generate(
+                                    orderController.allOrderList.length,
+                                    (index) {
+                                  return MyOrderListView(
+                                    orderData:
+                                        orderController.allOrderList[index],
+                                  );
+                                }),
+                              );
+                            } else {
+                              return Container(
+                                margin: EdgeInsets.all(50),
+                                child: Center(
+                                    child: EmptyListWidget(
+                                        title: text('no_order'),
+                                        subTitle: text(
+                                            'no_current_order_available_yet'),
+                                        // image: 'assets/images/userIcon.png',
+                                        image: null,
+                                        packageImage: PackageImage.Image_2,
+                                        // ignore: deprecated_member_use
+                                        titleTextStyle: Theme.of(context)
+                                            .typography
+                                            .dense
+                                            // ignore: deprecated_member_use
+                                            .display1
+                                            .copyWith(color: Color(0xff9da9c7)),
+                                        // ignore: deprecated_member_use
+                                        subtitleTextStyle: Theme.of(context)
+                                            .typography
+                                            .dense
+                                            // ignore: deprecated_member_use
+                                            .body2
+                                            .copyWith(
+                                                color: Color(0xffabb8d6)))),
+                              );
+                            }
                           }),
 
                           // Obx(

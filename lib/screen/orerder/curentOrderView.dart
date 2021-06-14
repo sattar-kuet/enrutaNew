@@ -121,7 +121,7 @@ class CurentOrderView extends StatelessWidget {
                           Positioned(
                             top: 10,
                             left: 113,
-                            width: 200,
+                            width: 180,
                             child: Container(
                               child: Text(
                                 detailsController.curentOrder.value.titleTxt,
@@ -137,7 +137,7 @@ class CurentOrderView extends StatelessWidget {
                           ),
                           Padding(padding: EdgeInsets.all(10)),
                           Positioned(
-                            top: 40,
+                            top: 45,
                             left: 113,
                             right: 90,
                             child: Container(

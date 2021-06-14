@@ -42,9 +42,8 @@ class CurentOrderController extends GetxController {
   var address = ''.obs;
 
   void getorderStatus(int id) async {
+    isLoading(true);
     try {
-      isLoading(true);
-
       Service().getOrderDetails(id).then((values) async {
         detailsModel.value.order = values.order;
         //order.value = values.order;
@@ -53,9 +52,8 @@ class CurentOrderController extends GetxController {
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
         //gettotal();
       });
-    } finally {
-      isLoading(false);
-    }
+    } finally {}
+    isLoading(false);
   }
 
   // double get totalPrice =>
@@ -73,12 +71,13 @@ class CurentOrderController extends GetxController {
   }
 
   Future<OrderModel> getCurentOrder() async {
+    isLoading(true);
     SharedPreferences spreferences = await SharedPreferences.getInstance();
 
     var id = spreferences.getInt("id");
     try {
       allCurentOrderList.value = [];
-      isLoading(true);
+
       await Future.delayed(Duration(seconds: 1));
       Service.getCurentOrder(id).then((values) {
         allCurentOrderList.value = values.orders.toList();
@@ -91,14 +90,16 @@ class CurentOrderController extends GetxController {
         }
         print(allCurentOrderList.length);
         getorderStatus(curentOrder.value.id);
+        isLoading(false);
       });
-    } finally {
-      isLoading(false);
-    }
+    } finally {}
+    //await Future.delayed(Duration(seconds: 3));
+
     return curentOrder.value;
   }
 
   getPopularOrder() async {
+    isLoading(true);
     SharedPreferences spreferences = await SharedPreferences.getInstance();
 
     var id = spreferences.getInt("id");
@@ -107,7 +108,6 @@ class CurentOrderController extends GetxController {
     try {
       allCurentOrderList.value = [];
       if (lat > 0) {
-        isLoading(true);
         await Future.delayed(Duration(seconds: 1));
         Service.getPopularShop(id, lat, lo).then((values) {
           if (!values.isNull) {
@@ -118,11 +118,10 @@ class CurentOrderController extends GetxController {
           //   curentOrder.value = polularShopList.value[0];
           // }
           print(polularShopList.length);
+          isLoading(false);
         });
       }
-    } finally {
-      isLoading(false);
-    }
+    } finally {}
   }
 
   getpointerLocation(String lat, String lng) async {
