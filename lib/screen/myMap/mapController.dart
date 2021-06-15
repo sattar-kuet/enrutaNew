@@ -34,12 +34,7 @@ class MyMapController extends GetxController {
 
     getLocation();
 
-    List storedCartList = GetStorage().read<List>('addressList');
-
-    if (!storedCartList.isNull) {
-      addressList =
-          storedCartList.map((e) => AddressModel.fromJson(e)).toList().obs;
-    }
+    getlocationlist();
   }
 
   void setaddresstype() {
@@ -104,11 +99,21 @@ class MyMapController extends GetxController {
   void getlocationlist() {
     GetStorage box = GetStorage();
     List a = box.read('addressList');
-    print("from storage $a");
-    if (a != null) {
-      print("from storage $a");
+    var b;
 
-      addressList.value = a.map((data) => AddressModel.fromJson(data)).toList();
+    //
+    if (a != null) {
+      // addressList.value = a.cast();
+      print("from storage $a");
+      addressList.value = a
+          .map((data) => AddressModel.fromJson(jsonDecode(jsonEncode(data))))
+          .toList();
+      ;
+      print(b);
+
+      // addressList.value =
+      //     a.map((data) => AddressModel.fromJson(jsonDecode(data))).toList();
+      // // print("get Worling");
     }
   }
 
@@ -173,21 +178,13 @@ class MyMapController extends GetxController {
     addressModel.locationDetails = pointAddress.value;
     addressModel.lat = pointLat.value.toString();
     addressModel.lng = pointLong.value.toString();
+    addressList.add(addressModel);
 
     GetStorage box = GetStorage();
-    addressList.add(addressModel);
+
     //print("from direct ${addressList.value}");
     box.write("addressList", addressList);
-
-    //addressList = GetStorage().read<RxList>('addressList');
-
-    List a = box.read('addressList');
-    print("from storage $a");
-    if (a != null) {
-      print("from storage $a");
-
-      addressList.value = a.map((data) => AddressModel.fromJson(data)).toList();
-    }
+    // getlocationlist();
 
     //     .toList();
     //addressList.value = a ;
