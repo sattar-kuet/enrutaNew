@@ -87,7 +87,7 @@ class SetLocation extends StatelessWidget {
                                       text('the_address_successfully_removed'),
                                       colorText: Colors.white,
                                       // ignore: deprecated_member_use
-                                      mainButton: FlatButton(
+                                      mainButton: TextButton(
                                         child: Text('Undo'),
                                         onPressed: () {
                                           if (removed.isNull) {

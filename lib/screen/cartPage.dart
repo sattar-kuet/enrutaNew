@@ -127,7 +127,7 @@ class CartPage extends StatelessWidget {
                                     colorText: Colors.white,
 
                                     // ignore: deprecated_member_use
-                                    mainButton: FlatButton(
+                                    mainButton: TextButton(
                                       child: Text(text('undo')),
                                       onPressed: () {
                                         if (removed.isNull) {

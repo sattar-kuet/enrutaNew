@@ -455,7 +455,7 @@ class _HomePageState extends State<HomePage> {
                           : Container(
                               margin: EdgeInsets.all(40),
                               child: Center(
-                                  child: EmptyListWidget(
+                                  child: EmptyWidget(
                                       title: text('no_restaurants'),
                                       subTitle: text(
                                           'no_popular_restaurants_available_yet'),

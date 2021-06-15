@@ -100,7 +100,7 @@ class GetReviewPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: 3,
 
                           // minRating: 1,
@@ -153,7 +153,7 @@ class GetReviewPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: 3,
 
                           // minRating: 1,
@@ -217,7 +217,7 @@ class GetReviewPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: 3,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
@@ -264,7 +264,7 @@ class GetReviewPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: 3,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
@@ -310,7 +310,7 @@ class GetReviewPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: 3,
                           direction: Axis.horizontal,
                           allowHalfRating: true,

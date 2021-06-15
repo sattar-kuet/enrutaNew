@@ -280,7 +280,7 @@ class CategoryListView extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             margin: EdgeInsets.only(left: 7),
-                            child: RatingBar(
+                            child: RatingBar.builder(
                               initialRating: itemData.rating,
 
                               direction: Axis.horizontal,

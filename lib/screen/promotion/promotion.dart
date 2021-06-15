@@ -89,7 +89,7 @@ class Promotion extends StatelessWidget {
                       : Container(
                           margin: EdgeInsets.all(50),
                           child: Center(
-                              child: EmptyListWidget(
+                              child: EmptyWidget(
                                   title: text('no_offer'),
                                   subTitle:
                                       text('no_current_offer_available_yet'),

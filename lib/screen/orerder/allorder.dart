@@ -110,7 +110,7 @@ class AllOrder extends StatelessWidget {
                                   : Container(
                                       margin: EdgeInsets.all(50),
                                       child: Center(
-                                          child: EmptyListWidget(
+                                          child: EmptyWidget(
                                               title: text('no_order'),
                                               subTitle: text(
                                                   'no_current_order_available_yet'),

@@ -42,20 +42,21 @@ class RatingListView extends StatelessWidget {
                 width: 75,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: ratingData.logo == null ? Center(
-                    child: Image.asset(
-                      "assets/icons/image.png",
-                      scale: 5,
-                    ),
-                    // Text("No image",
-                    //   style: TextStyle(color: Colors.grey),
-                    // ),
-                  )
-                  : Image.network(ratingData.logo, fit: BoxFit.fill,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace stackTrace) {
-                    return Center(child: Text('😢'));
-                  }),
+                  child: ratingData.logo == null
+                      ? Center(
+                          child: Image.asset(
+                            "assets/icons/image.png",
+                            scale: 5,
+                          ),
+                          // Text("No image",
+                          //   style: TextStyle(color: Colors.grey),
+                          // ),
+                        )
+                      : Image.network(ratingData.logo, fit: BoxFit.fill,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace stackTrace) {
+                          return Center(child: Text('😢'));
+                        }),
                 ),
               ),
               // child: Container(
@@ -103,7 +104,7 @@ class RatingListView extends StatelessWidget {
               left: 91,
               right: 5,
               child: Container(
-                child: RatingBar(
+                child: RatingBar.builder(
                   initialRating: ratingData.rating,
 
                   // minRating: 1,
