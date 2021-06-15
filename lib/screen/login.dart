@@ -562,6 +562,8 @@ class _LoginPageState extends State<LoginPage> {
             child: TextField(
               // keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
+                focusColor: Color(Helper.getHexToInt("#11C7A1")),
+
                 hintText: hintText,
                 hintStyle:
                     TextStyle(color: Color(Helper.getHexToInt("#6F6F6F"))),
