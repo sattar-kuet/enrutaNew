@@ -70,7 +70,7 @@ class MyVoucher extends StatelessWidget {
                               : Container(
                                   margin: EdgeInsets.all(50),
                                   child: Center(
-                                      child: EmptyListWidget(
+                                      child: EmptyWidget(
                                           title: text('no_voucher'),
                                           subTitle:
                                               text('no_voucher_available_yet'),
