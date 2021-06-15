@@ -93,6 +93,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(15), topRight: Radius.circular(15)),
       child: BottomNavigationBar(
+        selectedIconTheme:
+            IconThemeData(color: Color(Helper.getHexToInt("#11C7A1"))),
+        selectedItemColor: Color(Helper.getHexToInt("#11C7A1")),
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
         // selectedIconTheme: IconThemeData(

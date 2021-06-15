@@ -28,10 +28,16 @@ void main() async {
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
+
     theme: ThemeData(
-      primaryColor: Color(Helper.getHexToInt("#11C7A1")),
-      unselectedWidgetColor: Color(Helper.getHexToInt("#6F6F6F")),
-    ),
+        focusColor: Color(Helper.getHexToInt("#11C7A1")),
+        primaryColor: Color(Helper.getHexToInt("#11C7A1")),
+        unselectedWidgetColor: Color(Helper.getHexToInt("#6F6F6F")),
+        selectedRowColor: Color(Helper.getHexToInt("#11C7A1")),
+        textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Color(Helper.getHexToInt("#11C7A1")),
+            selectionColor: Color(Helper.getHexToInt("#11C7A1")),
+            selectionHandleColor: Color(Helper.getHexToInt("#11C7A1")))),
     initialBinding: LoginBinding(),
     // defaultTransition: Transition.fade,
     home: SplashScreen(),
