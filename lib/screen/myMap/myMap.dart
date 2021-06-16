@@ -75,12 +75,12 @@ class _MyMapState extends State<MyMap> {
         padding: const EdgeInsets.only(bottom: 150.0),
         child: FloatingActionButton(
           onPressed: () async {
-            await mymapcont.getLocation();
+            Position position = await Geolocator()
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
             await mapController.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
-                  target: LatLng(
-                      mymapcont.pointerlat.value, mymapcont.pointerlong.value),
+                  target: LatLng(position.latitude, position.longitude),
                   zoom: 17,
                 ),
               ),
