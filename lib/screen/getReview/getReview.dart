@@ -369,9 +369,11 @@ class _GetReviewPageState extends State<GetReviewPage> {
                           hintText: text('help_others_to_find_good_food'),
                           // border: InputBorder.none,
                           border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                              borderSide: BorderSide(
+                                color: Color(Helper.getHexToInt("#11C7A1")),
+                              )),
                         ),
                       ),
                     ),

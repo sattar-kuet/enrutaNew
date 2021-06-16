@@ -27,17 +27,22 @@ void main() async {
   await GetStorage.init();
 
   runApp(GetMaterialApp(
+    color: Color(Helper.getHexToInt("#11C7A1")),
     debugShowCheckedModeBanner: false,
 
     theme: ThemeData(
+        accentColor: Color(Helper.getHexToInt("#11C7A1")),
         focusColor: Color(Helper.getHexToInt("#11C7A1")),
         primaryColor: Color(Helper.getHexToInt("#11C7A1")),
+        primaryColorDark: Color(Helper.getHexToInt("#11C7A1")),
         unselectedWidgetColor: Color(Helper.getHexToInt("#6F6F6F")),
         selectedRowColor: Color(Helper.getHexToInt("#11C7A1")),
+        iconTheme: IconThemeData(color: Color(Helper.getHexToInt("#11C7A1"))),
         textSelectionTheme: TextSelectionThemeData(
-            cursorColor: Color(Helper.getHexToInt("#11C7A1")),
-            selectionColor: Color(Helper.getHexToInt("#11C7A1")),
-            selectionHandleColor: Color(Helper.getHexToInt("#11C7A1")))),
+          cursorColor: Color(Helper.getHexToInt("#11C7A1")),
+          selectionColor: Color(Helper.getHexToInt("#11C7A1")),
+          selectionHandleColor: Color(Helper.getHexToInt("#11C7A1")),
+        )),
     initialBinding: LoginBinding(),
     // defaultTransition: Transition.fade,
     home: SplashScreen(),

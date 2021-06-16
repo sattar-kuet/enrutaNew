@@ -264,7 +264,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                   .searchData(searchController.text.toString());
                               // Get.to(SearchResult());
                             },
-                            child: Icon(Icons.search),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(Helper.getHexToInt("#11C7A1")),
+                            ),
                           )),
                       onSubmitted: (value) {
                         searchCont.searchData(searchController.text);

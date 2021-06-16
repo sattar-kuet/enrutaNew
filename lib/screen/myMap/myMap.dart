@@ -335,7 +335,9 @@ class _MyMapState extends State<MyMap> {
                                 //     onPressed: () {},
                                 //     iconSize: 30.0),
                                 suffixIcon: IconButton(
-                                    icon: Icon(Icons.search),
+                                    icon: Icon(Icons.search,
+                                        color: Color(
+                                            Helper.getHexToInt("#11C7A1"))),
                                     onPressed: searchandNavigate,
                                     iconSize: 30.0)),
                             onChanged: (val) {
@@ -470,6 +472,11 @@ class _MyMapState extends State<MyMap> {
                           Color(Helper.getHexToInt("#6F6F6F")).withOpacity(.8)),
                   border: OutlineInputBorder(
                     gapPadding: 2,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    gapPadding: 2,
+                    borderSide: BorderSide(color: theamColor),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),

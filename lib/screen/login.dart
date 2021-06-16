@@ -562,18 +562,31 @@ class _LoginPageState extends State<LoginPage> {
             child: TextField(
               // keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                focusColor: Color(Helper.getHexToInt("#11C7A1")),
-
                 hintText: hintText,
                 hintStyle:
                     TextStyle(color: Color(Helper.getHexToInt("#6F6F6F"))),
+
+                focusedBorder: OutlineInputBorder(
+                  gapPadding: 5,
+                  borderSide: BorderSide(color: theamColor),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 // border: InputBorder.none,
+                disabledBorder: OutlineInputBorder(
+                  gapPadding: 5,
+                  borderSide: BorderSide(color: theamColor),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 border: OutlineInputBorder(
                   gapPadding: 5,
                   borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: theamColor),
                 ),
+
                 prefixIcon: hintText == text('email')
-                    ? Icon(Icons.email)
+                    ? Icon(
+                        Icons.email,
+                      )
                     : hintText == text('password')
                         ? Icon(Icons.lock)
                         : null,
