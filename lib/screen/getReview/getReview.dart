@@ -109,7 +109,7 @@ class _GetReviewPageState extends State<GetReviewPage> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         child: RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: 0,
 
                           // minRating: 1,
                           direction: Axis.horizontal,
@@ -162,7 +162,7 @@ class _GetReviewPageState extends State<GetReviewPage> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         child: RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: 0,
 
                           // minRating: 1,
                           direction: Axis.horizontal,
@@ -226,7 +226,7 @@ class _GetReviewPageState extends State<GetReviewPage> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         child: RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: 0,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
                           itemCount: 5,
@@ -273,7 +273,7 @@ class _GetReviewPageState extends State<GetReviewPage> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         child: RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: 0,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
                           itemCount: 5,
@@ -319,7 +319,7 @@ class _GetReviewPageState extends State<GetReviewPage> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         child: RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: 0,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
                           itemCount: 5,
@@ -380,15 +380,18 @@ class _GetReviewPageState extends State<GetReviewPage> {
                     ),
                     InkWell(
                       onTap: () async {
-                        double rating = ((r1 + r2 + r3 + r4 + r5) / 5);
-                        print(reviewcont.text);
-                        print(rating);
-                        await tController.addrivew(
-                            widget.shopid, rating, reviewcont.text);
-                        SharedPreferences spreferences =
-                            await SharedPreferences.getInstance();
-                        spreferences.setInt("OrderCompletedShop", null);
-                        Get.offAll(HomePage());
+                        double rating;
+                        try {
+                          double rating = ((r1 + r2 + r3 + r4 + r5) / 5);
+                          await tController.addrivew(
+                              widget.shopid, rating, reviewcont.text);
+                          SharedPreferences spreferences =
+                              await SharedPreferences.getInstance();
+                          spreferences.setInt("OrderCompletedShop", null);
+                          Get.offAll(HomePage());
+                        } catch (e) {
+                          Get.snackbar("Review", "Please clear all fields");
+                        }
                       },
                       child: Container(
                         height: 50,
