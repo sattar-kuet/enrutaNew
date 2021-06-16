@@ -76,7 +76,7 @@ class RatingListView extends StatelessWidget {
               left: 91,
               child: Container(
                 child: Text(
-                  ratingData.title,
+                  ratingData.title == null ? "No Name" : ratingData.title,
                   style: TextStyle(
                       fontFamily: 'TTCommonsm',
                       fontSize: 15,

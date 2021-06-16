@@ -74,13 +74,13 @@ class _MyMapState extends State<MyMap> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 150.0),
         child: FloatingActionButton(
-          onPressed: () {
-            mymapcont.getLocation();
-            mapController.animateCamera(
+          onPressed: () async {
+            await mymapcont.getLocation();
+            await mapController.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
-                  target: LatLng(
-                      mapcontroll.userlat.value, mapcontroll.userlong.value),
+                  target:
+                      LatLng(mymapcont.userlat.value, mymapcont.userlong.value),
                   zoom: 17,
                 ),
               ),

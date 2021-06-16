@@ -9,12 +9,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../homePage.dart';
 
-class GetReviewPage extends StatelessWidget {
-  final tController = Get.put(TestController());
-  final language = Get.put(LanguageController());
+class GetReviewPage extends StatefulWidget {
   final int shopid;
 
   GetReviewPage(this.shopid);
+
+  @override
+  _GetReviewPageState createState() => _GetReviewPageState();
+}
+
+class _GetReviewPageState extends State<GetReviewPage> {
+  final tController = Get.put(TestController());
+
+  final language = Get.put(LanguageController());
+
   String text(String key) {
     return language.text(key);
   }
@@ -376,7 +384,7 @@ class GetReviewPage extends StatelessWidget {
                         print(reviewcont.text);
                         print(rating);
                         await tController.addrivew(
-                            shopid, rating, reviewcont.text);
+                            widget.shopid, rating, reviewcont.text);
                         SharedPreferences spreferences =
                             await SharedPreferences.getInstance();
                         spreferences.setInt("OrderCompletedShop", null);

@@ -498,7 +498,7 @@ class _HomePageState extends State<HomePage> {
       margin: EdgeInsets.only(left: 10, right: 10),
       child: InkWell(
         onTap: () {
-          Get.to(Promotion());
+          // Get.to(Promotion());
         },
         child: Carousel(
           dotPosition: DotPosition.bottomLeft,

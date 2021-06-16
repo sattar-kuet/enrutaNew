@@ -14,7 +14,9 @@ class MyMapController extends GetxController {
   GoogleMapController _mapController;
   final address = ''.obs;
   var userlat = 0.0.obs;
+  var pointerlat = 0.0.obs;
   var userlong = 0.0.obs;
+  var pointerlong = 0.0.obs;
   var pointLat = 0.0.obs;
   var cheker = 0.obs;
   var pointLong = 0.0.obs;
@@ -54,13 +56,14 @@ class MyMapController extends GetxController {
     final coordinates = new Coordinates(position.latitude, position.longitude);
     userlat.value = position.latitude;
     userlong.value = position.longitude;
+    pointerlat.value = position.latitude;
+    pointerlong.value = position.longitude;
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     address.value = first.addressLine;
     address(first.addressLine);
-
-    print(address);
+    print("get location called. got : $address");
   }
 
   getpointerLocation(double let, double lo) async {
@@ -108,7 +111,7 @@ class MyMapController extends GetxController {
       addressList.value = a
           .map((data) => AddressModel.fromJson(jsonDecode(jsonEncode(data))))
           .toList();
-      ;
+
       print(b);
 
       // addressList.value =
@@ -184,6 +187,17 @@ class MyMapController extends GetxController {
 
     //print("from direct ${addressList.value}");
     box.write("addressList", addressList);
+
+    List a = box.read('addressList');
+
+    //
+    if (a != null) {
+      // addressList.value = a.cast();
+      print("from storage $a");
+      addressList.value = a
+          .map((data) => AddressModel.fromJson(jsonDecode(jsonEncode(data))))
+          .toList();
+    }
     // getlocationlist();
 
     //     .toList();
