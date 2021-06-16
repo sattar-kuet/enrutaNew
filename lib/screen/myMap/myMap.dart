@@ -79,8 +79,8 @@ class _MyMapState extends State<MyMap> {
             await mapController.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
-                  target:
-                      LatLng(mymapcont.userlat.value, mymapcont.userlong.value),
+                  target: LatLng(
+                      mymapcont.pointerlat.value, mymapcont.pointerlong.value),
                   zoom: 17,
                 ),
               ),
