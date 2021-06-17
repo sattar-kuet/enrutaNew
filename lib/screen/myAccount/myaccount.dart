@@ -250,7 +250,7 @@ class _MyAccountState extends State<MyAccount> {
                 width: Get.width,
                 child: InkWell(
                   onTap: () {
-                    Get.to(Promotion());
+                    // Get.to(Promotion());
                   },
                   child: Row(
                     children: [
