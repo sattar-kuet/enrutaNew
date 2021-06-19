@@ -70,6 +70,31 @@ class Service {
     }
   }
 
+  static Future<int> getTimebyOrder(int orderid) async {
+    print("get time called");
+    try {
+      final response = await http.post(
+        baseUrl + "getDeliveryTimeByOrderId",
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, int>{
+          'id': orderid,
+        }),
+      );
+      if (response.statusCode == 200) {
+        print(response.body);
+        return int.parse(response.body);
+      } else {
+        print(response.body);
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   static Future<Respons> getcategory() async {
     try {
       final response = await http.get(

@@ -2,6 +2,7 @@ import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/paymentController.dart';
 import 'package:enruta/controllers/suggestController.dart';
+import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/cart_list_data.dart';
@@ -38,6 +39,8 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    cCont.ordertypetapped(false);
+    cCont.selectaddresstapped(false);
     cCont.subTprice.value = (cCont.totalPrice != null ? cCont.totalPrice : 0.0);
     cCont.tvatprice.value = (cCont.vatPrice != null ? cCont.vatPrice : 0.0);
     cCont.grandTotalprice.value = (cCont.gTotal != null ? cCont.gTotal : 0.0);
@@ -1152,6 +1155,7 @@ class CartPage extends StatelessWidget {
           border: Border.all(color: Color(Helper.getHexToInt("#F0F0F0")))),
       child: InkWell(
         onTap: () {
+          cartCont.ordertypetapped(true);
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -1232,15 +1236,18 @@ class CartPage extends StatelessWidget {
               top: 37,
               left: 40,
               // right: 10,
-              child: Obx(() => Text(
-                    cartCont.deliveryType.value == 0
-                        ? text('pick_up')
-                        : text('delivery_in_35_50_min'),
-                    style: TextStyle(
-                        fontFamily: "TTCommonsm",
-                        fontSize: 16,
-                        color: Color(Helper.getHexToInt("#000000"))),
-                  )),
+              child: Obx(() => cartCont.ordertypetapped.value
+                  ? Text(
+                      cartCont.deliveryType.value == 0
+                          ? text('pick_up')
+                          : "Delivery in " +
+                              Get.put(TestController()).sendtime.value,
+                      style: TextStyle(
+                          fontFamily: "TTCommonsm",
+                          fontSize: 16,
+                          color: Color(Helper.getHexToInt("#000000"))),
+                    )
+                  : Text("Select")),
 
               // Text(
               //   "Delivery in 35-50 Min",

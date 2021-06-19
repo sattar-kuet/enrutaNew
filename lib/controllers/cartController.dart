@@ -56,6 +56,8 @@ class CartController extends GetxController {
   var cartLists = List<Product>().obs;
 
   var deliveryType = 0.obs;
+  var ordertypetapped = false.obs;
+  var selectaddresstapped = false.obs;
   var logCont = Get.put(LoginController());
   RxList<CartItemModel> items = RxList<CartItemModel>([]);
   // var cartL = List<Product>().obs;
@@ -646,6 +648,7 @@ class CartController extends GetxController {
     sendOrder.shop_category = box.read("shopcategory");
     sendOrder.shop_name = shopname.value;
     sendOrder.delivery_address = selectAddress.value;
+    sendOrder.order_deadline = Get.put(TestController()).sendtime.value;
     // }
 
     sendOrder.lat = selectLat.value.toString();

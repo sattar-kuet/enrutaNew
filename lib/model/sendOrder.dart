@@ -20,7 +20,8 @@ class SendOrderModel {
       this.lat,
       this.items,
       this.shop_name,
-      this.delivery_time_in_minutes});
+      this.delivery_time_in_minutes,
+      this.order_deadline});
 
   int userId;
   String delivery_address;
@@ -35,6 +36,7 @@ class SendOrderModel {
   int delivery_time_in_minutes;
   String lng;
   String lat;
+  String order_deadline;
   List<Item> items;
 
   factory SendOrderModel.fromJson(Map<String, dynamic> json) => SendOrderModel(
@@ -51,6 +53,7 @@ class SendOrderModel {
         paymentOption: json["payment_option"],
         lng: json["lng"],
         lat: json["lat"],
+        order_deadline: json["order_deadline"],
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
       );
 
@@ -62,6 +65,7 @@ class SendOrderModel {
         "coupon": coupon,
         "voucher": voucher,
         "offer": offer,
+        "order_deadline": order_deadline,
         "shop_name": shop_name,
         "delivery_time_in_minutes": delivery_time_in_minutes,
         "shop_category": shop_category,

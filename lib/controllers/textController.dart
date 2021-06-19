@@ -20,6 +20,9 @@ class TestController extends GetxController {
   var nearbycat = List<Datum>().obs;
   // ignore: deprecated_member_use
   var polularShopList = List<Datums>().obs;
+  var sendtime = "".obs;
+
+  var shopid = 0.obs;
   Rx<int> orderCompletedShop;
 
   final address = ''.obs;
@@ -115,6 +118,12 @@ class TestController extends GetxController {
   }
 
   void getnearByPlace() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var a = prefs.getString("shopid");
+    if (a != null) {
+      shopid.value = int.parse(a);
+    }
+
     await Future.delayed(Duration(seconds: 1));
     SharedPreferences pre = await SharedPreferences.getInstance();
     int userid = pre.getInt("id") ?? 93;
@@ -124,7 +133,15 @@ class TestController extends GetxController {
     Service.createAlbum(userid, lat, lo).then((values) {
       st.value = values.status;
       nearbyres.value = values.data;
+
       print("nearby $nearbyres");
+      print("Sortin");
+      nearbyres.forEach((d) {
+        if (d.shopId == shopid.value) {
+          sendtime.value = d.time;
+          print("XXXX: ${d.time}");
+        }
+      });
     });
   }
 

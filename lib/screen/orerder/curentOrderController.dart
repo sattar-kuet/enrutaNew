@@ -40,12 +40,16 @@ class CurentOrderController extends GetxController {
   var order = Order().obs;
   var orderall = List<Order>().obs;
   var address = ''.obs;
+  var deleveryTime = 0.obs;
 
   void getorderStatus(int id) async {
     isLoading(true);
     try {
       Service().getOrderDetails(id).then((values) async {
         detailsModel.value.order = values.order;
+        deleveryTime.value =
+            await Service.getTimebyOrder(detailsModel.value.order.id);
+
         //order.value = values.order;
         await getpointerLocation(values.order.lat, values.order.lng);
         // cCont.getShopLocation(order.value.lat, order.value.lng);

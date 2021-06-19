@@ -565,7 +565,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Text(
-                  text('it_may_take_40_min_to_arrive'),
+                  "It may take " +
+                      popularController.deleveryTime.value.toString() +
+                      " min to arrive",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18,
