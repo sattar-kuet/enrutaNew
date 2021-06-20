@@ -2,6 +2,7 @@ import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/all_order_model.dart';
 import 'package:enruta/model/my_order_list_data.dart';
+import 'package:enruta/model/orderdetailsmodel.dart';
 import 'package:enruta/screen/orderStutas/orderStatus.dart';
 import 'package:enruta/screen/orerder/curentOrderController.dart';
 import 'package:flutter/material.dart';
@@ -46,14 +47,12 @@ class CurentOrderView extends StatelessWidget {
                   ? Text(text('YOU_HAVE_NOT_ANY_CURRENT_ORDER'))
                   : InkWell(
                       onTap: () async {
-                        // ignore: await_only_futures
-                        print(detailsController.curentOrder.value.id);
-                        await detailsController.getorderStatus(
-                            detailsController.curentOrder.value.id);
-                        print(detailsController.detailsModel.value);
-                        if (detailsController.detailsModel.value != null) {
-                          Get.to(OrderStatus());
-                        }
+                        print(orderModel.id);
+
+                        await detailsController
+                            .getorderStatusforindivisual(orderModel.id);
+
+                        //Get.to(OrderStatus(a));
 
                         // _launchInWebViewOrVC("https://corona.gov.bd/");
                       },
@@ -64,38 +63,45 @@ class CurentOrderView extends StatelessWidget {
                             left: 5,
                             bottom: 10,
                             child: Container(
-                              height: 92,
-                              width: 80,
-                              // decoration: BoxDecoration(
-                              //   borderRadius: BorderRadius.circular(8),
-                              //   image: DecorationImage(
-                              //       image:
-                              //       AssetImage(orderData.imagePath),
-                              //       fit: BoxFit.cover),
-                              // ),
-                              child: Obx(() => detailsController
-                                          .curentOrder.value.imagePath !=
-                                      null
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      // backgroundColor: theamColor,
-                                      child: Image.network(
-                                        detailsController
-                                            .curentOrder.value.imagePath,
-                                        fit: BoxFit.fill,
-                                        errorBuilder: (BuildContext context,
-                                            Object exception,
-                                            StackTrace stackTrace) {
-                                          return Center(
-                                            child: Image.asset(
-                                                'assets/icons/persono.png'),
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : Image.asset('assets/icons/persono.png')),
-                            ),
+                                height: 92,
+                                width: 80,
+                                // decoration: BoxDecoration(
+                                //   borderRadius: BorderRadius.circular(8),
+                                //   image: DecorationImage(
+                                //       image:
+                                //       AssetImage(orderData.imagePath),
+                                //       fit: BoxFit.cover),
+                                // ),
+                                child: orderModel.imagePath != null
+                                    ? ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        // backgroundColor: theamColor,
+                                        child: Image.network(
+                                          orderModel.imagePath,
+                                          fit: BoxFit.fill,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace stackTrace) {
+                                            return Center(
+                                              child: Image.asset(
+                                                  'assets/icons/persono.png'),
+                                            );
+                                          },
+                                          loadingBuilder:
+                                              (context, child, progress) {
+                                            return progress == null
+                                                ? child
+                                                : Center(
+                                                    child: Center(
+                                                        child:
+                                                            CircularProgressIndicator()));
+                                          },
+                                        ),
+                                      )
+                                    : Image.asset('assets/icons/persono.png')),
                           ),
+
                           Positioned(
                             top: 10,
                             right: 10,
@@ -109,7 +115,7 @@ class CurentOrderView extends StatelessWidget {
                                   // color: Colors.green,
                                   borderRadius: BorderRadius.circular(3)),
                               child: Text(
-                                detailsController.curentOrder.value.price,
+                                orderModel.price,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(Helper.getHexToInt("#FFBB19")),
@@ -124,7 +130,7 @@ class CurentOrderView extends StatelessWidget {
                             width: 180,
                             child: Container(
                               child: Text(
-                                detailsController.curentOrder.value.titleTxt,
+                                orderModel.titleTxt,
                                 maxLines: 2,
                                 overflow: TextOverflow.fade,
                                 style: TextStyle(
@@ -142,7 +148,7 @@ class CurentOrderView extends StatelessWidget {
                             right: 90,
                             child: Container(
                               child: Text(
-                                detailsController.curentOrder.value.shopName,
+                                orderModel.shopName,
                                 overflow: TextOverflow.fade,
                                 textAlign: TextAlign.left,
                                 maxLines: 2,
@@ -160,7 +166,7 @@ class CurentOrderView extends StatelessWidget {
                             left: 113,
                             right: 120,
                             child: Text(
-                              detailsController.curentOrder.value.date,
+                              orderModel.date,
                               textAlign: TextAlign.justify,
                               maxLines: 2,
                               style: TextStyle(

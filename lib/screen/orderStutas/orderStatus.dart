@@ -1,12 +1,16 @@
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
+import 'package:enruta/model/orderdetailsmodel.dart';
 import 'package:enruta/screen/orerder/curentOrderController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderStatus extends StatelessWidget {
   final language = Get.put(LanguageController());
+  final OrderDetailsPageModel a;
+
+  OrderStatus(this.a);
   String text(String key) {
     return language.text(key);
   }
@@ -49,7 +53,7 @@ class OrderStatus extends StatelessWidget {
             ),
           ),
           Text(
-            text('it_may_take_40_min_to_arrive'),
+            "It may take " + a.time.toString() + " min to arrive",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18,
@@ -129,7 +133,7 @@ class OrderStatus extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    detailsController.detailsModel.value.order.orderFrom,
+                    a.details.order.orderFrom,
                     textAlign: TextAlign.right,
                     style: TextStyle(
                         fontSize: 18,
@@ -161,7 +165,7 @@ class OrderStatus extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    detailsController.detailsModel.value.order.number,
+                    a.details.order.number,
                     textAlign: TextAlign.right,
                     style: TextStyle(
                         fontSize: 18,
@@ -228,8 +232,7 @@ class OrderStatus extends StatelessWidget {
                             fontFamily: 'TTCommonsm',
                             fontSize: 18.0,
                             color: Color(Helper.getHexToInt("#535353"))),
-                        text: detailsController
-                            .detailsModel.value.order.orderItemNames),
+                        text: a.details.order.orderItemNames),
                   ),
                 ),
                 Expanded(
@@ -272,7 +275,7 @@ class OrderStatus extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "\$" + detailsController.detailsModel.value.order.price,
+                    "\$" + a.details.order.price,
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     style: TextStyle(
@@ -307,10 +310,7 @@ class OrderStatus extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "\$" +
-                        detailsController
-                            .detailsModel.value.order.deliveryCharge
-                            .toString(),
+                    "\$" + a.details.order.deliveryCharge.toString(),
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     style: TextStyle(
@@ -345,10 +345,7 @@ class OrderStatus extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "\$" +
-                        "-" +
-                        detailsController.detailsModel.value.order.voucher
-                            .toString(),
+                    "\$" + "-" + a.details.order.voucher.toString(),
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     style: TextStyle(
@@ -386,7 +383,7 @@ class OrderStatus extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "\$" + detailsController.detailsModel.value.order.price,
+                    "\$" + a.details.order.price,
                     maxLines: 1,
                     textAlign: TextAlign.right,
                     style: TextStyle(

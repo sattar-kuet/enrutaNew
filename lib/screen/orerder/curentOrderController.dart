@@ -1,6 +1,7 @@
 import 'package:enruta/api/service.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/model/all_order_model.dart';
+import 'package:enruta/model/orderdetailsmodel.dart';
 //import 'package:enruta/model/near_by_place_data.dart';
 import 'package:enruta/model/popular_shop.dart';
 import 'package:enruta/screen/myMap/mapController.dart';
@@ -36,6 +37,7 @@ class CurentOrderController extends GetxController {
   final cCont = Get.put(MyMapController());
 
   var isLoading = false.obs;
+  var getorderStatusforindivisualLoading = true.obs;
   var detailsModel = OrderDetailsModel().obs;
   var order = Order().obs;
   var orderall = List<Order>().obs;
@@ -58,6 +60,33 @@ class CurentOrderController extends GetxController {
       });
     } finally {}
     isLoading(false);
+  }
+
+  void getorderStatusforindivisual(int id) async {
+    getorderStatusforindivisualLoading(false);
+    OrderDetailsPageModel odp;
+    int time;
+    try {
+      await Service().getOrderDetails(id).then((values) async {
+        //
+        OrderDetailsModel oModerAll = values;
+        time = await Service.getTimebyOrder(values.order.id);
+        getpointerLocation(oModerAll.order.lat, oModerAll.order.lng);
+        odp = new OrderDetailsPageModel(details: oModerAll, time: time);
+        print("details = ${odp.details.order.orderFrom}");
+
+        //order.value = values.order;
+
+        // cCont.getShopLocation(order.value.lat, order.value.lng);
+        //   cCont.getshopsLocation(order.value.lat, order.value.lng);
+        //gettotal();
+      });
+    } catch (e) {
+      return null;
+    }
+    await getpointerLocation(odp.details.order.lat, odp.details.order.lng);
+    Get.to(OrderStatus(odp));
+    getorderStatusforindivisualLoading(true);
   }
 
   // double get totalPrice =>

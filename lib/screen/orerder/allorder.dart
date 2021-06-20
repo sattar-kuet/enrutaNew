@@ -90,14 +90,16 @@ class AllOrder extends StatelessWidget {
                                   ? ListView(
                                       shrinkWrap: true,
                                       physics: ClampingScrollPhysics(),
-                                      children: List.generate(1, (index) {
+                                      children: List.generate(
+                                          detailsController.allCurentOrderList
+                                              .length, (index) {
                                         return CurentOrderView(
                                           // ignore: invalid_use_of_protected_member
                                           orderModel: detailsController
                                               // ignore: invalid_use_of_protected_member
                                               .allCurentOrderList
                                               // ignore: invalid_use_of_protected_member
-                                              .value[0],
+                                              .value[index],
                                         );
                                       })
 
