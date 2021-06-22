@@ -15,6 +15,18 @@ class OrderStatus extends StatelessWidget {
     return language.text(key);
   }
 
+  String deliveryTime(int time, String status) {
+    switch (status) {
+      case "Processing":
+        time = (time - (time * .05).toInt());
+        break;
+      case "On the way":
+        time = (time - (time * .3).toInt());
+        break;
+    }
+    return time.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     final detailsController = Get.put(CurentOrderController());
@@ -53,7 +65,9 @@ class OrderStatus extends StatelessWidget {
             ),
           ),
           Text(
-            "It may take " + a.time.toString() + " min to arrive",
+            "It may take " +
+                deliveryTime(a.time, a.details.order.status) +
+                " min to arrive",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18,

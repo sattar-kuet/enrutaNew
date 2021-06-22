@@ -64,6 +64,7 @@ dependencies:
   animated_button: ^0.2.0
   flutter_multi_formatter: ^2.2.0
   cached_network_image: ^2.2.0
+  
 
 
   # location: ^3.0.0

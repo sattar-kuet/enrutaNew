@@ -223,7 +223,8 @@ class _HomePageState extends State<HomePage> {
                                     if (popularController
                                             .detailsModel.value.order !=
                                         null) {
-                                      showSuccessfullyBottompopup(context);
+                                      showSuccessfullyBottompopup(
+                                          context, snap.data.status);
                                     }
                                   } catch (e) {}
                                   // Get.to(AddNewMethod());
@@ -518,7 +519,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget showSuccessfullyBottompopup(BuildContext context) {
+  Widget showSuccessfullyBottompopup(BuildContext context, String status) {
     showModalBottomSheet(
         context: context,
         backgroundColor: white,
@@ -566,7 +567,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Text(
                   "It may take " +
-                      popularController.deleveryTime.value.toString() +
+                      deliveryTime(
+                          popularController.deleveryTime.value, status) +
                       " min to arrive",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -950,6 +952,18 @@ class _HomePageState extends State<HomePage> {
                 ),
               ));
         });
+  }
+
+  String deliveryTime(int time, String status) {
+    switch (status) {
+      case "Processing":
+        time = (time - (time * .05).toInt());
+        break;
+      case "On the way":
+        time = (time - (time * .3).toInt());
+        break;
+    }
+    return time.toString();
   }
 }
 
