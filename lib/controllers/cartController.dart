@@ -56,6 +56,7 @@ class CartController extends GetxController {
   var cartLists = List<Product>().obs;
 
   var deliveryType = 0.obs;
+  var orderpassed = 0.obs;
   var ordertypetapped = false.obs;
   var selectaddresstapped = false.obs;
   var logCont = Get.put(LoginController());

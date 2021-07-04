@@ -196,13 +196,14 @@ class _HomePageState extends State<HomePage> {
                       builder: (context, snap) {
                         if (snap.data != null) {
                           if (snap.data.status != null &&
-                              snap.data.status != "Completed") {
-                            tController.completeOrder(
-                                popularController // TODO: Cng to  Complete
-                                    .detailsModel
-                                    .value
-                                    .order
-                                    .shopId);
+                                  (snap.data.status != "Completed") ||
+                              (snap.data.status != "Cancelled")) {
+                            // tController.completeOrder(
+                            //     popularController // TODO: Cng to  Complete
+                            //         .detailsModel
+                            //         .value
+                            //         .order
+                            //         .shopId);
                             return Container(
                               height: 120,
                               width: MediaQuery.of(context).size.width,

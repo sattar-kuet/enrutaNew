@@ -1390,7 +1390,11 @@ class CartPage extends StatelessWidget {
           )),
         ),
         onclick: () {
-          cartCont.sendOrder(context);
+          if (cartCont.deliverOption.value != "" ||
+              Get.put(TestController()).sendtime.value != "") {
+            cartCont.sendOrder(context);
+          }
+          // Get.snackbar("", "Provide all details or wait a min");
         });
   }
 
@@ -1533,6 +1537,7 @@ class CartPage extends StatelessWidget {
                       onTap: () {
                         cartCont.deliverOption.value = text('pick_up');
                         cartCont.deliveryType.value = 0;
+
                         print(cartCont.deliverOption.value);
                         Navigator.of(context).pop();
                       },

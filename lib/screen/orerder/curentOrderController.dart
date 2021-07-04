@@ -20,6 +20,7 @@ class CurentOrderController extends GetxController {
   // ignore: deprecated_member_use
   var polularShopList = List<Datums>().obs;
   var curentOrder = OrderModel().obs;
+  var pageLoader = false.obs;
 
   var gtotal = 0.0;
 
@@ -86,6 +87,7 @@ class CurentOrderController extends GetxController {
     }
     await getpointerLocation(odp.details.order.lat, odp.details.order.lng);
     Get.to(OrderStatus(odp));
+    isLoading(false);
     getorderStatusforindivisualLoading(true);
   }
 

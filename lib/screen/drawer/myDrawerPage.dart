@@ -39,7 +39,7 @@ class MyDrawerPage extends StatelessWidget {
     return Drawer(
       child: Container(
         child: ListView(
-          padding: const EdgeInsets.all(0),
+          padding: const EdgeInsets.all(2),
           children: [
             UserAccountsDrawerHeader(
               // margin: EdgeInsets.only(left: 20),
@@ -59,6 +59,7 @@ class MyDrawerPage extends StatelessWidget {
                     // Obx(
                     //   () =>
                     Text(tController.address.value,
+                        maxLines: 1,
                         style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 13.0,

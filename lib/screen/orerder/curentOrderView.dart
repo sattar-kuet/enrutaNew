@@ -48,6 +48,7 @@ class CurentOrderView extends StatelessWidget {
                   : InkWell(
                       onTap: () async {
                         print(orderModel.id);
+                        detailsController.isLoading(true);
 
                         await detailsController
                             .getorderStatusforindivisual(orderModel.id);
