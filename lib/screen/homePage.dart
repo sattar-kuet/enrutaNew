@@ -194,16 +194,23 @@ class _HomePageState extends State<HomePage> {
                   new FutureBuilder<OrderModel>(
                       future: popularController.getCurentOrder(),
                       builder: (context, snap) {
-                        if (snap.data != null) {
-                          if (snap.data.status != null &&
-                                  (snap.data.status != "Completed") ||
+                        if (snap.data == null) {
+                          return SizedBox(
+                            height: 0,
+                          );
+                        } else if (snap.data.status == null) {
+                          return SizedBox(
+                            height: 0,
+                          );
+                        } else {
+                          if (snap.data.status == "Completed") {
+                            tController.completeOrder(popularController
+                                .detailsModel.value.order.shopId);
+                            return SizedBox(
+                              height: 0,
+                            );
+                          } else if ((snap.data.status != "Completed") ||
                               (snap.data.status != "Cancelled")) {
-                            // tController.completeOrder(
-                            //     popularController // TODO: Cng to  Complete
-                            //         .detailsModel
-                            //         .value
-                            //         .order
-                            //         .shopId);
                             return Container(
                               height: 120,
                               width: MediaQuery.of(context).size.width,
@@ -290,22 +297,15 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             );
-                          } else if (snap.data.status == "Completed") {
-                            tController.completeOrder(popularController
-                                .detailsModel.value.order.shopId);
-                            return SizedBox(
-                              height: 0,
-                            );
-                          } else {
+                          } else if (snap.data.status == null) {
                             return SizedBox(
                               height: 0,
                             );
                           }
-                        } else {
-                          return SizedBox(
-                            height: 0,
-                          );
                         }
+                        return SizedBox(
+                          height: 0,
+                        );
                       }),
                   Container(
                     color: Colors.white,
@@ -679,7 +679,7 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 Container(
-                  height: 25,
+                  height: 30,
                   padding: EdgeInsets.only(top: 10),
                   child: Row(
                     children: [

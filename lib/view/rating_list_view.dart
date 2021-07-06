@@ -41,7 +41,7 @@ class RatingListView extends StatelessWidget {
                 height: 75,
                 width: 75,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(5),
                   child: ratingData.logo == null
                       ? Center(
                           child: Image.asset(

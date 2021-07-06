@@ -39,7 +39,6 @@ class MyDrawerPage extends StatelessWidget {
     return Drawer(
       child: Container(
         child: ListView(
-          padding: const EdgeInsets.all(2),
           children: [
             UserAccountsDrawerHeader(
               // margin: EdgeInsets.only(left: 20),
@@ -77,7 +76,8 @@ class MyDrawerPage extends StatelessWidget {
                       // Image.network("https://lh4.googleusercontent.com/-MZPdSamrBIc/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclYi0TEz4rOxdXFBufUHhpleBeL2Q/s96-c/photo.jpg",
                       // fit: BoxFit.fill,)
                       Obx(() => dController.pimage.value != null
-                          ? ClipOval(
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
                               child: Image.network(
                                 dController.pimage.value,
                                 fit: BoxFit.fill,

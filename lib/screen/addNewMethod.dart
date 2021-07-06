@@ -275,7 +275,7 @@ class AddNewMethod extends StatelessWidget {
                           image: DecorationImage(
                               // image: NetworkImage(
                               //     'https://www.amexcommercial.com/wp-content/uploads/2020/09/Halley-Chase-bank....png'),
-                              image: AssetImage('assets/icons/3515737.png'),
+                              image: AssetImage('assets/images/mycard.png'),
                               scale: 1.0,
                               fit: BoxFit.fill),
                           boxShadow: <BoxShadow>[

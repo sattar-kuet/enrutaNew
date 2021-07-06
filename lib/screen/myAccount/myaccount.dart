@@ -228,7 +228,7 @@ class _MyAccountState extends State<MyAccount> {
   Widget offer() {
     return SafeArea(
       child: Container(
-        height: 190,
+        height: 150,
         margin: EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -245,41 +245,42 @@ class _MyAccountState extends State<MyAccount> {
                       fontSize: 14,
                       color: Color(Helper.getHexToInt("#22242A"))),
                 )),
-            Container(
-                height: 50,
-                width: Get.width,
-                child: InkWell(
-                  onTap: () {
-                    // Get.to(Promotion());
-                  },
-                  child: Row(
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          'assets/icons/shout.png',
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Text(
-                            text('promotions'),
-                            style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 14,
-                                color: Color(Helper.getHexToInt("#22242A"))),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Icon(
-                          Icons.navigate_next,
-                          color: Color(Helper.getHexToInt("#CDCDD7")),
-                        ),
-                      )
-                    ],
-                  ),
-                )),
+            // Container(
+            //     height: 50,
+            //     width: Get.width,
+            //     child: InkWell(
+            //       onTap: () {
+            //         // Get.to(Promotion());
+            //       },
+            //       child: Row(
+            //         children: [
+            //           Center(
+            //             child: Image.asset(
+            //               'assets/icons/shout.png',
+            //             ),
+            //           ),
+            //           // Expanded(
+            //           //   child: Container(
+            //           //     padding: EdgeInsets.only(left: 20),
+            //           //     child: Text(
+            //           //       text('promotions'),
+            //           //       style: TextStyle(
+            //           //           fontFamily: "Poppins",
+            //           //           fontSize: 14,
+            //           //           color: Color(Helper.getHexToInt("#22242A"))),
+            //           //     ),
+            //           //   ),
+            //           // ),
+            //           Center(
+            //             child: Icon(
+            //               Icons.navigate_next,
+            //               color: Color(Helper.getHexToInt("#CDCDD7")),
+            //             ),
+            //           )
+            //         ],
+            //       ),
+            //     )),
+
             Container(
                 height: 50,
                 width: Get.width,
@@ -430,7 +431,8 @@ class _MyAccountState extends State<MyAccount> {
     return Center(
       child: ModalProgressHUD(
         inAsyncCall: spin,
-        child: ClipOval(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
           child: GestureDetector(
             onTap: () {
               showModalBottomSheet(
@@ -461,16 +463,17 @@ class _MyAccountState extends State<MyAccount> {
     return Container(
       height: 120,
       width: 120,
-      color: Colors.grey.shade200,
-      child: CircleAvatar(
-          radius: 80.0,
-          backgroundImage: imageF != null
-              ? FileImage(
-                  imageF,
-                )
-              : dController.pimage.value != null
-                  ? NetworkImage('${dController.pimage.value}')
-                  : AssetImage('assets/icons/persono.png')),
+
+      decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          image: DecorationImage(
+              image: imageF != null
+                  ? FileImage(
+                      imageF,
+                    )
+                  : dController.pimage.value != null
+                      ? NetworkImage('${dController.pimage.value}')
+                      : AssetImage('assets/icons/persono.png'))),
       // Image.asset(
       //   "assets/images/group4320.png",
       //   width: 120.0,
@@ -487,7 +490,7 @@ class _MyAccountState extends State<MyAccount> {
   Widget settings(BuildContext context) {
     return SafeArea(
       child: Container(
-        height: 190,
+        height: 150,
         margin: EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -553,37 +556,37 @@ class _MyAccountState extends State<MyAccount> {
                 ),
               ),
             ),
-            Container(
-                height: 50,
-                width: Get.width,
-                child: Row(
-                  children: [
-                    Center(
-                      child: Image.asset(
-                        'assets/icons/security.png',
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          text('permissions'),
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 14,
-                            color: Color(Helper.getHexToInt("#22242A")),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Icon(
-                        Icons.navigate_next,
-                        color: Color(Helper.getHexToInt("#CDCDD7")),
-                      ),
-                    )
-                  ],
-                )),
+            // Container(
+            //     height: 50,
+            //     width: Get.width,
+            //     child: Row(
+            //       children: [
+            //         Center(
+            //           child: Image.asset(
+            //             'assets/icons/security.png',
+            //           ),
+            //         ),
+            //         Expanded(
+            //           child: Container(
+            //             padding: EdgeInsets.only(left: 20),
+            //             child: Text(
+            //               text('permissions'),
+            //               style: TextStyle(
+            //                 fontFamily: "Poppins",
+            //                 fontSize: 14,
+            //                 color: Color(Helper.getHexToInt("#22242A")),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //         Center(
+            //           child: Icon(
+            //             Icons.navigate_next,
+            //             color: Color(Helper.getHexToInt("#CDCDD7")),
+            //           ),
+            //         )
+            //       ],
+            //     )),
           ],
         ),
       ),
