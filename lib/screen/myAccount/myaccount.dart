@@ -614,7 +614,7 @@ class _MyAccountState extends State<MyAccount> {
                       color: Color(Helper.getHexToInt("#22242A"))),
                 )),
             Container(
-                height: 50,
+                height: 50,   
                 width: Get.width,
                 child: Row(
                   children: [

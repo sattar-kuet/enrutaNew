@@ -254,12 +254,12 @@ class CategoryListView extends StatelessWidget {
                   )),
             ),
             Positioned(
-              bottom: 45,
+              bottom: 10,
               left: 10,
               right: 10,
               child: Center(
                 child: Container(
-                  height: 20,
+                  height: 21,
 
                   // width: 100,
                   // padding: EdgeInsets.only(left: 20),
@@ -322,20 +322,20 @@ class CategoryListView extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(bottom: 28, left: 10, right: 10, child: Divider()),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
-              child: Text(
-                itemData.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'TTCommonsr',
-                    fontSize: 17,
-                    color: Color(Helper.getHexToInt("#434343")).withOpacity(1)),
-              ),
-            )
+            // Positioned(bottom: 28, left: 10, right: 10, child: Divider()),
+            // Positioned(
+            //   bottom: 10,
+            //   left: 10,
+            //   right: 10,
+            //   child: Text(
+            //     itemData.name,
+            //     textAlign: TextAlign.center,
+            //     style: TextStyle(
+            //         fontFamily: 'TTCommonsr',
+            //         fontSize: 17,
+            //         color: Color(Helper.getHexToInt("#434343")).withOpacity(1)),
+            //   ),
+            // )
           ],
         ),
       ),

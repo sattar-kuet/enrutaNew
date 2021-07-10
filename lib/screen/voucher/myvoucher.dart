@@ -245,6 +245,7 @@ class MyVoucher extends StatelessWidget {
                                 child: Container(
                                   height: 25,
                                   // width: 25,
+                                  padding: EdgeInsets.all(2),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius:

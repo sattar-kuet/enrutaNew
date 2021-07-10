@@ -270,37 +270,38 @@ class MyDrawerPage extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
-              onTap: () {
-                Navigator.pop(context);
-                pmController.totalPayment.value = 0;
-                Get.to(Paymentmethods());
-              },
-              child: Container(
-                padding: EdgeInsets.only(left: 20),
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Icon(SvgPicture.asset("assets/icons/home.svg"))
-                    Container(
-                      height: 20,
-                      width: 40,
-                      margin: EdgeInsets.only(right: 30),
-                      child: SvgPicture.asset("assets/icons/wallet.svg"),
-                    ),
-                    Text(
-                      text('wallet'),
-                      style: TextStyle(
-                          fontFamily: "TTCommonsd",
-                          fontSize: 16,
-                          color: Color(Helper.getHexToInt("#8D92A3"))),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // InkWell(
+            //   splashColor: Color(Helper.getHexToInt("#11E4A1")).withOpacity(.4),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     pmController.totalPayment.value = 0;
+            //     Get.to(Paymentmethods());
+            //   },
+            //   child: Container(
+            //     padding: EdgeInsets.only(left: 20),
+            //     height: 50,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         // Icon(SvgPicture.asset("assets/icons/home.svg"))
+            //         Container(
+            //           height: 20,
+            //           width: 40,
+            //           margin: EdgeInsets.only(right: 30),
+            //           child: SvgPicture.asset("assets/icons/wallet.svg"),
+            //         ),
+            //         Text(
+            //           text('wallet'),
+            //           style: TextStyle(
+            //               fontFamily: "TTCommonsd",
+            //               fontSize: 16,
+            //               color: Color(Helper.getHexToInt("#8D92A3"))),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
             // InkWell(
             //   onTap: () {
             //     Navigator.pop(context);

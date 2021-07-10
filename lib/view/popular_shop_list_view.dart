@@ -93,7 +93,7 @@ class PopularShopListView extends StatelessWidget {
                           child: Container(
                               margin: EdgeInsets.only(right: 50),
                               padding:
-                                  EdgeInsets.only(left: 8, top: 8, bottom: 8),
+                                  EdgeInsets.only(left: 8, top: 9, bottom: 8),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(10.0),
@@ -168,12 +168,12 @@ class PopularShopListView extends StatelessWidget {
                   )),
             ),
             Positioned(
-              bottom: 45,
+              bottom: 10,
               left: 10,
               right: 10,
               child: Center(
                 child: Container(
-                  height: 20,
+                  height: 21,
 
                   // width: 100,
                   // padding: EdgeInsets.only(left: 20),
@@ -236,20 +236,20 @@ class PopularShopListView extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(bottom: 28, left: 10, right: 10, child: Divider()),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
-              child: Text(
-                itemData.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'TTCommonsr',
-                    fontSize: 17,
-                    color: Color(Helper.getHexToInt("#434343")).withOpacity(1)),
-              ),
-            )
+            // Positioned(bottom: 28, left: 10, right: 10, child: Divider()),
+            // Positioned(
+            //   bottom: 10,
+            //   left: 10,
+            //   right: 10,
+            //   child: Text(
+            //     itemData.name,
+            //     textAlign: TextAlign.center,
+            //     style: TextStyle(
+            //         fontFamily: 'TTCommonsr',
+            //         fontSize: 17,
+            //         color: Color(Helper.getHexToInt("#434343")).withOpacity(1)),
+            //   ),
+            // )
           ],
         ),
       ),
