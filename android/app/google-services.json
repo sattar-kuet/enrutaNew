@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:29810957656:android:29c63f2574c7c11d6fd92d",
         "android_client_info": {
-          "package_name": "com.app.fooddelivery"
+          "package_name": "com.app.itscholarbd.fooddelivery"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "29810957656-1hf8tkqu8ad9fv9bntofoum605ac4gbp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.app.fooddelivery",
+            "package_name": "com.app.itscholarbd.fooddelivery",
             "certificate_hash": "62b82f18b52440a2b38e1fd8b8b96b15c7003913"
           }
         },
