@@ -624,7 +624,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleSignIn() async {
     try {
       print("login");
-      handleSignOut();
+      // handleSignOut();
       //await googleSignIn.signIn();
       if (currentUser != null) {
         handleSignOut();

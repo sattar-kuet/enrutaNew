@@ -1,70 +1,41 @@
 {
   "project_info": {
-    "project_number": "29810957656",
-    "project_id": "enruta-b5ea6",
-    "storage_bucket": "enruta-b5ea6.appspot.com"
+    "project_number": "467898034236",
+    "project_id": "enrutademo",
+    "storage_bucket": "enrutademo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:29810957656:android:29c63f2574c7c11d6fd92d",
+        "mobilesdk_app_id": "1:467898034236:android:1f3cfbf445c34381e47b39",
         "android_client_info": {
-          "package_name": "com.app.enruta"
+          "package_name": "com.app.itscholarbd.fooddelivery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "29810957656-1hf8tkqu8ad9fv9bntofoum605ac4gbp.apps.googleusercontent.com",
+          "client_id": "467898034236-do7e8fsoppahftcrelcphmnbb31e1hbn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.app.enruta",
-            "certificate_hash": "62b82f18b52440a2b38e1fd8b8b96b15c7003913"
+            "package_name": "com.app.itscholarbd.fooddelivery",
+            "certificate_hash": "fca033c98964578e44df4a457b950e65f02e93d8"
           }
         },
         {
-          "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
+          "client_id": "467898034236-e9d5e7hfdvkci2erne8iogsukajkdbjd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCyT707N_BPjXWKEl2QLJwZaH4V0XeOIMY"
+          "current_key": "AIzaSyARvB5EhNvXNEjzif6BviT4AU0vkXPfF5s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:29810957656:android:82c4fccefbb096216fd92d",
-        "android_client_info": {
-          "package_name": "com.example.enruta"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCyT707N_BPjXWKEl2QLJwZaH4V0XeOIMY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
+              "client_id": "467898034236-e9d5e7hfdvkci2erne8iogsukajkdbjd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
