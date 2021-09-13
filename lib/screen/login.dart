@@ -4,6 +4,7 @@ import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/screen/homePage.dart';
+import 'package:enruta/screen/permissionCheck.dart';
 import 'package:enruta/screen/resetpassword/resetPassword.dart';
 
 import 'package:enruta/screen/signup.dart';
@@ -82,14 +83,15 @@ class _LoginPageState extends State<LoginPage> {
     if (email == null) {
       print(email);
     } else {
-      await Geolocator().getCurrentPosition();
+      // await Geolocator().getCurrentPosition();
       var permission = await Geolocator().checkGeolocationPermissionStatus();
       if (permission != GeolocationStatus.denied) {
         Get.offAll(HomePage());
       } else {
-        Get.defaultDialog(title: "Please give Permission first");
+        Get.offAll(PermissionCheckScreen());
       }
       //Get.offAll(HomePage());
+
     }
   }
 
@@ -632,7 +634,7 @@ class _LoginPageState extends State<LoginPage> {
       if (lController.currentUser != null) {
         handleSignOut();
       }
-      await Geolocator().getCurrentPosition();
+      //await Geolocator().getCurrentPosition();
       await googleSignIn.signIn();
     } catch (error) {
       print(error);
@@ -642,7 +644,7 @@ class _LoginPageState extends State<LoginPage> {
   // LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
   Future<Null> faceBookLogin() async {
-    await Geolocator().getCurrentPosition();
+    //await Geolocator().getCurrentPosition();
     facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
     // final result = await facebookSignIn.logInWithReadPermissions(['email']);
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);

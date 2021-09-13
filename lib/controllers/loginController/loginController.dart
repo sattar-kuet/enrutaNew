@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:enruta/screen/permissionCheck.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,12 @@ class LoginController extends GetxController {
     shp.setString("profileImage", currentUser.photoUrl);
     // pimage.value = currentUser.photoUrl;
     print(currentUser.photoUrl);
-    Get.offAll(HomePage());
+    var permission = await Geolocator().checkGeolocationPermissionStatus();
+    if (permission != GeolocationStatus.denied) {
+      Get.offAll(HomePage());
+    } else {
+      Get.offAll(PermissionCheckScreen());
+    }
   }
 
   void checklogin() {
@@ -101,20 +107,19 @@ class LoginController extends GetxController {
         sharedPreferences.setString("username", username);
         sharedPreferences.setString("phone", phone);
         sharedPreferences.setString("profileImage", avatar);
-        await Geolocator().getCurrentPosition();
+        //await Geolocator().getCurrentPosition();
         var permission = await Geolocator().checkGeolocationPermissionStatus();
         if (permission != GeolocationStatus.denied) {
           Get.offAll(HomePage());
         } else {
-          Get.defaultDialog(title: "Please give Permission first");
+          Get.offAll(PermissionCheckScreen());
         }
       }
 
       // UserArr user = await convertedDatatojson['user_arr'];
     } catch (e) {
-      Get.snackbar("error to login ", e.message
-      ,colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("error to login ", e.message,
+          colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
     }
     // return convertedDatatojson;
   }
@@ -162,8 +167,8 @@ class LoginController extends GetxController {
       // print("\n\n\n\n\n MAP: " + result.toString()+"\n\n\n\n\n\n");
 
       if (result == 0) {
-        Get.snackbar("Please Input Valid Email & password", "",colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Please Input Valid Email & password", "",
+            colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
       } else {
         // Map<String, dynamic> user = await convertedDatatojson["user"];
 
@@ -187,14 +192,18 @@ class LoginController extends GetxController {
         await sharedPreferences.setInt("id", Xid);
 
         await sharedPreferences.setString("roleId", roleId.toString());
-        Get.offAll(HomePage());
+        var permission = await Geolocator().checkGeolocationPermissionStatus();
+        if (permission != GeolocationStatus.denied) {
+          Get.offAll(HomePage());
+        } else {
+          Get.offAll(PermissionCheckScreen());
+        }
       }
     } catch (e) {
       print("\n\n\n\n\nErr: " + e.toString() + "\n\n\n\n\n\n");
 
       Get.snackbar("warning", e.toString(),
-      colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM);
+          colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -211,8 +220,7 @@ class LoginController extends GetxController {
       var result = await convertedDatatojson['status'];
       if (result == 0) {
         Get.snackbar("Please Input Valid Email & password", "",
-        colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM);
+            colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
       } else {
         Map<String, dynamic> user = convertedDatatojson['user'];
 
@@ -226,11 +234,16 @@ class LoginController extends GetxController {
             await SharedPreferences.getInstance();
         sharedPreferences.setInt("id", id);
         sharedPreferences.setString("roleId", roleId);
-        Get.offAll(HomePage());
+        var permission = await Geolocator().checkGeolocationPermissionStatus();
+        if (permission != GeolocationStatus.denied) {
+          Get.offAll(HomePage());
+        } else {
+          Get.offAll(PermissionCheckScreen());
+        }
+        //Get.offAll(HomePage());
       }
     } catch (e) {
       Get.snackbar("warning", e.toString(),
-      
           snackPosition: SnackPosition.BOTTOM);
     }
   }

@@ -5,6 +5,7 @@ import 'package:enruta/controllers/loginController/loginBinding.dart';
 import 'package:enruta/screen/getReview/getReview.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:enruta/screen/permissionCheck.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -96,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (checkLogin == "a") {
       // Get.put(TestController());
       // Get.put(CartController());
-      await Geolocator().getCurrentPosition();
+      //await Geolocator().getCurrentPosition();
       var permission = await Geolocator().checkGeolocationPermissionStatus();
       if (permission != GeolocationStatus.denied) {
         if (orderComplete != null) {
@@ -105,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Get.offAll(HomePage());
         }
       } else {
-        Get.defaultDialog(title: "Please give Permission first");
+        Get.offAll(PermissionCheckScreen());
       }
     } else {
       Get.offAll(LoginPage());
