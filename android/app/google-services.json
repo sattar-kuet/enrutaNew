@@ -9,65 +9,60 @@
       "client_info": {
         "mobilesdk_app_id": "1:29810957656:android:29c63f2574c7c11d6fd92d",
         "android_client_info": {
-          "package_name": "com.app.itscholarbd.fooddelivery"
+          "package_name": "com.app.enruta"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "29810957656-1hf8tkqu8ad9fv9bntofoum605ac4gbp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.itscholarbd.fooddelivery",
-            "certificate_hash": "62b82f18b52440a2b38e1fd8b8b96b15c7003913"
-          }
-        },
-        {
-          "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
+        {
+          "current_key": "AIzaSyAsx1HMeHOxaBkYsfNQMo-MtTALcvwy95o"
+        },
         {
           "current_key": "AIzaSyCyT707N_BPjXWKEl2QLJwZaH4V0XeOIMY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:29810957656:android:82c4fccefbb096216fd92d",
+        "mobilesdk_app_id": "1:29810957656:android:50f6c830599261e36fd92d",
         "android_client_info": {
-          "package_name": "com.example.enruta"
+          "package_name": "com.app.itscholarbd.fooddelivery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "29810957656-151iqlp3ovsuvfrpmn7k4h70dlbi91r8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbd.fooddelivery",
+            "certificate_hash": "aa2bb295f9338889b839f647f0e658c91ca01ece"
+          }
+        },
+        {
+          "client_id": "29810957656-cslhvk5nst9d9akg0ukmpddhlphqc6dq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbd.fooddelivery",
+            "certificate_hash": "cefa96c5d06f2d5dbc30d9ba3e84aedf57ff471d"
+          }
         }
       ],
       "api_key": [
+        {
+          "current_key": "AIzaSyAsx1HMeHOxaBkYsfNQMo-MtTALcvwy95o"
+        },
         {
           "current_key": "AIzaSyCyT707N_BPjXWKEl2QLJwZaH4V0XeOIMY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "29810957656-pmalesgc2v4iqta00huu94tkfdhg7rt6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
