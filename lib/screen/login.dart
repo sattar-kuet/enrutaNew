@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/helper/style.dart';
@@ -21,6 +21,7 @@ import '../helper/helper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:enruta/helper/FacebookLogin.dart';
 import 'package:http/http.dart' as http;
+import 'package:apple_sign_in/apple_sign_in.dart' as applesignin;
 
 // class LoginPage extends GetWidget<LoginController> {
 // class LoginPage extends StatelessWidget {
@@ -101,6 +102,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    if(Platform.isIOS){                                                      //check for ios if developing for both android & ios
+      applesignin.AppleSignIn.onCredentialRevoked.listen((_) {
+        print("Credentials revoked");
+      });
+    }
 
     // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
     //   setState(() {
@@ -532,6 +538,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
+
+              SizedBox(
+                height: 20,
+              ),
+              FadeAnimation(
+                  1.9,
+                  applesignin.AppleSignInButton(
+                    style: applesignin.ButtonStyle.black,
+                    type: applesignin.ButtonType.continueButton,
+                    onPressed: appleLogIn,
+                  )),
               SizedBox(
                 height: 20,
               ),
@@ -706,6 +723,29 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> handleSignOut() async {
     googleSignIn.disconnect();
   }
+
+  Future<Null> appleLogIn() async {
+    if(await applesignin.AppleSignIn.isAvailable()) {
+      final applesignin.AuthorizationResult result = await applesignin.AppleSignIn.performRequests([
+        applesignin.AppleIdRequest(requestedScopes: [applesignin.Scope.email, applesignin.Scope.fullName])
+      ]);
+      switch (result.status) {
+        case applesignin.AuthorizationStatus.authorized:
+          print(String.fromCharCodes(result.credential.identityToken),);
+          break;//All the required credentials
+        case applesignin.AuthorizationStatus.error:
+          print("Sign in failed: ${result.error.localizedDescription}");
+          break;
+        case applesignin.AuthorizationStatus.cancelled:
+          print('User cancelled');
+          break;
+      }
+    }else{
+      print('Apple SignIn is not available for your device');
+    }
+
+  }
+
 }
 
 // e7:61:78:2b:d5:fb:90:90:03:8a:43:61:35:3d:e8:88:59:8e:ef:54
