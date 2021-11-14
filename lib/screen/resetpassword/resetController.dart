@@ -64,7 +64,7 @@ class ResetController extends GetxController {
     var convertedDatatojson;
     try {
       String url =
-          'http://enruta.itscholarbd.com/api/v2' + '/passwordResetRequest';
+          'https://enruta.itscholarbd.com/api/v2' + '/passwordResetRequest';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"}, body: {'email': email});
       convertedDatatojson = jsonDecode(response.body);
@@ -102,11 +102,11 @@ class ResetController extends GetxController {
   }
 
   void setPassword(var pass) async {
-    // http://enruta.itscholarbd.com/api/v2/
+    // https://enruta.itscholarbd.com/api/v2/
 
     var convertedDatatojson;
     try {
-      String url = 'http://enruta.itscholarbd.com/api/v2' + '/resetPassword';
+      String url = 'https://enruta.itscholarbd.com/api/v2' + '/resetPassword';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
           body: {'code': code.value, 'password': pass});

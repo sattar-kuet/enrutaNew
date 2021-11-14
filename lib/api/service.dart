@@ -16,40 +16,40 @@ import 'package:get/get.dart' as g;
 import 'package:http/http.dart' as http;
 
 class Service {
-  static const String url = 'http://enruta.itscholarbd.com/api/v2/categories';
+  static const String url = 'https://enruta.itscholarbd.com/api/v2/categories';
 
-  static const String urls = 'http://enruta.itscholarbd.com/api/v2/nearByShop';
+  static const String urls = 'https://enruta.itscholarbd.com/api/v2/nearByShop';
 
   static const String getAllorderUrl =
-      'http://enruta.itscholarbd.com/api/v2/myOrder';
+      'https://enruta.itscholarbd.com/api/v2/myOrder';
 
   static const String getCurentOrderUrl =
-      'http://enruta.itscholarbd.com/api/v2/myCurrentOrder';
+      'https://enruta.itscholarbd.com/api/v2/myCurrentOrder';
 
   static const String getPopularShopUrl =
-      'http://enruta.itscholarbd.com/api/v2/nearByPopularShop';
+      'https://enruta.itscholarbd.com/api/v2/nearByPopularShop';
 
   static const String placeOrderurls =
-      'http://enruta.itscholarbd.com/api/v2/placeOrder';
+      'https://enruta.itscholarbd.com/api/v2/placeOrder';
   static const String us =
-      'http://enruta.itscholarbd.com/api/v2/getProductByShopId';
-  static const String baseUrl = 'http://enruta.itscholarbd.com/api/v2/';
+      'https://enruta.itscholarbd.com/api/v2/getProductByShopId';
+  static const String baseUrl = 'https://enruta.itscholarbd.com/api/v2/';
 
-  static const String base_url = 'http://enruta.itscholarbd.com';
+  static const String base_url = 'https://enruta.itscholarbd.com';
 
   static const String toggleFavorite =
-      'http://enruta.itscholarbd.com/api/v2/toggleFavourite';
+      'https://enruta.itscholarbd.com/api/v2/toggleFavourite';
 
   static const String getOffersUrl =
-      'http://enruta.itscholarbd.com/api/v2/getOffers';
+      'https://enruta.itscholarbd.com/api/v2/getOffers';
 
   static const String getOrderDetailsApi =
-      'http://enruta.itscholarbd.com/api/v2/getOrderByOrderId';
+      'https://enruta.itscholarbd.com/api/v2/getOrderByOrderId';
 
   static const String getVoucherUrl =
-      'http://enruta.itscholarbd.com/api/v2/getVoucherByUserId';
+      'https://enruta.itscholarbd.com/api/v2/getVoucherByUserId';
   static const String addorupdaterivew =
-      'http://enruta.itscholarbd.com/api/v2/addORupdateReview';
+      'https://enruta.itscholarbd.com/api/v2/addORupdateReview';
 
   static Future<Respons> addorupdateReview(AddReview model) async {
     var data = json.encode(model);
@@ -122,7 +122,7 @@ class Service {
         // final response = await http.get(uri, headers: headers);
 
         final response = await http.post(
-          "http://enruta.itscholarbd.com/api/v2/getProductByShopId",
+          "https://enruta.itscholarbd.com/api/v2/getProductByShopId",
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

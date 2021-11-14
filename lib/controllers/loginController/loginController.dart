@@ -72,7 +72,7 @@ class LoginController extends GetxController {
   void login(String email, [String password]) async {
     var convertedDatatojson;
     try {
-      String url = 'http://enruta.itscholarbd.com/api/v2' + '/login';
+      String url = 'https://enruta.itscholarbd.com/api/v2' + '/login';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
           body: {'login': email, 'password': password});
@@ -155,7 +155,8 @@ class LoginController extends GetxController {
     // gid:kamal@gmail.com, name: kamal
     var convertedDatatojson;
     try {
-      String url = 'http://enruta.itscholarbd.com/api/v2' + '/signupWithGoogle';
+      String url =
+          'https://enruta.itscholarbd.com/api/v2' + '/signupWithGoogle';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
           body: {'gid': email, 'name': name});
@@ -212,7 +213,7 @@ class LoginController extends GetxController {
     var convertedDatatojson;
     try {
       String url =
-          'http://enruta.itscholarbd.com/api/v2' + '/signupWithFacebook';
+          'https://enruta.itscholarbd.com/api/v2' + '/signupWithFacebook';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
           body: {'fid': fid, 'name': name});

@@ -396,7 +396,7 @@ class _MyAccountState extends State<MyAccount> {
       var request = http.MultipartRequest(
           'POST',
           Uri.parse(
-              "http://enruta.itscholarbd.com/api/v2/updateProfilePicture"));
+              "https://enruta.itscholarbd.com/api/v2/updateProfilePicture"));
       print('path = $imageF');
       request.files.add(
           await http.MultipartFile.fromPath('avatar', imageF.path.toString()));
@@ -405,7 +405,7 @@ class _MyAccountState extends State<MyAccount> {
           await http.Response.fromStream(await request.send());
       if (response.statusCode == 200) {
         final response = await http.post(
-            Uri.parse('http://enruta.itscholarbd.com/api/v2/getUser'),
+            Uri.parse('https://enruta.itscholarbd.com/api/v2/getUser'),
             headers: {"Accept": "Application/json"},
             body: {'email': '${dController.email.value}'});
         if (response.statusCode == 200) {
@@ -614,7 +614,7 @@ class _MyAccountState extends State<MyAccount> {
                       color: Color(Helper.getHexToInt("#22242A"))),
                 )),
             Container(
-                height: 50,   
+                height: 50,
                 width: Get.width,
                 child: Row(
                   children: [

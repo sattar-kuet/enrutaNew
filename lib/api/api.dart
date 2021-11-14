@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 // ignore: non_constant_identifier_names
-final String BASE_URL = 'http://enruta.itscholarbd.com/api/v2';
+final String BASE_URL = 'https://enruta.itscholarbd.com/api/v2';
 
 Future loginUser(String email, String password) async {
   String url = BASE_URL + '/login';
@@ -26,7 +26,7 @@ Future loginUser(String email, String password) async {
 
 Future<Response> sendForm(
     String url, Map<String, dynamic> data, Map<String, File> files) async {
-  String url = 'http://enruta.itscholarbd.com/api/v2/signup';
+  String url = 'https://enruta.itscholarbd.com/api/v2/signup';
   // Map<String, File> f = FileImage(File(files.path));
   Map<String, MultipartFile> fileMap = {};
   for (MapEntry fileEntry in files.entries) {
@@ -75,7 +75,7 @@ Future<dynamic> registration(String name, String address, String email,
     _imageFile = await getImageFileFromAssets("assets/images/group4320.png");
   }
   var request = http.MultipartRequest(
-      'POST', Uri.parse("http://enruta.itscholarbd.com/api/v2/signup"));
+      'POST', Uri.parse("https://enruta.itscholarbd.com/api/v2/signup"));
   print('path = $_imageFile');
   request.files.add(
       await http.MultipartFile.fromPath('avatar', _imageFile.path.toString()));
@@ -103,10 +103,10 @@ Future<dynamic> registration(String name, String address, String email,
 //     return jsonDecode(response.body);
 //   }
 
-// http://enruta.itscholarbd.com/api/v2/signup [POST]
+// https://enruta.itscholarbd.com/api/v2/signup [POST]
 }
 
-const baseUrl = "http://enruta.itscholarbd.com/api";
+const baseUrl = "https://enruta.itscholarbd.com/api";
 
 class API {
   static Future categoryList() {
@@ -119,7 +119,7 @@ class API {
 }
 
 Future<List<Category>> categoryList() async {
-  var url = 'http://enruta.itscholarbd.com/api/v2/categories';
+  var url = 'https://enruta.itscholarbd.com/api/v2/categories';
   //encode Map to JSON
   var response = await http.get(
     url,

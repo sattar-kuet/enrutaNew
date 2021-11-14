@@ -10,7 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TestController extends GetxController {
-  static const String url = 'http://enruta.itscholarbd.com/api/v2/categories';
+  static const String url = 'https://enruta.itscholarbd.com/api/v2/categories';
 
   // ignore: deprecated_member_use
   var category = List<Category>().obs;
