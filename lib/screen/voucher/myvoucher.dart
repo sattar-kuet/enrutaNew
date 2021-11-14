@@ -81,14 +81,14 @@ class MyVoucher extends StatelessWidget {
                                               .typography
                                               .dense
                                               // ignore: deprecated_member_use
-                                              .display1
+                                              .headline4
                                               .copyWith(
                                                   color: Color(0xff9da9c7)),
                                           subtitleTextStyle: Theme.of(context)
                                               .typography
                                               .dense
                                               // ignore: deprecated_member_use
-                                              .body2
+                                              .bodyText1
                                               .copyWith(
                                                   color: Color(0xffabb8d6)))),
                                 );

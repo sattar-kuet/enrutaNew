@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '3'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '1.0.0'
 }
 
 apply plugin: 'com.android.application'
@@ -44,7 +44,10 @@ android {
     }
 
     defaultConfig {
+<<<<<<< HEAD
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+=======
+>>>>>>> origin/feature/config_release
         applicationId "com.app.itscholarbd.fooddelivery"
         minSdkVersion 21
         targetSdkVersion 30
@@ -67,10 +70,43 @@ android {
    }
 
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile file("signing/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+
         release {
+<<<<<<< HEAD
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+=======
+            storeFile file("signing/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+>>>>>>> origin/feature/config_release
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
@@ -88,8 +124,6 @@ dependencies {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
-
-
 
 
 // e7:61:78:2b:d5:fb:90:90:03:8a:43:61:35:3d:e8:88:59:8e:ef:54

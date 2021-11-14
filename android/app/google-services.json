@@ -12,8 +12,10 @@
           "package_name": "com.app.itscholarbd.fooddelivery"
         }
       },
-      "oauth_client": [
+      "oauth_client": [],
+      "api_key": [
         {
+<<<<<<< HEAD
           "client_id": "467898034236-do7e8fsoppahftcrelcphmnbb31e1hbn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -29,16 +31,65 @@
       "api_key": [
         {
           "current_key": "AIzaSyARvB5EhNvXNEjzif6BviT4AU0vkXPfF5s"
+=======
+          "current_key": "AIzaSyAsx1HMeHOxaBkYsfNQMo-MtTALcvwy95o"
+        },
+        {
+          "current_key": "AIzaSyCyT707N_BPjXWKEl2QLJwZaH4V0XeOIMY"
+>>>>>>> origin/feature/config_release
         }
       ],
       "services": {
         "appinvite_service": {
+<<<<<<< HEAD
           "other_platform_oauth_client": [
             {
               "client_id": "467898034236-e9d5e7hfdvkci2erne8iogsukajkdbjd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
+=======
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29810957656:android:50f6c830599261e36fd92d",
+        "android_client_info": {
+          "package_name": "com.app.itscholarbd.fooddelivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29810957656-151iqlp3ovsuvfrpmn7k4h70dlbi91r8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbd.fooddelivery",
+            "certificate_hash": "aa2bb295f9338889b839f647f0e658c91ca01ece"
+          }
+        },
+        {
+          "client_id": "29810957656-cslhvk5nst9d9akg0ukmpddhlphqc6dq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbd.fooddelivery",
+            "certificate_hash": "cefa96c5d06f2d5dbc30d9ba3e84aedf57ff471d"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsx1HMeHOxaBkYsfNQMo-MtTALcvwy95o"
+        },
+        {
+          "current_key": "AIzaSyCyT707N_BPjXWKEl2QLJwZaH4V0XeOIMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+>>>>>>> origin/feature/config_release
         }
       }
     }

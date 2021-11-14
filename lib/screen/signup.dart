@@ -8,6 +8,7 @@ import 'package:enruta/controllers/loginController/loginController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
+import 'package:enruta/screen/permissionCheck.dart';
 import 'package:enruta/widgetview/custom_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -714,12 +715,19 @@ class _SignUpState extends State<SignUp> {
         print(name);
 
         print(image);
-        await Geolocator().getCurrentPosition();
+        // await Geolocator().getCurrentPosition();
+        // var permission = await Geolocator().checkGeolocationPermissionStatus();
+        // if (permission != GeolocationStatus.denied) {
+        //   Get.offAll(HomePage());
+        // } else {
+        //   Get.defaultDialog(title: "Please give Permission first");
+        // }
+        //Get.offAll(HomePage());
         var permission = await Geolocator().checkGeolocationPermissionStatus();
         if (permission != GeolocationStatus.denied) {
           Get.offAll(HomePage());
         } else {
-          Get.defaultDialog(title: "Please give Permission first");
+          Get.offAll(PermissionCheckScreen());
         }
 
         print('''
