@@ -230,13 +230,13 @@ class ProductDetails extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   // ignore: deprecated_member_use
-                  .body1
+                  .bodyText2
                   .merge(TextStyle(fontSize: 16.0)),
             ),
             TextSpan(
                 text: 'More',
                 // ignore: deprecated_member_use
-                style: Theme.of(context).textTheme.body1.merge(
+                style: Theme.of(context).textTheme.bodyText2.merge(
                       TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600,
