@@ -46,12 +46,13 @@ class MenuItemView extends StatelessWidget {
                     child: Padding(
                         padding: const EdgeInsets.only(top: 1),
                         child: Container(
-                          // width: MediaQuery.of(context).size.width / 7,
-                          // height: MediaQuery.of(context).size.height / 7,
+                          width: MediaQuery.of(context).size.width / 10,
+                          height: MediaQuery.of(context).size.width / 10,
                           child: Image.network(categoryData.icon,
-                              alignment: Alignment.center, errorBuilder:
-                                  (BuildContext context, Object exception,
-                                      StackTrace stackTrace) {
+                              alignment: Alignment.center,
+                              fit: BoxFit.contain,
+                              scale: 10.0, errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
                             return Center(
                                 child: Image.asset(
                               "assets/icons/image.png",
