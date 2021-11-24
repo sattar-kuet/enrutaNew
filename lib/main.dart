@@ -1,4 +1,6 @@
 // ignore: unused_import
+import 'dart:io';
+
 import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/loginController/loginBinding.dart';
@@ -17,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:google_sign_in/google_sign_in.dart';
 // ignore: unused_import
+import 'api/httpcert.dart';
 import 'controllers/textController.dart';
 import 'helper/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,6 +30,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.blue, // navigation bar color
     statusBarColor: Color(Helper.getHexToInt("#11C7A1")), // status bar color
