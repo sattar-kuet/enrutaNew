@@ -25,7 +25,9 @@ class HomePageController extends GetxController {
     await Future.delayed(Duration(seconds: 1));
     Service.getcategory().then((values) {
       // todos = values.categories.toList();
-      category.value = values.categories.toList();
+      if (values != null) {
+        category.value = values.categories.toList();
+      }
     });
   }
 

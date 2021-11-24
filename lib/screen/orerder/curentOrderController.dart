@@ -49,12 +49,14 @@ class CurentOrderController extends GetxController {
     isLoading(true);
     try {
       Service().getOrderDetails(id).then((values) async {
-        detailsModel.value.order = values.order;
-        deleveryTime.value =
-            await Service.getTimebyOrder(detailsModel.value.order.id);
+        if (values != null) {
+          detailsModel.value.order = values.order;
+          deleveryTime.value =
+              await Service.getTimebyOrder(detailsModel.value.order.id);
 
-        //order.value = values.order;
-        await getpointerLocation(values.order.lat, values.order.lng);
+          //order.value = values.order;
+          await getpointerLocation(values.order.lat, values.order.lng);
+        }
         // cCont.getShopLocation(order.value.lat, order.value.lng);
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
         //gettotal();

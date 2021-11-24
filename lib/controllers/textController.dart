@@ -94,7 +94,7 @@ class TestController extends GetxController {
 
         //await Future.delayed(Duration(seconds: 1));
         await Service.getPopularShop(id, lat, lo).then((values) {
-          if (!values.isNull) {
+          if (values != null) {
             polularShopList.value = values.data.toList();
           }
           st.value = values.status;
@@ -129,17 +129,19 @@ class TestController extends GetxController {
     var lat = userlat.value;
     var lo = userlong.value;
     Service.createAlbum(userid, lat, lo).then((values) {
-      st.value = values.status;
-      nearbyres.value = values.data;
+      if (values != null) {
+        st.value = values.status;
+        nearbyres.value = values.data;
 
-      print("nearby $nearbyres");
-      print("Sortin");
-      nearbyres.forEach((d) {
-        if (d.shopId == shopid.value) {
-          sendtime.value = d.time;
-          print("XXXX: ${d.time}");
-        }
-      });
+        print("nearby $nearbyres");
+        print("Sortin");
+        nearbyres.forEach((d) {
+          if (d.shopId == shopid.value) {
+            sendtime.value = d.time;
+            print("XXXX: ${d.time}");
+          }
+        });
+      }
     });
   }
 
