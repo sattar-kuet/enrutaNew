@@ -44,10 +44,6 @@ android {
     }
 
     defaultConfig {
-<<<<<<< HEAD
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-=======
->>>>>>> origin/feature/config_release
         applicationId "com.app.itscholarbd.fooddelivery"
         minSdkVersion 21
         targetSdkVersion 30
@@ -79,11 +75,6 @@ android {
         }
 
         release {
-<<<<<<< HEAD
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.release
-=======
             storeFile file("signing/debug.keystore")
             storePassword "android"
             keyAlias "androiddebugkey"
@@ -99,7 +90,6 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
->>>>>>> origin/feature/config_release
         }
         release {
             debuggable false

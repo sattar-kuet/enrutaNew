@@ -57,7 +57,7 @@ class TestController extends GetxController {
       Service.getcategory().then((values) {
         // todos = values.categories.toList();
         category.value = values.categories.toList();
-        // print("category.toList");
+        print("category.toList");
         // print(category.toList);
         // print(category.length);
       });
@@ -87,34 +87,32 @@ class TestController extends GetxController {
     var id = spreferences.getInt("id");
     var lat = userlat.value;
     var lo = userlong.value;
-    // try {
-    // allCurentOrderList.value = [];
-    if (lat > 0) {
-      isLoading(true);
+    try {
+      // allCurentOrderList.value = [];
+      if (lat > 0) {
+        isLoading(true);
 
-      //await Future.delayed(Duration(seconds: 1));
-      await Service.getPopularShop(id, lat, lo).then((values) {
-        // if(!values.isNull){
-        //   polularShopList.value = values.data.toList();
-        // }
-        st.value = values.status;
-        print("$id from getpopularshop ");
+        //await Future.delayed(Duration(seconds: 1));
+        await Service.getPopularShop(id, lat, lo).then((values) {
+          if (!values.isNull) {
+            polularShopList.value = values.data.toList();
+          }
+          st.value = values.status;
+          print("$id from getpopularshop ");
 
-        polularShopList.value = values.data.toList();
-        //print(polularShopList[1]);
+          polularShopList.value = values.data.toList();
+          //print(polularShopList[1]);
 
-        // if(polularShopList.value.length>0){
-        //   curentOrder.value = polularShopList.value[0];
-        // }
-      }).whenComplete(() => orderiscoming(false));
+          if (polularShopList.value.length > 0) {
+            // curentOrder.value = polularShopList.value[0];
+          }
+        }).whenComplete(() => orderiscoming(false));
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      isLoading(false);
     }
-
-    // }catch(e){
-    //   print(e);
-    // }
-    // finally {
-    //   isLoading(false);
-    // }
   }
 
   void getnearByPlace() async {
