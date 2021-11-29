@@ -143,7 +143,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
               //color: Color(Helper.getHexToInt("#929292"))
             ),
-            label: text('Favourite'),
+            label: text('favorite'),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(

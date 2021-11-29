@@ -607,7 +607,7 @@ class _MyAccountState extends State<MyAccount> {
                 height: 40,
                 width: Get.width,
                 child: Text(
-                  text('help_&_legal'),
+                  text(''),
                   style: TextStyle(
                       fontFamily: "Poppinsr",
                       fontSize: 14,
@@ -619,15 +619,15 @@ class _MyAccountState extends State<MyAccount> {
                 child: Row(
                   children: [
                     Center(
-                      child: Image.asset(
-                        'assets/icons/help.png',
-                      ),
+                      // child: Image.asset(
+                      //   'assets/icons/help.png',
+                      // ),
                     ),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          text('help'),
+                          text(''),
                           style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 14,
@@ -649,15 +649,15 @@ class _MyAccountState extends State<MyAccount> {
                 child: Row(
                   children: [
                     Center(
-                      child: Image.asset(
-                        'assets/icons/polices.png',
-                      ),
+                      // child: Image.asset(
+                      //   'assets/icons/polices.png',
+                      // ),
                     ),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          text('polices'),
+                          text(''),
                           style: TextStyle(
                             fontFamily: "Poppins",
                             fontSize: 14,
