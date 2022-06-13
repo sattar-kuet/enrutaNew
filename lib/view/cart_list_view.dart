@@ -3,6 +3,7 @@ import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/Product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CartListView extends StatelessWidget {
   const CartListView(
@@ -32,178 +33,182 @@ class CartListView extends StatelessWidget {
       subtotal.value = (cartData.qty * cartData.price);
     }
 
-    return Container(
-      height: 120,
-      width: MediaQuery.of(context).size.width,
+    return Padding(
+      padding:
+          const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 20.0, right: 20),
       child: Container(
-        margin: EdgeInsets.only(top: 0, bottom: 0, left: 20, right: 20),
-        decoration: BoxDecoration(
-          color: Color(
-            Helper.getHexToInt("#FFFFFF"),
+        height: 100,
+        width: MediaQuery.of(context).size.width,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color(
+              Helper.getHexToInt("#FFFFFF"),
+            ),
+            borderRadius: BorderRadius.circular(10),
           ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: InkWell(
-          onTap: () {
-            // _launchInWebViewOrVC("https://corona.gov.bd/");
-          },
-          child: Stack(
-            children: [
-              // Text("dkfjsldkfj"),
-              Positioned(
-                top: 10,
-                left: 10,
-                bottom: 10,
-                child: Container(
-                  height: 75,
-                  width: 85,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    // image: DecorationImage(
-                    //     image: NetworkImage(cartData.logo), fit: BoxFit.cover),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: cartData.logo.isEmpty
-                        ? Center(
-                            child: Image.asset(
-                              "assets/icons/image.png",
-                              scale: 5,
-                            ),
-                          )
-                        : Image.network(
-                            cartData.logo[0],
-                            fit: BoxFit.fill,
-                            errorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return Center(
-                                  child: Image.asset(
+          child: InkWell(
+            onTap: () {
+              // _launchInWebViewOrVC("https://corona.gov.bd/");
+            },
+            child: Stack(
+              children: [
+                // Text("dkfjsldkfj"),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  bottom: 10,
+                  child: Container(
+                    height: 65,
+                    width: 85,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      // image: DecorationImage(
+                      //     image: NetworkImage(cartData.logo), fit: BoxFit.cover),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: cartData.logo.isEmpty
+                          ? Center(
+                              child: Image.asset(
                                 "assets/icons/image.png",
                                 scale: 5,
-                              ));
-                            },
-                            loadingBuilder: (context, child, progress) {
-                              return progress == null
-                                  ? child
-                                  : Center(child: CircularProgressIndicator());
-                            },
-                          ),
+                              ),
+                            )
+                          : Image.network(
+                              cartData.logo[0],
+                              fit: BoxFit.fill,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
+                                return Center(
+                                    child: Image.asset(
+                                  "assets/icons/image.png",
+                                  scale: 5,
+                                ));
+                              },
+                              loadingBuilder: (context, child, progress) {
+                                return progress == null
+                                    ? child
+                                    : Center(
+                                        child: CircularProgressIndicator());
+                              },
+                            ),
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 15,
-                left: 115,
-                child: Container(
-                  child: Text(
-                    cartData.title,
-                    style: TextStyle(
-                        fontFamily: 'TTCommonsd',
-                        fontSize: 16,
-                        color: Color(Helper.getHexToInt("#959595"))),
+                Positioned(
+                  top: 15,
+                  left: 115,
+                  child: Container(
+                    child: Text(
+                      cartData.title,
+                      style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Color(Helper.getHexToInt("#959595"))),
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 45,
-                left: 115,
-                child: Container(
-                  child: Obx(() => subtotal != null
-                      ? Text(
-                          "\$" + subtotal.toString(),
-                          style: TextStyle(
-                              fontFamily: 'TTCommonsm',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Color(Helper.getHexToInt("#959595"))),
-                        )
-                      : null),
+                Positioned(
+                  top: 70,
+                  left: 115,
+                  child: Container(
+                    child: Obx(() => subtotal != null
+                        ? Text(
+                            "\$ " + subtotal.toString(),
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Color(Helper.getHexToInt("#959595"))),
+                          )
+                        : null),
+                  ),
                 ),
-              ),
-              Positioned(
-                  right: 15,
-                  top: 5,
-                  bottom: 5,
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        child: InkWell(
-                          onTap: () {
-                            print("add");
-                            cartData.qty++;
-                            qt++;
-                            cartController.addtocarts(cartData);
-                            subtotal.value = (cartData.qty * cartData.price);
-                            cartController.totalcalculate();
-                            // GetStorage box = GetStorage();
-                            // box.write("cartList",
-                            //     Get.find<CartController>().cartList);
-                          },
-                          child: Center(
-                              child: Icon(
-                            Icons.add,
-                            size: 25,
-                            color: Color(Helper.getHexToInt("#6E6E6E")),
-                          )),
-                        ),
-                      )),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      // Expanded(
-                      //   child:
-
-                      Obx(
-                        () => Container(
-                          width: 21,
-                          height: 25,
-                          decoration: BoxDecoration(
-                              color: Color(Helper.getHexToInt("#3AD8B4")),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Center(
-                              child: Text(
-                            qt.toString(),
-                            // cartController.countqty.toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontFamily: 'TTCommonsm', color: Colors.white),
-                          )),
-                        ),
-                      ),
-
-                      // ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            if (cartData.qty > 1) {
-                              cartData.qty--;
-                              qt--;
-                              subtotal.value = (cartData.qty * cartData.price);
+                Positioned(
+                    right: 15,
+                    top: 5,
+                    bottom: 5,
+                    child: Column(
+                      children: [
+                        Expanded(
+                            child: Container(
+                          child: InkWell(
+                            onTap: () {
+                              print("add");
+                              cartData.qty++;
+                              qt++;
                               cartController.addtocarts(cartData);
+                              subtotal.value = (cartData.qty * cartData.price);
                               cartController.totalcalculate();
                               // GetStorage box = GetStorage();
                               // box.write("cartList",
                               //     Get.find<CartController>().cartList);
-                            }
-
-                            // print("remove");
-                          },
-                          child: Center(
-                            child: Icon(
-                              Icons.remove,
+                            },
+                            child: Center(
+                                child: Icon(
+                              Icons.add,
                               size: 25,
                               color: Color(Helper.getHexToInt("#6E6E6E")),
+                            )),
+                          ),
+                        )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        // Expanded(
+                        //   child:
+
+                        Obx(
+                          () => Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                                color: Color(Helper.getHexToInt("#3AD8B4")),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Center(
+                                child: Text(
+                              qt.toString(),
+                              // cartController.countqty.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontFamily: 'TTCommonsm',
+                                  color: Colors.white),
+                            )),
+                          ),
+                        ),
+
+                        // ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if (cartData.qty > 1) {
+                                cartData.qty--;
+                                qt--;
+                                subtotal.value =
+                                    (cartData.qty * cartData.price);
+                                cartController.addtocarts(cartData);
+                                cartController.totalcalculate();
+                                // GetStorage box = GetStorage();
+                                // box.write("cartList",
+                                //     Get.find<CartController>().cartList);
+                              }
+
+                              // print("remove");
+                            },
+                            child: Center(
+                              child: Icon(
+                                Icons.remove,
+                                size: 25,
+                                color: Color(Helper.getHexToInt("#6E6E6E")),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  )),
-            ],
+                      ],
+                    )),
+              ],
+            ),
           ),
         ),
       ),

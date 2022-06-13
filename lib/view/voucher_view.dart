@@ -65,6 +65,7 @@ class VoucherView extends StatelessWidget {
                       Positioned(
                         top: 13,
                         left: 16,
+                     
                         child: Container(
                             height: 20,
                             decoration: BoxDecoration(
@@ -84,6 +85,7 @@ class VoucherView extends StatelessWidget {
                       Positioned(
                           top: 38,
                           left: 16,
+                          
                           child: Center(
                             child: Text(
                               voucherData.code ?? "",
@@ -96,6 +98,7 @@ class VoucherView extends StatelessWidget {
                       Positioned(
                         bottom: 21,
                         left: 16,
+                        right: 20,
                         child: Center(
                             child: Text(
                           "\$" + voucherData.minOrder.toString() ??
@@ -108,8 +111,8 @@ class VoucherView extends StatelessWidget {
                         )),
                       ),
                       Positioned(
-                          bottom: 21,
-                          right: 16,
+                          bottom: 20,
+                          right: 20,
                           child: Center(
                             child: Text(
                               voucherData.validity.toString() ?? "",
@@ -121,7 +124,7 @@ class VoucherView extends StatelessWidget {
                           )),
                       Positioned(
                           top: 13,
-                          right: 16,
+                          right: 20,
                           child: Container(
                             height: 25,
                             // width: 25,

@@ -1,62 +1,74 @@
+import 'package:empty_widget/empty_widget.dart';
 import 'package:enruta/controllers/language_controller.dart';
+import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/near_by_place_data.dart';
+import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
+import 'package:enruta/screen/drawer/myDrawerPage.dart';
+import 'package:enruta/screen/myFavorite/myFavoriteView.dart';
 import 'package:enruta/view/category_list_view.dart';
-import 'package:enruta/view/item_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class MyFavorite extends StatelessWidget {
+class MyFavorite extends StatefulWidget {
+  bool isFromBottom;
+  MyFavorite({this.isFromBottom = true});
   // List<VoucherListData> voucherList = VoucherListData.voucherList;
   //List<ItemListData> itemList = ItemListData.itemList;
 
+  @override
+  _MyFavoriteState createState() => _MyFavoriteState();
+}
+
+class _MyFavoriteState extends State<MyFavorite> {
   final language = Get.put(LanguageController());
+
   String text(String key) {
     return language.text(key);
   }
 
   final tController = Get.put(TestController());
-  // ignore: deprecated_member_use
-  RxList<Datum> itemList = List<Datum>().obs;
 
+  fetchData() async {
+    await tController.getFavList();
+
+    // itemList.refresh();
+  }
+
+  GlobalKey<ScaffoldState> key = GlobalKey();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fetchData();
+  }
+
+  final pcontroller = Get.put(ProductController());
   @override
   Widget build(BuildContext context) {
-    if (itemList.isEmpty == true) {
-      tController.getnearByPlace();
-      // itemList.refresh();
-      tController.nearbyres.forEach((u) {
-        if (u.favorite == true) {
-          print('loop = = $u');
-          itemList.add(u);
-        }
-      });
-    } else {
-      //  tController.getPopularOrder();
-      //itemList.refresh();
-      tController.getnearByPlace();
-      itemList.clear();
-
-      tController.nearbyres.forEach((u) {
-        if (u.favorite == true) {
-          print('loop = = $u');
-          itemList.add(u);
-        }
-      });
-    }
     return Scaffold(
+        key: key,
+        drawer: MyDrawerPage(),
         appBar: AppBar(
-          toolbarHeight: 90,
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-              // Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-          ),
+          toolbarHeight: 80,
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Get.back();
+          //     // Navigator.of(context).pop();
+          //   },
+          //   icon: Icon(Icons.arrow_back_ios),
+          //   color: Colors.white,
+          // ),
+          leading: widget.isFromBottom
+              ? Container()
+              : IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.topLeft, colors: [
@@ -75,21 +87,118 @@ class MyFavorite extends StatelessWidget {
                   fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
           centerTitle: true,
         ),
-        body: Container(
-            color: cardbackgroundColor,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: ListView(children: [
-              restaurant(text('restaurant'), context),
-              // restaurant(text('retails')),
-              // restaurant(text('liquor')),
-              // restaurant(text('pharmacies')),
-              // Container(
-              //     margin: EdgeInsets.only(top: 5),
-              //     child: Column(children: [
-              //       Text("Restaurant"),
-              //     ]))
-            ])));
+        body: Column(
+          children: [
+            const SizedBox(height: 10),
+            Expanded(
+              child: Obx(() => tController.spinFav.value
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : tController.nearFavList.isEmpty
+                      ? Container(
+                          margin: EdgeInsets.all(50),
+                          child: Center(
+                              child: EmptyWidget(
+                                  title: text('no_favorite'),
+                                  subTitle:
+                                      text('no_current_favorite_available_yet'),
+                                  // image: 'assets/images/userIcon.png',
+                                  image: null,
+                                  packageImage: PackageImage.Image_2,
+                                  // ignore: deprecated_member_use
+                                  titleTextStyle: Theme.of(context)
+                                      .typography
+                                      .dense
+                                      // ignore: deprecated_member_use
+                                      .headline4
+                                      .copyWith(color: Color(0xff9da9c7)),
+                                  // ignore: deprecated_member_use
+                                  subtitleTextStyle: Theme.of(context)
+                                      .typography
+                                      .dense
+                                      // ignore: deprecated_member_use
+                                      .bodyText1
+                                      .copyWith(color: Color(0xffabb8d6)))),
+                        )
+                      : Expanded(
+                          child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 5,
+                                childAspectRatio: 0.9 * 0.8,
+                                crossAxisSpacing: 5,
+                              ),
+                              itemCount: tController.nearFavList.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                // return ItemListView(
+                                //   itemData: itemList[index],
+                                // );
+                                return MyFavoriteView(
+                                  itemData: tController.nearFavList[index],
+                                  callback: () {
+                                    print(
+                                        tController.nearFavList[index].shopId);
+                                    // ignore: unused_local_variable
+
+                                    var status = tController
+                                            .nearFavList[index].isFavorite.value
+                                        ? 0
+                                        : 1;
+                                    print(' STATUS ==$status');
+                                    print(
+                                        ' STATUS ==${tController.nearFavList[index].shopId}');
+                                    pcontroller.sendfavorit(
+                                        tController.nearFavList[index].shopId,
+                                        status);
+
+                                    tController.nearFavList[index].isFavorite
+                                        .toggle();
+                                    tController.nearFavList[index].favorite =
+                                        !tController
+                                            .nearFavList[index].favorite;
+                                    if (!tController
+                                        .nearFavList[index].isFavorite.value) {
+                                      tController.nearFavList.removeAt(index);
+                                        tController.polularShopList
+                                          .forEach((element) {
+                                        if (element.catId == tController
+                                                .nearFavList[index].catId) {
+                                          element.isFavorite.toggle();
+                                          element.favorite = !element.favorite;
+                                        }
+                                      });
+                                    }
+
+                                    !tController
+                                            .nearFavList[index].isFavorite.value
+                                        ? Get.snackbar(
+                                            'Added in Favourites', '',
+                                            colorText: Colors.white)
+                                        : Get.snackbar(
+                                            'Removed from Favourites', '',
+                                            colorText: Colors.white);
+                                    // SharedPreferences pref = await SharedPreferences.getInstance();
+                                    // if(itemData.isFavorite.value == true){
+                                    //   fav.add(itemData);
+                                    // }else{
+                                    //   fav.remove(itemData);
+                                    // }
+                                    // pref.setStringList('FAV_List', fav);
+                                    // return CategoryListView(
+                                    //   itemData: itemList[index],
+                                    //   callback: () {
+                                    //     setState(() {});
+                                  },
+                                );
+                              }),
+                        )),
+            ),
+            !widget.isFromBottom ? Container() : BottomNavigation(key),
+          ],
+        ));
   }
 
   Widget restaurant(var title, context) {
@@ -101,39 +210,16 @@ class MyFavorite extends StatelessWidget {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(7)),
         child: Column(
           children: [
-            Container(
-                height: 40,
-                width: Get.width,
-                child: Text(
-                  title,
-                  style: TextStyle(
-                      fontFamily: "Poppinsr",
-                      fontSize: 14,
-                      color: Color(Helper.getHexToInt("#22242A"))),
-                )),
-            Expanded(child: Obx(() {
-              return Container(
-                height: 150,
-                decoration: BoxDecoration(),
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.9 * 0.8,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemCount: itemList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      // return ItemListView(
-                      //   itemData: itemList[index],
-                      // );
-                      return CategoryListView(
-                        itemData: itemList[index],
-                      );
-                    }),
-              );
-            })),
+            // Container(
+            //     height: 40,
+            //     width: Get.width,
+            //     child: Text(
+            //       title,
+            //       style: TextStyle(
+            //           fontFamily: "Poppinsr",
+            //           fontSize: 14,
+            //           color: Color(Helper.getHexToInt("#22242A"))),
+            //     )),
           ],
         ),
       ),

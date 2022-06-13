@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/login.dart';
 import 'package:enruta/screen/resetpassword/newpassword.dart';
 import 'package:enruta/screen/resetpassword/verification.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +62,7 @@ class ResetController extends GetxController {
     signupimage.value = spreferences.get("image");
   }
 
-  void resetPassword(String email) async {
+  Future<void> resetPassword(String email) async {
     var convertedDatatojson;
     try {
       String url =
@@ -68,30 +70,32 @@ class ResetController extends GetxController {
       final response = await http.post(url,
           headers: {"Accept": "Application/json"}, body: {'email': email});
       convertedDatatojson = jsonDecode(response.body);
-      var result = await convertedDatatojson['status'];
-      var codes = await convertedDatatojson['code'];
+      var result = convertedDatatojson['status'];
+      var codes = convertedDatatojson['code'];
       code.value = codes;
       if (result == 1 && result != null) {
-        Get.to(Verification());
+        Get.to(Verification(email));
       } else {
-        Get.snackbar("email not in our service ", "",
-            snackPosition: SnackPosition.BOTTOM);
+        throw convertedDatatojson['response'];
       }
     } catch (e) {
-      Get.snackbar("input valid email ", e.message,
-          snackPosition: SnackPosition.BOTTOM);
+      rethrow;
     }
   }
 
-  void checkverificationCode() {
-    var p =
-        "${cod1.value.text}${cod2.value.text}${cod3.value.text}${cod4.value.text}${cod5.value.text}${cod6.value.text}";
+  void checkverificationCode(String otpCode) {
+    // var p =
+    //     "${cod1.value.text}${cod2.value.text}${cod3.value.text}${cod4.value.text}${cod5.value.text}${cod6.value.text}";
     // print(p);
     // print(code.value.toString());
-    if (code.value == p) {
+    if (otpCode == code.value) {
       Get.to(NewPassword());
     } else {
-      Get.snackbar(" ", "your verify code dose not match");
+      Get.snackbar(
+        "",
+        "This code is already used OR invalid",
+        colorText: Colors.red,
+      );
     }
   }
 
@@ -113,17 +117,26 @@ class ResetController extends GetxController {
       convertedDatatojson = jsonDecode(response.body);
       var result = await convertedDatatojson['status'];
       // var codes = await convertedDatatojson['code'];
+
       // code.value = codes;
       if (result == 1 && result != null) {
         // Get.to(Verification());
         Get.offAll(LoginPage());
       } else {
-        Get.snackbar("password not set ", "",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          convertedDatatojson['status_text'],
+          "",
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.red,
+        );
       }
     } catch (e) {
-      Get.snackbar("input valid email ", e.message,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        "input valid email ",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.red,
+      );
     }
   }
 }

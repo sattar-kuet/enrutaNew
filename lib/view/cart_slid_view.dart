@@ -111,7 +111,7 @@ class CartSlidView extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 5,
+              bottom: 10,
               left: 100,
               height: 25,
               child: Container(
@@ -132,7 +132,7 @@ class CartSlidView extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 5,
+              bottom: 10,
               right: 10,
               height: 25,
               width: 25,

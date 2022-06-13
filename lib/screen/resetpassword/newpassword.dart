@@ -61,8 +61,7 @@ class _NewPassword extends State<NewPassword> {
         ),
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text(
-            text('new_password'),
+        title: Text(text('new_password'),
             style: TextStyle(
                 fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
         centerTitle: true,
@@ -92,7 +91,7 @@ class _NewPassword extends State<NewPassword> {
 
             Container(
               height: 60,
-              padding: EdgeInsets.only(top: 10, left: 20),
+              padding: EdgeInsets.only(top: 10, left: 20, right: 20),
               child: Text(
                 text('enter_a_new_password'),
                 style: TextStyle(
@@ -269,7 +268,8 @@ class _NewPassword extends State<NewPassword> {
 
                         ),
                     controller: confiremPassword,
-                    obscureText: hintText == text('password') ? _isHidden : false,
+                    obscureText:
+                        hintText == text('password') ? _isHidden : false,
                   ),
                 )
               ],
@@ -310,7 +310,8 @@ class _NewPassword extends State<NewPassword> {
                               : Icon(Icons.visibility),
                         )),
                     controller: scontroller,
-                    obscureText: hintText == text('new_password') ? _isHidden : false,
+                    obscureText:
+                        hintText == text('new_password') ? _isHidden : false,
                   ),
                 )
               ],
@@ -351,8 +352,9 @@ class _NewPassword extends State<NewPassword> {
                               : Icon(Icons.visibility),
                         )),
                     controller: scontroller,
-                    obscureText:
-                        hintText == text('conform_password') ? _isHidden1 : false,
+                    obscureText: hintText == text('conform_password')
+                        ? _isHidden1
+                        : false,
                   ),
                 )
               ],
@@ -373,13 +375,20 @@ class _NewPassword extends State<NewPassword> {
           Expanded(
             child: InkWell(
               onTap: () {
+                if (passwordController.text.isEmpty ||
+                    confiremPassword.text.isEmpty) {
+                  Get.snackbar("", text('Please input the password.'),
+                      colorText: Colors.red);
+                  return;
+                }
                 var a = passwordController.text;
                 var b = confiremPassword.text;
                 if (a == b) {
                   print(a);
                   pController.setPassword(a);
                 } else {
-                  Get.snackbar("", text('your_password_doesnt_match'));
+                  Get.snackbar("", text('your_password_doesnt_match'),
+                      colorText: Colors.red);
                 }
               },
               child: Container(

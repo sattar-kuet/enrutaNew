@@ -48,22 +48,26 @@ class AddReview {
   int shop_id;
   double rating;
   String comment;
+  int order_id;
   AddReview({
     this.user_id,
     this.shop_id,
     this.rating,
     this.comment,
+    this.order_id
   });
   factory AddReview.fromJson(Map<String, dynamic> json) => AddReview(
       user_id: json["user_id"],
       shop_id: json["shop_id"],
       rating: json["rating"],
+      order_id: json['order_id'],
       comment: json["comment"]);
 
   Map<String, dynamic> toJson() => {
         "user_id": user_id,
         "shop_id": shop_id,
         "rating": rating,
-        "comment": comment
+        "comment": comment,
+        "order_id":order_id
       };
 }

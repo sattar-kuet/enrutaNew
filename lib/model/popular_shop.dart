@@ -51,7 +51,7 @@ class Datums {
   int userId;
   String name;
   var vat;
-  int deliveryCharge;
+  double deliveryCharge;
   bool favorite;
   String time;
   String logo;
@@ -68,8 +68,8 @@ class Datums {
         catId: json["catId"],
         userId: json["userId"],
         name: json["name"],
-        vat: json["vat"],
-        deliveryCharge: json["delivery_charge"],
+        vat: json["vat"].toDouble(),
+        deliveryCharge: json["delivery_charge"].toDouble(),
         favorite: json["favorite"],
         time: json["time"],
         logo: json["logo"],

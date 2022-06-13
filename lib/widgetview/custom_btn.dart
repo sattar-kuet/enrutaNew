@@ -55,12 +55,11 @@ class _CustomButtonState extends State<CustomButton> {
               setState(() => isloading = true);
               try {
                 await widget.onclick();
-                await Future.delayed(Duration(seconds: 3));
+                await Future.delayed(Duration(seconds: 1));
               } catch (e) {
                 print(e);
-                setState(() => isloading = false);
               } finally {
-                setState(() => isloading = false);
+                if (mounted) setState(() => isloading = false);
               }
             }
           },

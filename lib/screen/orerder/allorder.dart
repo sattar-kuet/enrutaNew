@@ -3,6 +3,8 @@ import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/my_order_list_data.dart';
+import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
+import 'package:enruta/screen/drawer/myDrawerPage.dart';
 import 'package:enruta/screen/orerder/curentOrderController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class AllOrder extends StatelessWidget {
     return language.text(key);
   }
 
+  GlobalKey _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -26,15 +29,18 @@ class AllOrder extends StatelessWidget {
 
     detailsController.getCurentOrder();
     return Scaffold(
+        key: _key,
+        drawer: MyDrawerPage(),
         appBar: AppBar(
           toolbarHeight: 90,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   icon: Icon(Icons.arrow_back_ios),
+          //   color: Colors.white,
+          // ),
+          leading: Container(),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.topLeft, colors: [
@@ -64,21 +70,41 @@ class AllOrder extends StatelessWidget {
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: 20, top: 25, right: 5, bottom: 10),
-                            child: Text(
-                              text('current_orders'),
-                              style: TextStyle(
-                                  fontFamily: "TTCommonsd",
-                                  fontSize: 16,
-                                  color: Color(Helper.getHexToInt("#000000"))
-                                      .withOpacity(0.8)),
-                            ),
-                          ),
+                          Obx(() {
+                            return detailsController.isLoading.value &&
+                                    detailsController
+                                        // ignore: invalid_use_of_protected_member
+                                        .allCurentOrderList
+                                        // ignore: invalid_use_of_protected_member
+                                        .value
+                                        .isEmpty
+                                ? Container()
+                                : Container(
+                                    margin: EdgeInsets.only(
+                                        left: 20,
+                                        top: 25,
+                                        right: 5,
+                                        bottom: 10),
+                                    child: Text(
+                                      text('current_orders'),
+                                      style: TextStyle(
+                                          fontFamily: "TTCommonsd",
+                                          fontSize: 16,
+                                          color: Color(
+                                                  Helper.getHexToInt("#000000"))
+                                              .withOpacity(0.8)),
+                                    ),
+                                  );
+                          }),
                           Obx(() {
                             if (detailsController.isLoading.value) {
-                              return Center(child: CircularProgressIndicator());
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    top:
+                                        MediaQuery.of(context).size.height / 3),
+                                child:
+                                    Center(child: CircularProgressIndicator()),
+                              );
                             } else {
                               return detailsController
                                           // ignore: invalid_use_of_protected_member
@@ -87,28 +113,33 @@ class AllOrder extends StatelessWidget {
                                           .value
                                           .length >
                                       0
-                                  ? ListView(
-                                      shrinkWrap: true,
-                                      physics: ClampingScrollPhysics(),
-                                      children: List.generate(
-                                          detailsController.allCurentOrderList
-                                              .length, (index) {
-                                        return CurentOrderView(
-                                          // ignore: invalid_use_of_protected_member
-                                          orderModel: detailsController
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 70),
+                                      child: ListView(
+                                          shrinkWrap: true,
+                                          physics: ClampingScrollPhysics(),
+                                          children: List.generate(
+                                              detailsController
+                                                  .allCurentOrderList
+                                                  .length, (index) {
+                                            return CurentOrderView(
                                               // ignore: invalid_use_of_protected_member
-                                              .allCurentOrderList
-                                              // ignore: invalid_use_of_protected_member
-                                              .value[index],
-                                        );
-                                      })
+                                              orderModel: detailsController
+                                                  // ignore: invalid_use_of_protected_member
+                                                  .allCurentOrderList
+                                                  // ignore: invalid_use_of_protected_member
+                                                  .value[index],
+                                            );
+                                          })
 
-                                      // List.generate(orderList.length, (index) {
-                                      //   return CurentOrderView(
-                                      //     orderData: orderList[index],
-                                      //   );
-                                      // }),
-                                      )
+                                          // List.generate(orderList.length, (index) {
+                                          //   return CurentOrderView(
+                                          //     orderData: orderList[index],
+                                          //   );
+                                          // }),
+                                          ),
+                                    )
                                   : Container(
                                       margin: EdgeInsets.all(50),
                                       child: Center(
@@ -146,6 +177,19 @@ class AllOrder extends StatelessWidget {
                       ),
                     ),
                   ])),
+              Obx(() =>
+                  detailsController.getorderStatusforindivisualLoading.value
+                      ? Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.black26,
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : Container()),
+
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavigation(_key)),
               // DraggableScrollableSheet(
               //     maxChildSize: 1,
               //     initialChildSize: .2,
@@ -545,6 +589,10 @@ class AllOrder extends StatelessWidget {
               //             ),
               //           ));
               //     }),
+              // SizedBox(height:30)
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavigation(_key)),
             ])));
   }
 }

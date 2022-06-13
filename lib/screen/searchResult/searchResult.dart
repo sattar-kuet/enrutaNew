@@ -26,9 +26,10 @@ class SearchResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       drawer: MyDrawerPage(),
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: 80,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -87,7 +88,7 @@ class SearchResult extends StatelessWidget {
                                     left: 20, bottom: 10, top: 20),
                                 child: Text(
                                   '${searchCont.filterlength.value} ' +
-                                      text('found near you'),
+                                      text('Shop found near you'),
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -125,7 +126,7 @@ class SearchResult extends StatelessWidget {
               right: 0,
               bottom: 0,
               height: 73,
-              child: BottomNavigation(),
+              child: BottomNavigation(key),
             ),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:enruta/screen/myMap/address_model.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -50,26 +51,35 @@ class MyMapController extends GetxController {
   }
 
   getLocation() async {
-    await Future.delayed(Duration(seconds: 1));
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    userlat.value = position.latitude;
-    userlong.value = position.longitude;
-    pointerlat.value = position.latitude;
-    pointerlong.value = position.longitude;
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    address.value = first.addressLine;
-    address(first.addressLine);
-    print("get location called. got : $address");
+    try {
+      var permission = await Geolocator().checkGeolocationPermissionStatus();
+      if (permission == GeolocationStatus.granted) {
+        Position position = await Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        final coordinates =
+            new Coordinates(position.latitude, position.longitude);
+        userlat.value = position.latitude;
+        userlong.value = position.longitude;
+        pointerlat.value = position.latitude;
+        pointerlong.value = position.longitude;
+        var addresses =
+            await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        var first = addresses.first;
+        address.value = first.addressLine;
+        address(first.addressLine);
+        print("get location called. got : $address");
+      }
+    } on PlatformException catch (e) {
+      print(e.message);
+    } catch (e) {
+      print(e);
+    }
   }
 
   getpointerLocation(double let, double lo) async {
     print("call api");
     print(let);
-    await Future.delayed(Duration(seconds: 1));
+
     // ignore: unused_local_variable
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -110,7 +120,8 @@ class MyMapController extends GetxController {
       print("from storage $a");
       addressList.value = a
           .map((data) => AddressModel.fromJson(jsonDecode(jsonEncode(data))))
-          .toList();
+          .toList()
+          .obs;
 
       print(b);
 
@@ -120,12 +131,12 @@ class MyMapController extends GetxController {
     }
   }
 
-  void savelocation(var addrestype) {
+  Future<void> savelocation(var addrestype) async {
     print("save location called");
     AddressModel addressModel = new AddressModel();
     // List addresssList = GetStorage().read<List>('addressList');
 
-    // addressModel.locationType = "1";
+    addressModel.locationType = "5";
 
     addressModel.locationTitle = addrestype;
     String type = addrestype.toString().toLowerCase();
@@ -134,9 +145,7 @@ class MyMapController extends GetxController {
       addressModel.locationType = "1";
       addressModel.locationTitle = "Curent Address";
       // addressModel.locationTitle = "Curent";
-    }
-
-    if (type == "home") {
+    } else if (type == "home") {
       addressModel.locationType = "2";
       addressModel.locationTitle = "Home";
       // addressModel.locationTitle = "Curent";
@@ -148,13 +157,9 @@ class MyMapController extends GetxController {
       addressModel.locationType = "4";
       addressModel.locationTitle = "Other";
       // addressModel.locationTitle = "Other";
-    } else if (type != "home" &&
-        type != "curent" &&
-        type != "office" &&
-        type != "other") {
-      addressModel.locationType = "4";
-      addressModel.locationTitle = addressModel.locationTitle;
-      // addressModel.locationTitle = "Other";
+    }  else {
+      addressModel.locationTitle = addrestype;
+      addressModel.locationType = "5";
     }
     if (type == null || type == "") {
       addressModel.locationTitle = "Other";
@@ -181,12 +186,14 @@ class MyMapController extends GetxController {
     addressModel.locationDetails = pointAddress.value;
     addressModel.lat = pointLat.value.toString();
     addressModel.lng = pointLong.value.toString();
-    addressList.add(addressModel);
+    if (addressModel.locationDetails.isNotEmpty) {
+      addressList.add(addressModel);
+    }
 
     GetStorage box = GetStorage();
 
     //print("from direct ${addressList.value}");
-    box.write("addressList", addressList);
+    await box.write("addressList", addressList);
 
     List a = box.read('addressList');
 

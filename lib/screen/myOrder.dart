@@ -26,7 +26,7 @@ class _MyOrderState extends State<MyOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 80,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -63,22 +63,35 @@ class _MyOrderState extends State<MyOrder> {
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: 20, top: 25, right: 5, bottom: 10),
-                            child: Text(
-                              text('past_orders'),
-                              style: TextStyle(
-                                  fontFamily: "TTCommonsd",
-                                  fontSize: 16,
-                                  color: Color(Helper.getHexToInt("#000000"))
-                                      .withOpacity(0.8)),
-                            ),
-                          ),
+                          Obx(() {
+                            return orderController.isLoading.value &&
+                                    orderController.allOrderList.isEmpty
+                                ? Container()
+                                : Container(
+                                    margin: EdgeInsets.only(
+                                        left: 20,
+                                        top: 25,
+                                        right: 5,
+                                        bottom: 10),
+                                    child: Text(
+                                      text('past_orders'),
+                                      style: TextStyle(
+                                          fontFamily: "TTCommonsd",
+                                          fontSize: 16,
+                                          color: Color(
+                                                  Helper.getHexToInt("#000000"))
+                                              .withOpacity(0.8)),
+                                    ),
+                                  );
+                          }),
 
                           Obx(() {
                             if (orderController.isLoading.value) {
-                              return Center(child: CircularProgressIndicator());
+                              return Padding(
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height /
+                                          2.5),
+                                  child: Center(child: CircularProgressIndicator()));
                             } else if (orderController.allOrderList.length >
                                 0) {
                               return ListView(

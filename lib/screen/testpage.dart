@@ -4,6 +4,7 @@ import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/item_list_data.dart';
 import 'package:enruta/screen/bottomnavigation/bottomNavigation.dart';
+import 'package:enruta/screen/drawer/myDrawerPage.dart';
 import 'package:enruta/view/item_list_view.dart';
 import 'package:enruta/view/menu_list_view.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,12 @@ import 'package:get/get.dart';
 class TestPage extends StatelessWidget {
   final tController = Get.put(TestController());
   List<ItemListData> itemList = ItemListData.itemList;
+   GlobalKey<ScaffoldState> key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawerPage(),
+      key: key,
       body: Container(
         child: Stack(
           children: [
@@ -75,11 +79,26 @@ class TestPage extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      size: 19,
-                                      color: Colors.white,
-                                    ),
+                                 tController.addressType.value == '1'
+                                        ? Icon(
+                                            Icons.location_on,
+                                            size: 18,
+                                          )
+                                        : tController.addressType.value == '2'
+                                            ? Icon(
+                                                Icons.home,
+                                                size: 18,
+                                              )
+                                            : tController.addressType.value ==
+                                                    '3'
+                                                ? Icon(
+                                                    Icons.location_city,
+                                                    size: 18,
+                                                  )
+                                                : Icon(
+                                                    Icons.location_on,
+                                                    size: 18,
+                                                  ),
                                     Container(child: Obx(() {
                                       return Text(
                                           '${tController.address.value}',
@@ -231,7 +250,7 @@ class TestPage extends StatelessWidget {
               right: 0,
               bottom: 0,
               height: 73,
-              child: BottomNavigation(),
+              child: BottomNavigation(key),
             ),
           ],
         ),

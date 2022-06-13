@@ -106,7 +106,7 @@ class RatingListView extends StatelessWidget {
               child: Container(
                 child: RatingBar.builder(
                   initialRating: ratingData.rating,
-
+ignoreGestures: true,
                   // minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,

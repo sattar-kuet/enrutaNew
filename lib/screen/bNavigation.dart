@@ -31,12 +31,12 @@ class MyHomePage extends StatelessWidget {
 
       bottomNavigationBar: Obx(
         () => Container(
-          height: 73,
+          height: 80,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15)),
             child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
+              // type: BottomNavigationBarType.fixed,
 
               // type: BottomNavigationBarType.fixed,
               backgroundColor: Colors.white,

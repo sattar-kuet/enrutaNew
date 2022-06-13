@@ -9,16 +9,15 @@ class SuggestController extends GetxController {
   // ignore: deprecated_member_use
   var suggetItems = List<Product>().obs;
   var isLoading = true.obs;
-  final vats = 0.obs;
-  final dc = 0.obs;
+  final vats = 0.0.obs;
+  final dc = 0.0.obs;
   @override
   void onInit() {
     getsuggetItems();
     super.onInit();
-    
   }
-  
-  void getsuggetItems() async {
+
+  Future<void> getsuggetItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     shopid.value = prefs.getString('shopid') ?? "1";
 
@@ -26,20 +25,20 @@ class SuggestController extends GetxController {
     try {
       suggetItems.value = [];
       isLoading(true);
-      await Future.delayed(Duration(seconds: 1));
-      Service.menulist(shopid.value).then((va) {
+
+      await Service.menulist(shopid.value).then((va) {
         if (va != null) {
           suggetItems.value = va.products.toList();
           shopid.value = va.shopid.toString();
-          vats.value = va.vat.toInt();
+          vats.value = va.vat;
           print(
               'shopid is $shopid   vat is $vats   delivery charge is $va.deliveryCharge');
 
-          Get.find<CartController>().vat.value = va.vat.toInt();
-          Get.find<CartController>().deliveryCharge.value =
-              va.deliveryCharge.toInt();
+          // Get.find<CartController>().vat.value = va.vat.toInt();
+          // Get.find<CartController>().deliveryCharge.value =
+          //     va.deliveryCharge.toInt();
 
-          dc.value = va.deliveryCharge.toInt();
+          dc.value = va.deliveryCharge;
 
           print(suggetItems.length);
         }
@@ -60,8 +59,8 @@ class SuggestController extends GetxController {
 
   getiteminfo() async {
     SharedPreferences pr = await SharedPreferences.getInstance();
-    vats.value = pr.getInt("vat");
-    dc.value = pr.getInt("deliveryCharge");
+    vats.value = pr.getDouble("vat");
+    dc.value = pr.getDouble("deliveryCharge");
   }
 
   addtolist(

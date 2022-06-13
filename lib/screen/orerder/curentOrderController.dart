@@ -38,17 +38,17 @@ class CurentOrderController extends GetxController {
   final cCont = Get.put(MyMapController());
 
   var isLoading = false.obs;
-  var getorderStatusforindivisualLoading = true.obs;
+  var getorderStatusforindivisualLoading = false.obs;
   var detailsModel = OrderDetailsModel().obs;
   var order = Order().obs;
   var orderall = List<Order>().obs;
   var address = ''.obs;
   var deleveryTime = 0.obs;
 
-  void getorderStatus(int id) async {
+  Future<void> getorderStatus(int id) async {
     isLoading(true);
     try {
-      Service().getOrderDetails(id).then((values) async {
+      await Service().getOrderDetails(id).then((values) async {
         if (values != null) {
           detailsModel.value.order = values.order;
           deleveryTime.value =
@@ -61,15 +61,16 @@ class CurentOrderController extends GetxController {
         //   cCont.getshopsLocation(order.value.lat, order.value.lng);
         //gettotal();
       });
-    } finally {}
-    isLoading(false);
+    } finally {
+      isLoading(false);
+    }
   }
 
-  void getorderStatusforindivisual(int id) async {
-    getorderStatusforindivisualLoading(false);
+  Future<void> getorderStatusforindivisual(int id) async {
     OrderDetailsPageModel odp;
     int time;
     try {
+      getorderStatusforindivisualLoading(true);
       await Service().getOrderDetails(id).then((values) async {
         //
         OrderDetailsModel oModerAll = values;
@@ -77,7 +78,7 @@ class CurentOrderController extends GetxController {
         getpointerLocation(oModerAll.order.lat, oModerAll.order.lng);
         odp = new OrderDetailsPageModel(details: oModerAll, time: time);
         print("details = ${odp.details.order.orderFrom}");
-
+        Get.to(OrderStatus(odp));
         //order.value = values.order;
 
         // cCont.getShopLocation(order.value.lat, order.value.lng);
@@ -86,11 +87,12 @@ class CurentOrderController extends GetxController {
       });
     } catch (e) {
       return null;
+    } finally {
+      getorderStatusforindivisualLoading(false);
     }
-    await getpointerLocation(odp.details.order.lat, odp.details.order.lng);
-    Get.to(OrderStatus(odp));
-    isLoading(false);
-    getorderStatusforindivisualLoading(true);
+    // await getpointerLocation(odp.details.order.lat, odp.details.order.lng);
+
+    // isLoading(false);
   }
 
   // double get totalPrice =>
@@ -107,35 +109,35 @@ class CurentOrderController extends GetxController {
     gtotal = as + b - c - d - e;
   }
 
-  Future<OrderModel> getCurentOrder() async {
+  Future<List<OrderModel>> getCurentOrder() async {
     isLoading(true);
     SharedPreferences spreferences = await SharedPreferences.getInstance();
 
     var id = spreferences.getInt("id");
+    print("id---"+id.toString());
     try {
       allCurentOrderList.value = [];
 
-      await Future.delayed(Duration(seconds: 1));
-      Service.getCurentOrder(id).then((values) {
+      await Service.getCurentOrder(id).then((values) async {
         allCurentOrderList.value = values.orders.toList();
 
         // ignore: invalid_use_of_protected_member
-        if (allCurentOrderList.value.length > 0) {
-          curentOrder.value =
-              // ignore: invalid_use_of_protected_member
-              allCurentOrderList.value[allCurentOrderList.value.length - 1];
-        }
+        // if (allCurentOrderList.value.length > 0) {
+        //   curentOrder.value =
+        //       // ignore: invalid_use_of_protected_member
+        //       allCurentOrderList.value[allCurentOrderList.value.length - 1];
+        // }
         print(allCurentOrderList.length);
-        getorderStatus(curentOrder.value.id);
+        await getorderStatus(curentOrder.value.id);
         isLoading(false);
       });
     } finally {}
     //await Future.delayed(Duration(seconds: 3));
 
-    return curentOrder.value;
+    return allCurentOrderList.value.toList();
   }
 
-  getPopularOrder() async {
+   getPopularOrder() async {
     isLoading(true);
     SharedPreferences spreferences = await SharedPreferences.getInstance();
 
@@ -161,9 +163,12 @@ class CurentOrderController extends GetxController {
     } finally {}
   }
 
-  getpointerLocation(String lat, String lng) async {
-    double lg = double.parse(lng);
-    double la = double.parse(lat);
+  Future getpointerLocation(String lat, String lng) async {
+    if (lat.isEmpty && lng.isEmpty) {
+      return;
+    }
+    double lg = double.tryParse(lng);
+    double la = double.tryParse(lat);
     print("call api");
     print(la);
     //await Future.delayed(Duration(seconds: 1));

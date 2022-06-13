@@ -1,11 +1,15 @@
+import 'dart:ui';
+
 import 'package:enruta/controllers/productController.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/model/near_by_place_data.dart';
+import 'package:enruta/screen/getReview/getReview.dart';
 import 'package:enruta/screen/menuandreviewpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryListView extends StatelessWidget {
   const CategoryListView(
@@ -41,7 +45,7 @@ class CategoryListView extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => MenuAndReviewPage(
                       itemData.shopId,
-                      itemData.vat.toInt(),
+                      itemData.vat,
                       itemData.deliveryCharge,
                       itemData.name,
                       itemData.address)));
@@ -50,48 +54,74 @@ class CategoryListView extends StatelessWidget {
         },
         child: Stack(
           children: [
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  itemData.name,
+                  style: GoogleFonts.poppins(
+                      fontSize: 17,
+                      color: Color(Helper.getHexToInt("#434343"))),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
             Positioned(
                 top: 0,
                 left: 0,
                 right: 0,
-                bottom: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Image.network(
-                    itemData.logo,
-                    alignment: Alignment.center,
-                    fit: BoxFit.scaleDown,
-                    matchTextDirection: false,
+                bottom: 35,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      image: DecorationImage(
+                        alignment: Alignment.center,
+                        matchTextDirection: false,
+                        image: NetworkImage(
+                            itemData.logo), //AssetImage(itemData.logo),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 )),
             Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                  height: 30,
-                  // child: Padding(
-                  //     padding: const EdgeInsets.only(top: 0),
+                top: 0,
+                left: 0,
+                right: 0,
+                // height: MediaQuery.of(context).size.height / 20,
+                // child: Padding(
+                //     padding: const EdgeInsets.only(top: 0),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 40),
-                          padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                bottomRight: Radius.circular(10.0)),
-                            color: Color(Helper.getHexToInt("#ECFBF8")),
-                          ),
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 8,
+                          top: 10,
+                          right: 8,
+                          bottom: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10.0),
+                              bottomRight: Radius.circular(3.0)),
+                          color: Colors.black54,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 0.2),
                           child: Text(
                             // itemData.catId.toString(),
                             itemData.time,
                             textAlign: TextAlign.left,
+                            overflow: TextOverflow.fade,
                             style: TextStyle(
                                 fontFamily: 'Poppinsr',
                                 fontSize: 10,
@@ -100,57 +130,70 @@ class CategoryListView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                            child: Obx(() => CircleAvatar(
-                                backgroundColor: itemData.isFavorite.value
-                                    ? Color(Helper.getHexToInt("#FFEEEE"))
-                                    : Color(Helper.getHexToInt("#F9F9F9")),
-                                child: Obx(
-                                  () => IconButton(
-                                    icon: itemData.isFavorite.value
-                                        ? Icon(Icons.favorite,
-                                            color: Color(
-                                                Helper.getHexToInt("#FF5A5A")),
-                                            size: 15)
-                                        : Icon(
-                                            Icons.favorite,
-                                            color: Color(
-                                                Helper.getHexToInt("#C0C0C0")),
-                                            size: 15,
-                                          ),
-                                    onPressed: () async {
-                                      // ignore: unused_local_variable
-                                      List fav = [];
-                                      var status =
-                                          itemData.isFavorite.value ? 0 : 1;
-                                      print(' STATUS ==$status');
-                                      print(' STATUS ==${itemData.shopId}');
-                                      pcontroller.sendfavorit(
-                                          itemData.shopId, status);
 
-                                      itemData.isFavorite.toggle();
-                                      // SharedPreferences pref = await SharedPreferences.getInstance();
-                                      // if(itemData.isFavorite.value == true){
-                                      //   fav.add(itemData);
-                                      // }else{
-                                      //   fav.remove(itemData);
-                                      // }
-                                      // pref.setStringList('FAV_List', fav);
-                                      controller.getnearByPlace();
+                      Padding(
+                          padding: const EdgeInsets.only(
+                            top: 5.0,
+                            right: 5,
+                          ),
+                          child: CircleAvatar(
+                              radius: 15,
+                              // backgroundColor: itemData.isFavorite.value
+                              //     ? Color(Helper.getHexToInt("#FFEEEE"))
+                              //     : Color(Helper.getHexToInt("#F9F9F9")),
+                              backgroundColor: Colors.black38,
+                              child: Obx(
+                                () => IconButton(
+                                  icon: itemData.isFavorite.value
+                                      ? Icon(Icons.favorite,
+                                          color: Color(
+                                              Helper.getHexToInt("#FF5A5A")),
+                                          size: 15)
+                                      : Icon(
+                                          Icons.favorite,
+                                          color: Color(
+                                              Helper.getHexToInt("#C0C0C0")),
+                                          size: 15,
+                                        ),
+                                  onPressed: () async {
+                                    print(itemData.shopId);
+                                    // ignore: unused_local_variable
+                                    List fav = [];
+                                    var status =
+                                        itemData.isFavorite.value ? 0 : 1;
+                                    print(' STATUS ==$status');
+                                    print(' STATUS ==${itemData.shopId}');
+                                    pcontroller.sendfavorit(
+                                        itemData.shopId, status);
 
-                                      itemData.isFavorite.value
-                                          ? Get.snackbar(
-                                              'Added in Favourites', '',
-                                              colorText: Colors.white)
-                                          : Get.snackbar(
-                                              'Removed from Favourites', '',
-                                              colorText: Colors.white);
-                                    },
-                                  ),
-                                )))),
-                      )
+                                    itemData.isFavorite.toggle();
+                                    if (itemData.isFavorite.value) {
+                                      controller.nearFavList.add(itemData);
+                                    } else {
+                                      controller.nearFavList.removeWhere(
+                                          (element) =>
+                                              element.catId == itemData.catId);
+                                    }
+                                    itemData.favorite = !itemData.favorite;
+
+                                    // SharedPreferences pref = await SharedPreferences.getInstance();
+                                    // if(itemData.isFavorite.value == true){
+                                    //   fav.add(itemData);
+                                    // }else{
+                                    //   fav.remove(itemData);
+                                    // }
+                                    // pref.setStringList('FAV_List', fav);
+                                    // controller.getnearByPlace();
+                                    itemData.isFavorite.value
+                                        ? Get.snackbar(
+                                            'Added in Favourites', '',
+                                            colorText: Colors.white)
+                                        : Get.snackbar(
+                                            'Removed from Favourites', '',
+                                            colorText: Colors.white);
+                                  },
+                                ),
+                              ))),
 
                       // Expanded(
                       //     // child: Padding(
@@ -251,73 +294,91 @@ class CategoryListView extends StatelessWidget {
                       //       ),
                       // ),
                     ],
-                  )),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
-              child: Center(
-                child: Container(
-                  height: 21,
-
-                  // width: 100,
-                  // padding: EdgeInsets.only(left: 20),
-                  // margin: EdgeInsets.only(left: 10, right: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
-                    color: Color(Helper.getHexToInt("#F8F9FF")),
                   ),
+                )),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 50),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: BackdropFilter(
+                    filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      height: 30,
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 7),
-                            child: RatingBar.builder(
-                              initialRating: itemData.rating,
+                      // width: 100,
+                      // padding: EdgeInsets.only(left: 20),
+                      // margin: EdgeInsets.only(left: 10, right: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0),
+                          ),
+                          color: Colors.white.withOpacity(0.5)),
 
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemSize: 11,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 7),
+                                child: RatingBar.builder(
+                                  initialRating: itemData.rating,
+                                  ignoreGestures: true,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 11,
 
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                size: 1.0,
-                                color: Colors.amber,
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    size: 1.0,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    print(itemData.rating);
+                                  },
+                                  // onRatingUpdate: (rating) {
+                                  //   print(itemData.rating);
+                                  // },
+                                ),
                               ),
-                              onRatingUpdate: null,
-                              // onRatingUpdate: (rating) {
-                              //   print(itemData.rating);
-                              // },
                             ),
                           ),
-                        ),
+                          // Expanded(
+                          //   child:
+                          Container(
+                              // width: 50,
+                              padding: EdgeInsets.only(right: 10),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => GetReviewPage(
+                                              [itemData.shopId],
+                                              itemData.shopId)));
+                                },
+                                child: Text(
+                                  // '8888522 Reviews',
+                                  ' ${itemData.totalReview} Reviews',
+                                  style: TextStyle(
+                                      fontFamily: 'TTCommonsd',
+                                      fontSize: 11,
+                                      color:
+                                          Color(Helper.getHexToInt("#000000"))
+                                              .withOpacity(0.4)),
+                                  textAlign: TextAlign.end,
+                                ),
+                              )),
+                          // )
+                        ],
                       ),
-                      // Expanded(
-                      //   child:
-                      Container(
-                          // width: 50,
-                          padding: EdgeInsets.only(right: 10),
-                          child: Text(
-                            // '8888522 Reviews',
-                            ' ${itemData.totalReview} Reviews',
-                            style: TextStyle(
-                                fontFamily: 'TTCommonsd',
-                                fontSize: 11,
-                                color: Color(Helper.getHexToInt("#000000"))
-                                    .withOpacity(0.4)),
-                            textAlign: TextAlign.end,
-                          )),
-                      // )
-                    ],
+                    ),
                   ),
                 ),
               ),

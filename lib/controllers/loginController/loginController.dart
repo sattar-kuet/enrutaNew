@@ -4,6 +4,7 @@ import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
 import 'package:enruta/screen/permissionCheck.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
@@ -38,12 +39,13 @@ class LoginController extends GetxController {
     shp.setString("profileImage", currentUser.photoUrl);
     // pimage.value = currentUser.photoUrl;
     print(currentUser.photoUrl);
-    var permission = await Geolocator().checkGeolocationPermissionStatus();
-    if (permission != GeolocationStatus.denied) {
-      Get.offAll(HomePage());
-    } else {
-      Get.offAll(PermissionCheckScreen());
-    }
+    // var permission = await Geolocator().checkGeolocationPermissionStatus();
+    // if (permission != GeolocationStatus.denied) {
+    //   Get.offAll(HomePage());
+    // } else {
+    //   Get.offAll(PermissionCheckScreen());
+    // }
+    Get.offAll(HomePage());
   }
 
   void checklogin() {
@@ -69,7 +71,7 @@ class LoginController extends GetxController {
     }
   }
 
-  void login(String email, [String password]) async {
+  Future<void> login(String email, [String password]) async {
     var convertedDatatojson;
     try {
       String url = 'https://enruta.itscholarbd.com/api/v2' + '/login';
@@ -80,8 +82,12 @@ class LoginController extends GetxController {
       var result = await convertedDatatojson['status'];
 
       if (result == 0) {
-        Get.snackbar("Please Input Valid Email & password", "",
-            colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+            convertedDatatojson['status_text'] ??
+                "Please Input Valid Email & password",
+            "",
+            colorText: Colors.red,
+            snackPosition: SnackPosition.BOTTOM);
       } else {
         Map<String, dynamic> user = convertedDatatojson['user_arr'];
 
@@ -108,18 +114,19 @@ class LoginController extends GetxController {
         sharedPreferences.setString("phone", phone);
         sharedPreferences.setString("profileImage", avatar);
         //await Geolocator().getCurrentPosition();
-        var permission = await Geolocator().checkGeolocationPermissionStatus();
-        if (permission != GeolocationStatus.denied) {
-          Get.offAll(HomePage());
-        } else {
-          Get.offAll(PermissionCheckScreen());
-        }
+        // var permission = await Geolocator().checkGeolocationPermissionStatus();
+        // if (permission == GeolocationStatus.granted) {
+        //   Get.offAll(HomePage());
+        // } else {
+        //   Get.offAll(PermissionCheckScreen());
+        // }
+        Get.offAll(HomePage());
       }
 
       // UserArr user = await convertedDatatojson['user_arr'];
     } catch (e) {
       Get.snackbar("error to login ", e.message,
-          colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+          colorText: Colors.red, snackPosition: SnackPosition.BOTTOM);
     }
     // return convertedDatatojson;
   }
@@ -151,7 +158,7 @@ class LoginController extends GetxController {
     }
   }
 
-  void googleuser(var email, var name) async {
+  Future<void> googleuser(var email, var name, String id) async {
     // gid:kamal@gmail.com, name: kamal
     var convertedDatatojson;
     try {
@@ -159,45 +166,47 @@ class LoginController extends GetxController {
           'https://enruta.itscholarbd.com/api/v2' + '/signupWithGoogle';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
-          body: {'gid': email, 'name': name});
+          body: {'email': email, 'name': name, 'gid': id});
+      if (response.statusCode == 200) {
+        convertedDatatojson = jsonDecode(response.body);
 
-      convertedDatatojson = jsonDecode(response.body);
+        dynamic result = await convertedDatatojson["status"];
 
-      dynamic result = await convertedDatatojson["status"];
+        // print("\n\n\n\n\n MAP: " + result.toString()+"\n\n\n\n\n\n");
 
-      // print("\n\n\n\n\n MAP: " + result.toString()+"\n\n\n\n\n\n");
-
-      if (result == 0) {
-        Get.snackbar("Please Input Valid Email & password", "",
-            colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
-      } else {
-        // Map<String, dynamic> user = await convertedDatatojson["user"];
-
-        // print("\n\n\n\n\n User:" + user.toString()+"\n\n\n\n\n\n");
-
-        var id = await convertedDatatojson["user"]["id"];
-
-        print("\n\n\n\n\nID:" + id.toString() + "\n\n\n\n\n\n");
-
-        // String name = await convertedDatatojson["user"]["name"].toString();
-
-        var roleId = await convertedDatatojson["user"]["role_id"];
-
-        print("\n\n\n\n\nRoleID:" + id.toString() + "\n\n\n\n\n\n");
-
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-
-        // ignore: non_constant_identifier_names
-        int Xid = int.parse(id.toString());
-        await sharedPreferences.setInt("id", Xid);
-
-        await sharedPreferences.setString("roleId", roleId.toString());
-        var permission = await Geolocator().checkGeolocationPermissionStatus();
-        if (permission != GeolocationStatus.denied) {
-          Get.offAll(HomePage());
+        if (result == 0) {
+          Get.snackbar("Please Input Valid Email & password", "",
+              colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
         } else {
-          Get.offAll(PermissionCheckScreen());
+          // Map<String, dynamic> user = await convertedDatatojson["user"];
+
+          // print("\n\n\n\n\n User:" + user.toString()+"\n\n\n\n\n\n");
+
+          var id = await convertedDatatojson["user"]["id"];
+
+          print("\n\n\n\n\nID:" + id.toString() + "\n\n\n\n\n\n");
+
+          // String name = await convertedDatatojson["user"]["name"].toString();
+
+          var roleId = await convertedDatatojson["user"]["role_id"];
+
+          print("\n\n\n\n\nRoleID:" + id.toString() + "\n\n\n\n\n\n");
+
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+
+          // ignore: non_constant_identifier_names
+          int Xid = int.parse(id.toString());
+          await sharedPreferences.setInt("id", Xid);
+
+          await sharedPreferences.setString("roleId", roleId.toString());
+          // var permission =
+          //     await Geolocator().checkGeolocationPermissionStatus();
+          // if (permission != GeolocationStatus.denied) {
+
+          // } else {
+          //   Get.offAll(PermissionCheckScreen());
+          // }
         }
       }
     } catch (e) {
@@ -208,7 +217,66 @@ class LoginController extends GetxController {
     }
   }
 
-  void facebookUser(var fid, var name) async {
+  Future<void> appleuser(var email, var name, String id) async {
+    // gid:kamal@gmail.com, name: kamal
+    var convertedDatatojson;
+    try {
+      String url =
+          'https://enruta.itscholarbd.com/api/v2' + '/signupWithApple';
+      final response = await http.post(url,
+          headers: {"Accept": "Application/json"},
+          body: {'email': email, 'name': name??'', 'apple_id': id});
+      if (response.statusCode == 200) {
+        convertedDatatojson = jsonDecode(response.body);
+
+        dynamic result = await convertedDatatojson["status"];
+
+        // print("\n\n\n\n\n MAP: " + result.toString()+"\n\n\n\n\n\n");
+
+        if (result == 0) {
+          Get.snackbar("Please Input Valid Email & password", "",
+              colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+        } else {
+          // Map<String, dynamic> user = await convertedDatatojson["user"];
+
+          // print("\n\n\n\n\n User:" + user.toString()+"\n\n\n\n\n\n");
+
+          var id = await convertedDatatojson["user"]["id"];
+
+          print("\n\n\n\n\nID:" + id.toString() + "\n\n\n\n\n\n");
+
+          // String name = await convertedDatatojson["user"]["name"].toString();
+
+          var roleId = await convertedDatatojson["user"]["role_id"];
+
+          print("\n\n\n\n\nRoleID:" + id.toString() + "\n\n\n\n\n\n");
+
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+
+          // ignore: non_constant_identifier_names
+          int Xid = int.parse(id.toString());
+          await sharedPreferences.setInt("id", Xid);
+
+          await sharedPreferences.setString("roleId", roleId.toString());
+          // var permission =
+          //     await Geolocator().checkGeolocationPermissionStatus();
+          // if (permission != GeolocationStatus.denied) {
+
+          // } else {
+          //   Get.offAll(PermissionCheckScreen());
+          // }
+        }
+      }
+    } catch (e) {
+      print("\n\n\n\n\nErr: " + e.toString() + "\n\n\n\n\n\n");
+
+      Get.snackbar("warning", e.toString(),
+          colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  Future<void> facebookUser(var email, var name, String id) async {
     // gid:kamal@gmail.com, name: kamal
     var convertedDatatojson;
     try {
@@ -216,31 +284,34 @@ class LoginController extends GetxController {
           'https://enruta.itscholarbd.com/api/v2' + '/signupWithFacebook';
       final response = await http.post(url,
           headers: {"Accept": "Application/json"},
-          body: {'fid': fid, 'name': name});
+          body: {'email': email, 'name': name, "fid": id});
+
       convertedDatatojson = jsonDecode(response.body);
       var result = await convertedDatatojson['status'];
       if (result == 0) {
         Get.snackbar("Please Input Valid Email & password", "",
             colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
-      } else {
+      } else if (convertedDatatojson != null) {
         Map<String, dynamic> user = convertedDatatojson['user'];
 
         // int id = user["id"];
         // String name = user["name"].toString();
 
-        var id = int.parse(user["id"].toString());
+        var userId = int.parse(user["id"].toString());
         var roleId = user['role_id'].toString();
         // var name = await convertedDatatojson['name'];
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        sharedPreferences.setInt("id", id);
+        sharedPreferences.setInt("id", userId);
+        sharedPreferences.setString("email", email);
         sharedPreferences.setString("roleId", roleId);
-        var permission = await Geolocator().checkGeolocationPermissionStatus();
-        if (permission != GeolocationStatus.denied) {
-          Get.offAll(HomePage());
-        } else {
-          Get.offAll(PermissionCheckScreen());
-        }
+        // var permission = await Geolocator().checkGeolocationPermissionStatus();
+        // if (permission != GeolocationStatus.denied) {
+        //   Get.offAll(HomePage());
+        // } else {
+        //   Get.offAll(PermissionCheckScreen());
+        // }
+        Get.offAll(HomePage());
         //Get.offAll(HomePage());
       }
     } catch (e) {

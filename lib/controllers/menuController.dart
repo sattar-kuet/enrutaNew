@@ -36,8 +36,8 @@ class MenuController extends GetxController {
     try {
       menuItems.value = [];
       isLoading(true);
-      await Future.delayed(Duration(seconds: 1));
-      Service.menulist(id).then((va) {
+
+      await Service.menulist(id).then((va) {
         if (va != null) {
           menuItemsTemp.value = va.products.toList();
           categoryName.value = va.categoryName.toString();

@@ -173,7 +173,7 @@ class _ItemListViewState extends State<ItemListView> {
                             margin: EdgeInsets.only(left: 7),
                             child: RatingBar.builder(
                               initialRating: widget.itemData.rating,
-
+ignoreGestures: true,
                               // minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,

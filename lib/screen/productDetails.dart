@@ -6,13 +6,11 @@ import 'package:enruta/model/Product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProductDetails extends StatelessWidget {
+class ProductDetails extends StatefulWidget {
   final Product menuitemdata;
   final String shopid;
-  final int vat;
-  final int deliveryCharge;
-  final pController = Get.put(ProductController());
-  final cartController = Get.put(CartController());
+  final double vat;
+  final double deliveryCharge;
 
   ProductDetails({
     Key key,
@@ -21,6 +19,16 @@ class ProductDetails extends StatelessWidget {
     this.vat,
     this.deliveryCharge,
   }) : super(key: key);
+
+  @override
+  State<ProductDetails> createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  final pController = Get.put(ProductController());
+
+  final cartController = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +69,7 @@ class ProductDetails extends StatelessWidget {
                               //       return productColor();
                               //     }),
                               Expanded(
+                                flex: 4,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8),
                                   child: Row(
@@ -96,11 +105,12 @@ class ProductDetails extends StatelessWidget {
                                         flex: 2,
                                         child: ListView.builder(
                                             scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                menuitemdata.colors.length,
+                                            itemCount: widget
+                                                .menuitemdata.colors.length,
                                             itemBuilder: (context, index) {
                                               return productColor(
-                                                  menuitemdata.colors[index],
+                                                  widget.menuitemdata
+                                                      .colors[index],
                                                   index);
                                             }),
                                       )
@@ -109,9 +119,10 @@ class ProductDetails extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                height: 5,
+                                height: 10,
                               ),
                               Expanded(
+                                flex: 4,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8),
                                   child: Row(
@@ -132,27 +143,27 @@ class ProductDetails extends StatelessWidget {
                                         flex: 2,
                                         child: ListView.builder(
                                             scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                menuitemdata.sizes.length,
+                                            itemCount: widget
+                                                .menuitemdata.sizes.length,
                                             itemBuilder: (context, index) {
-                                              return productSize(index,
-                                                  menuitemdata.sizes[index]);
+                                              return productSize(
+                                                  index,
+                                                  widget.menuitemdata
+                                                      .sizes[index]);
                                             }),
                                       )
                                     ],
                                   ),
                                 ),
                               ),
-                              Spacer(
-                                flex: 1,
-                              ),
+
                               SizedBox(
-                                height: 20,
+                                height: 15,
                               ),
                               // _buildWidgetProductPrice(context),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 16.0, bottom: 16.0),
+                                    top: 10.0, bottom: 16.0),
                                 child: Divider(
                                     thickness: 1,
                                     color: Color(
@@ -160,17 +171,13 @@ class ProductDetails extends StatelessWidget {
                                     )),
                               ),
                               // WidgetChooseColor(),
-                              SizedBox(height: 16.0),
+                              SizedBox(height: 5.0),
                               // WidgetChooseSize(),
                               buidbottomfield(),
                               // _buildWidgetProductInfo(context),
                             ],
                           ),
                         )),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      // child: WidgetAddToBag(),
-                    ),
                   ],
                 ),
               ),
@@ -191,7 +198,7 @@ class ProductDetails extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                  menuitemdata.title,
+                  widget.menuitemdata.title,
                   style: TextStyle(
                       fontFamily: "TTCommonsm",
                       fontSize: 24,
@@ -203,7 +210,7 @@ class ProductDetails extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 8, 10, 0),
               child: Text(
-                "\$" + menuitemdata.price.toString(),
+                "\$" + widget.menuitemdata.price.toString(),
                 style: TextStyle(
                     fontSize: 16,
                     fontFamily: 'TTCommonsd',
@@ -252,18 +259,18 @@ class ProductDetails extends StatelessWidget {
     return InkWell(
       onTap: () {
         // Get.bottomSheet();
-        menuitemdata.selectcolor = menuitemdata.pcolor.value;
-        menuitemdata.selectSize = menuitemdata.psize.value;
+        widget.menuitemdata.selectcolor = widget.menuitemdata.pcolor.value;
+        widget.menuitemdata.selectSize = widget.menuitemdata.psize.value;
         print(
-            "shopid : $shopid  vat:$vat  Size : ${menuitemdata.selectSize} color: ${menuitemdata.selectcolor}");
-        menuitemdata.qty = menuitemdata.pqty.toInt();
+            "shopid : ${widget.shopid}  vat:${widget.vat}  Size : ${widget.menuitemdata.selectSize} color: ${widget.menuitemdata.selectcolor}");
+        widget.menuitemdata.qty = widget.menuitemdata.pqty.toInt();
 
-        cartController.additemtocarts(
-            menuitemdata, shopid, vat, deliveryCharge);
+        cartController.additemtocarts(widget.menuitemdata, widget.shopid,
+            widget.vat, widget.deliveryCharge);
 
         // menuitemdata.selectcolor = menuitemdata.pcolor.value;
         // menuitemdata.selectSize = menuitemdata.psize.value;
-        cartController.isInChart(shopid, menuitemdata);
+        cartController.isInChart(widget.shopid, widget.menuitemdata);
         Get.back();
 
         // GetStorage box = GetStorage();
@@ -305,7 +312,7 @@ class ProductDetails extends StatelessWidget {
   }
 
   Widget widgetPageViewHeader() {
-    final listImageHeader = menuitemdata.logo;
+    final listImageHeader = widget.menuitemdata.logo;
 
     var heightImage = Get.height / 1.3;
     return Container(
@@ -315,8 +322,8 @@ class ProductDetails extends StatelessWidget {
           PageView.builder(
             itemBuilder: (context, index) {
               return Image.network(
-                menuitemdata.logo[index],
-                fit: BoxFit.fill,
+                widget.menuitemdata.logo[index],
+                fit: BoxFit.cover,
                 width: Get.width,
                 errorBuilder: (BuildContext context, Object exception,
                     StackTrace stackTrace) {
@@ -359,6 +366,16 @@ class ProductDetails extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          SafeArea(
+            child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                )),
           ),
         ],
       ),
@@ -417,13 +434,13 @@ class ProductDetails extends StatelessWidget {
           GestureDetector(
             onTap: () {
               pController.colorSelect(index);
-              menuitemdata.pcolor(color);
+              widget.menuitemdata.pcolor(color);
             },
             child: AnimatedContainer(
               duration: Duration(milliseconds: 250),
-              margin: EdgeInsets.symmetric(horizontal: 3.0),
-              height: isActive ? 40 : 40,
-              width: isActive ? 40 : 40,
+              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              height: isActive ? 50 : 50,
+              width: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   // color: isActive ? Color(Helper.getHexToInt("#11C4A1")) : null,
@@ -432,7 +449,9 @@ class ProductDetails extends StatelessWidget {
                   // image: ImageIcon(Icons.ac_unit),
                   border: isActive
                       ? Border.all(
-                          color: Colors.black,
+                          color: color == "#FFFFFF"
+                              ? Colors.black12
+                              : Color(Helper.getHexToInt(color)),
                           width: 3,
                         )
                       : Border.all(
@@ -443,8 +462,8 @@ class ProductDetails extends StatelessWidget {
                         )),
               padding: EdgeInsets.all(2),
               child: Container(
-                width: isActive ? 40 : 40,
-                height: isActive ? 40 : 40,
+                width: isActive ? 50 : 50,
+                height: isActive ? 50 : 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Color(Helper.getHexToInt(color))),
@@ -477,15 +496,15 @@ class ProductDetails extends StatelessWidget {
           GestureDetector(
             onTap: () {
               pController.sizeSelect(index);
-              menuitemdata.psize(size);
+              widget.menuitemdata.psize(size);
             },
             child: AnimatedContainer(
               duration: Duration(milliseconds: 250),
-              margin: EdgeInsets.symmetric(horizontal: 3.0),
+              margin: EdgeInsets.symmetric(horizontal: 5.0),
               height: isActive ? 40 : 40,
               width: isActive ? 40 : 40,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
                 color: isActive
                     ? Color(Helper.getHexToInt("#11E5A1"))
                     : Color(Helper.getHexToInt("#F7F8FA")),
@@ -493,7 +512,7 @@ class ProductDetails extends StatelessWidget {
                 //     ? Border.all(color: Color(Helper.getHexToInt("#F7F8FA")))
                 //     : null,
               ),
-              padding: EdgeInsets.all(isActive ? 4.0 : 0.0),
+              padding: EdgeInsets.all(isActive ? 0.0 : 0.0),
               child: Center(
                 child: Text(
                   size,

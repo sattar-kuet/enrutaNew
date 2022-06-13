@@ -4,12 +4,20 @@ import 'package:enruta/helper/style.dart';
 import 'package:enruta/screen/resetpassword/resetController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ResetPassword extends StatelessWidget {
+class ResetPassword extends StatefulWidget {
+  @override
+  _ResetPasswordState createState() => _ResetPasswordState();
+}
+
+class _ResetPasswordState extends State<ResetPassword> {
   final dController = Get.put(ResetController());
+
   final emailController = TextEditingController();
 
   final language = Get.put(LanguageController());
+
   String text(String key) {
     return language.text(key);
   }
@@ -18,7 +26,7 @@ class ResetPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 70,
           leading: IconButton(
             onPressed: () {
               Get.back();
@@ -39,10 +47,8 @@ class ResetPassword extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text(
-              text('reset_password'),
-              style: TextStyle(
-                  fontFamily: 'Poppinsm', fontSize: 18.0, color: Colors.white)),
+          title: Text(text('reset_password'),
+              style: GoogleFonts.poppins(fontSize: 18.0, color: Colors.white)),
           centerTitle: true,
         ),
         body: Container(
@@ -61,19 +67,20 @@ class ResetPassword extends StatelessWidget {
               //           fontSize: 16,
               //           color: Color(Helper.getHexToInt("#22242A"))),
               //     )),
+              SizedBox(
+                height: 20,
+              ),
               promotionsimage(),
               Container(
-                height: 30,
-                padding: EdgeInsets.only(top: 10, left: 20),
+                padding: EdgeInsets.only(top: 10, left: 20, bottom: 20),
                 child: Text(
                   text('reset_password'),
-                  style: TextStyle(
-                      fontFamily: "TTCommonsr", fontSize: 20, color: black),
+                  style: GoogleFonts.poppins(fontSize: 20, color: Colors.black),
                 ),
               ),
               Container(
                 height: 60,
-                padding: EdgeInsets.only(top: 10, left: 20),
+                padding: EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: Text(
                   text('if_you_forgot_your_password'),
                   style: TextStyle(
@@ -108,58 +115,54 @@ class ResetPassword extends StatelessWidget {
       height: 100.0,
       padding: EdgeInsets.all(20),
       width: double.infinity,
-      child: Row(
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                dController.resetPassword(emailController.text);
-                // Get.to(Verification());
-              },
-              child: Container(
-                height: 70,
-                // margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-                    Color(Helper.getHexToInt("#11C7A1")),
-                    // Colors.green[600],
-                    Color(Helper.getHexToInt("#11E4A1"))
-                  ]),
-                  // color: Colors.white,
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                child: Center(
-                    child: Text(
-                  text('send'),
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontFamily: 'TTCommonsm',
-                  ),
-                )),
-              ),
+      child: InkWell(
+        onTap: () async {
+          try {
+            if (RegExp(emailRegx).hasMatch(emailController.text.trim())) {
+              await dController.resetPassword(emailController.text);
+              Get.snackbar(
+                "We send a code to your email, please check",
+                "",
+                snackPosition: SnackPosition.BOTTOM,
+                colorText: Color(Helper.getHexToInt("#11E4A1")),
+              );
+            } else {
+              Get.snackbar("Input valid email ", "",
+                  colorText: Colors.red, snackStyle: SnackStyle.FLOATING);
+            }
+          } catch (e) {
+            Get.snackbar(
+              e,
+              '',
+              snackPosition: SnackPosition.BOTTOM,
+              colorText: Colors.red,
+            );
+          }
+
+          // Get.to(Verification());
+        },
+        child: Container(
+          height: 70,
+          // margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topLeft, colors: [
+              Color(Helper.getHexToInt("#11C7A1")),
+              // Colors.green[600],
+              Color(Helper.getHexToInt("#11E4A1"))
+            ]),
+            // color: Colors.white,
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Center(
+              child: Text(
+            text('send'),
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontFamily: 'TTCommonsm',
             ),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          // InkWell(
-          //   child: Container(
-          //     alignment: Alignment.topLeft,
-          //     // padding: EdgeInsets.only(top: 5, left: 5),
-          //     width: 50,
-          //     height: 50,
-          //     decoration: BoxDecoration(
-          //         gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-          //           Color(Helper.getHexToInt("#11C7A1")),
-          //           // Colors.green[600],
-          //           Color(Helper.getHexToInt("#11E4A1"))
-          //         ]),
-          //         borderRadius: BorderRadius.circular(9)),
-          //     child: Center(child: Image.asset("assets/icons/starw.png")),
-          //   ),
-          // ),
-        ],
+          )),
+        ),
       ),
     );
   }
@@ -182,16 +185,19 @@ class ResetPassword extends StatelessWidget {
               top: 10,
               right: 10,
               bottom: 10,
-              child: Container(
-                  height: 30,
-                  width: 21,
-                  child: Obx(() => Icon(
-                        dController.same.value
-                            ? Icons.check_circle_outline
-                            : Icons.radio_button_unchecked,
-                        // Icons.radio_button_unchecked,
-                        color: Color(Helper.getHexToInt("#00E9A3")),
-                      ))),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                    height: 30,
+                    width: 21,
+                    child: Icon(
+                      RegExp(emailRegx).hasMatch(emailController.text.trim())
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                      // Icons.radio_button_unchecked,
+                      color: Color(Helper.getHexToInt("#00E9A3")),
+                    )),
+              ),
             ),
             Positioned(
               top: 24,
@@ -225,6 +231,7 @@ class ResetPassword extends StatelessWidget {
                     onChanged: (text) {
                       dController.checkEmail(text);
                       print("First text field: $text");
+                      setState(() {});
                       // print(text.length);
                     },
                     controller: emailController,
@@ -254,4 +261,7 @@ class ResetPassword extends StatelessWidget {
       ),
     );
   }
+
+  static const String emailRegx =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 }

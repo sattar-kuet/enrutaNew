@@ -11,23 +11,24 @@ import 'package:enruta/model/Product_model.dart';
 
 import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/cart/cart_model.dart';
-import 'package:enruta/screen/cartPage.dart';
 import 'package:enruta/screen/homePage.dart';
 
 import 'package:enruta/screen/voucher/voucher_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as h;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartController extends GetxController {
   var position = 0.obs;
   var qty = 0.obs;
-  var vat = 0.obs;
-  var deliveryCharge = 0.obs;
+  var vat = 0.0.obs;
+  var deliveryCharge = 0.0.obs;
   var grandTotal = 0.obs;
   var shoptype = "assets/images/type0.jpg".obs;
   var imageloader = false.obs;
@@ -77,6 +78,7 @@ class CartController extends GetxController {
   //for voucher
   var shopvoucher = 0.obs;
   var voucher = 0.obs;
+  var voucherName = ''.obs;
 
   var voucherMinimum = 0.obs;
 
@@ -112,11 +114,13 @@ class CartController extends GetxController {
 
   int get countqty => cartList.first.qty;
   var selectAddress = "".obs;
+  var selectAddressType = "".obs;
+  var selectAddressTitle = "".obs;
   var selectLat = "".obs;
   var selectLng = "".obs;
   var shopid = "".obs;
 
-  var paymentoption = "".obs;
+  var paymentoption = "Cash on delivery".obs;
   GetStorage box = GetStorage();
 
   @override
@@ -130,11 +134,19 @@ class CartController extends GetxController {
     if (box.read("selectAddress") != null) {
       selectAddress.value = box.read("selectAddress");
     }
+    if (box.read("selectAddressType") != null) {
+      selectAddressType.value = box.read("selectAddressType");
+    }
+    if (box.read("selectAddressTypeTitle") != null) {
+      selectAddressTitle.value = box.read("selectAddressTypeTitle");
+    }
     if (box.read("selectLet") != null) {
       selectLat.value = box.read("selectLet");
       selectLng.value = box.read("selectLng");
     }
-    if (box.read("paymentoption") != null) {}
+    if (box.read("paymentoption") != null) {
+      paymentoption.value = box.read("paymentoption");
+    }
 
     getsuggetItems();
     print("Menu items fn called");
@@ -142,7 +154,7 @@ class CartController extends GetxController {
     List storedCartList = GetStorage().read<List>('cartList');
     // shopid.value = GetStorage().read('shopid');
 
-    if (!storedCartList.isNull) {
+    if (storedCartList?.isNotEmpty ?? false) {
       cartList = storedCartList.map((e) => Product.fromJson(e)).toList().obs;
     }
     if (shopid != null && cartList.length < 0) {
@@ -171,7 +183,7 @@ class CartController extends GetxController {
       suggetItems.value = [];
       isLoading(true);
       // await Future.delayed(Duration(seconds: 1));
-      Service.menulist(shopid.value).then((val) {
+      await Service.menulist(shopid.value).then((val) {
         if (val != null) {
           suggetItems.value = val.products.toList();
           print(suggetItems.length);
@@ -196,7 +208,7 @@ class CartController extends GetxController {
   }
 
   void additemtocarts(
-      Product item, String shop, int vats, int deliveryC) async {
+      Product item, String shop, double vats, double deliveryC) async {
     print("shopid" '$shop');
     print(vats);
     print("deliveryC");
@@ -208,13 +220,13 @@ class CartController extends GetxController {
 
     if (shopid.value == null) {
       prefs.setString('shopid', shop);
-      prefs.setInt("vat", vats);
-      prefs.setInt("deliveryCharge", deliveryC);
+      prefs.setDouble("vat", vats);
+      prefs.setDouble("deliveryCharge", deliveryC);
       vat.value = vats;
       deliveryCharge.value = deliveryC;
       print("............working so far......");
       productadded(item, shop);
-    } else if (shopid.value != null && shopid.value != shop) {
+    } else if (shopid.value != null && shop != null && shopid.value != shop) {
       Get.defaultDialog(
           title: "",
           content: Text(
@@ -235,18 +247,20 @@ class CartController extends GetxController {
                   // ignore: deprecated_member_use
                   cartList.value = List<Product>().obs;
                   prefs.setString('shopid', shop);
-                  prefs.setInt("vat", vats);
-                  prefs.setInt("deliveryCharge", deliveryC);
+                  prefs.setDouble("vat", vats);
+                  prefs.setDouble("deliveryCharge", deliveryC);
                   voucher.value = 0;
+                  voucherName.value = '';
                   cuppon.value = 0.0;
                   prefs.setString("categoryName",
                       Get.find<MenuController>().categoryName.value);
                   Get.find<SuggestController>().getsuggetItems();
                   Get.find<SuggestController>().removeitemfromlist(item.id);
-                  totalcalculate();
+
                   vat.value = vats;
                   deliveryCharge.value = deliveryC;
                   shopid.value = shop;
+                  totalcalculate();
                   Get.back();
                   productadded(item, shop);
 
@@ -362,6 +376,7 @@ class CartController extends GetxController {
     String shop = prefs.getString('shopid');
     bool result = false;
     if (shop != null &&
+        shopId != null &&
         int.parse(shop) == int.parse(shopId) &&
         cartList.length != 0) {
       for (Product p in cartList) {
@@ -509,11 +524,12 @@ class CartController extends GetxController {
   }
 
   Future<void> applyVoucher(String code) async {
-    print("Shop id = $shopid from apply voucher");
+    print("Shop id = $shopid from apply voucher $code");
     underValue.value = 0;
     CuponModel a = await Service.getCuppons(shopid.value, user_id.value, code);
+
     try {
-      if (!a.offer.isNull) {
+      if (a.offer != null) {
         cupponMinimum.value = a.offer.minimum_spent;
         cupontype.value = a.offer.type;
         if (cupontype.value == 1) {
@@ -590,11 +606,15 @@ class CartController extends GetxController {
     //     box.read('addressList') ? box.read('addressList') : [];
 
     box.write("selectLet", lat.toString());
+    box.write("selectAddressType", selectAddressType.value);
+    box.write("selectAddressTypeTitle", selectAddressTitle.value);
     box.write("selectLng", long.toString());
     print("lat lang written finished");
     box.write("adress_list", addressdetails);
 
     selectAddress.value = addressdetails.toString();
+    selectAddressType.value = selectAddressType.value.toString();
+    selectAddressTitle.value = selectAddressTitle.value.toString();
     selectLat.value = lat.toString();
     selectLng.value = long.toString();
 
@@ -620,101 +640,151 @@ class CartController extends GetxController {
     } catch (e) {}
   }
 
-  sendOrder(BuildContext context) async {
-    print(jsonEncode(cartList));
-    isLoding.value = true;
-    GetStorage box = GetStorage();
-    SharedPreferences pre = await SharedPreferences.getInstance();
-    SendOrderModel sendOrder = new SendOrderModel();
-    //Item p = new Item();
-    // var pList = List<Item>();
-    List<Item> pList = [];
+  Future sendOrder(BuildContext context) async {
+    try {
+      isLoding.value = true;
+      GetStorage box = GetStorage();
+      SharedPreferences pre = await SharedPreferences.getInstance();
+      SendOrderModel sendOrder = new SendOrderModel();
+      //Item p = new Item();
+      // var pList = List<Item>();
+      List<Item> pList = [];
 
-    user_id.value = pre.getString("email");
+      user_id.value = pre.getString("email");
 
-    deliveryCharge.value = deliveryCharge.value;
+      // deliveryCharge.value = deliveryCharge.value;
 
-    grandTotal.value = gTotal.round();
+      grandTotal.value = gTotal.round();
 
-    shop_category.value = shopid.value;
+      shop_category.value = shopid.value;
 
-    tax.value = vatPrice.toInt();
+      tax.value = vatPrice.toInt();
 
-    sendOrder.userId = pre.getInt("id");
-    if (sendOrder.userId == null) {
-      logCont.checklogin();
-    }
-    sendOrder.shop_category = pre.getString("categoryName");
-    // if(sendOrder.shopCategory.isEmpty){
-    sendOrder.shop_category = box.read("shopcategory");
-    sendOrder.shop_name = shopname.value;
-    sendOrder.delivery_address = selectAddress.value;
-    sendOrder.order_deadline = Get.put(TestController()).sendtime.value;
-    // }
+      sendOrder.userId = pre.getInt("id");
+      if (sendOrder.userId == null) {
+        logCont.checklogin();
+      }
+      sendOrder.shop_category = pre.getString("categoryName");
+      // if(sendOrder.shopCategory.isEmpty){
+      sendOrder.shop_category = box.read("shopcategory");
+      sendOrder.shop_name = shopname.value;
+      sendOrder.delivery_address = selectAddress.value;
+      sendOrder.deliveryAddressType = selectAddressType.value;
+      sendOrder.order_deadline = Get.put(TestController()).sendtime.value;
+      // }
 
-    sendOrder.lat = selectLat.value.toString();
+      sendOrder.lat = selectLat.value.toString();
 
-    sendOrder.lng = selectLng.value.toString();
-    //print("cartListcartListcartListcartList" + cartList.value.toString());
-    for (var item in cartList) {
-      Item p = new Item();
-      p.name = item.title;
-      p.productId = item.id;
-      p.qty = item.qty;
-      p.price = item.price.toDouble();
-      p.size = item.selectSize != null ? item.selectSize : "";
-      p.color = item.selectcolor != null ? item.selectcolor : "";
+      sendOrder.lng = selectLng.value.toString();
+      //print("cartListcartListcartListcartList" + cartList.value.toString());
+      for (var item in cartList) {
+        Item p = new Item();
+        p.name = item.title;
+        p.productId = item.id;
+        p.qty = item.qty;
+        p.price = item.price.toDouble();
+        p.size = item.selectSize != null ? item.selectSize : "";
+        p.color = item.selectcolor != null ? item.selectcolor : "";
 
-      pList.add(p);
-      // order.items.add(item);
-    }
-    sendOrder.items = pList.toList();
-    // print("cartListcartListcartListcartList" + sendOrder.items[0].color);
-    // order.items = cartList.toList();
+        pList.add(p);
+        // order.items.add(item);
+      }
+      sendOrder.items = pList.toList();
+      // print("cartListcartListcartListcartList" + sendOrder.items[0].color);
+      // order.items = cartList.toList();
 
-    // order.items = cartList.toList();
+      // order.items = cartList.toList();
 
-    sendOrder.tax = vatPrice;
-    sendOrder.coupon = cuppon.value ?? 0.0;
-    sendOrder.voucher = voucher.value ?? 0;
-    sendOrder.offer = discount.value ?? 0;
+      sendOrder.tax = vatPrice;
+      sendOrder.coupon = cuppon.value ?? 0.0;
+      sendOrder.voucher = voucher.value ?? 0;
+      sendOrder.offer = discount.value ?? 0;
 
-    sendOrder.delivery_charge = deliveryCharge.value.toDouble();
+      sendOrder.delivery_charge = deliveryCharge.value.toDouble();
 
-    sendOrder.paymentOption = paymentoption.value.toString();
-    sendOrder.delivery_time_in_minutes = 10;
+      sendOrder.paymentOption = paymentoption.value.toString();
+      sendOrder.delivery_time_in_minutes = 10;
 
-    deliveryType.value == 1
-        ? sendOrder.delivery_address = selectAddress.value
-        : "Pick UP";
+      deliveryType.value == 1
+          ? sendOrder.delivery_address = selectAddress.value
+          : "Pick UP";
 
-    newOrder.value = 1;
-    print(pList);
+      newOrder.value = 1;
+      print(pList);
 
-    //await Future.delayed(Duration(seconds: 1));
+      //await Future.delayed(Duration(seconds: 1));
+      print(sendOrder.toJson());
 
-    Service.sendorder(sendOrder).then((values) {
-      h.Response res = values;
-      //String responseCode = res.statusCode.toString();
-      if (res.statusCode == 200) {
-        submitorderstatus.value = true;
-        sendOrder = new SendOrderModel();
-        pList = [];
-        cartList.value = [];
-        print(cartList);
-        clearall();
-        var c = CartPage();
-
-        Navigator.pop(context);
-        c.showSuccessfullyBottompopup(context);
+      if (sendOrder.paymentOption == "Master Card") {
+        await purchaseItem(
+            "WxrXWgPR8wBItl1IH9XH2UJ2lDt", 10, "YYK0a5skhG5NX8jxuXHQUvnzN9W");
       }
 
-      print(res.body);
-      print(res.body);
+      await Service.sendorder(sendOrder).then((values) {
+        h.Response res = values;
+        //String responseCode = res.statusCode.toString();
+        if (res.statusCode == 200) {
+          submitorderstatus.value = true;
 
-      // Get.back();
+          sendOrder = new SendOrderModel();
+          pList = [];
+          cartList.value = [];
+          print(cartList);
+          clearall();
+
+          Navigator.pop(context);
+        }
+
+        print(res.body);
+        print(res.body);
+
+        // Get.back();
+        isLoding.value = false;
+      });
+    } catch (e) {
+      print(e);
       isLoding.value = false;
-    });
+      rethrow;
+    }
+  }
+
+  Future<void> purchaseItem(
+      String gatewayToken, int amount, String paymentMethodToken) async {
+    try {
+      String url =
+          "https://core.spreedly.com/v1/gateways/$gatewayToken/purchase.json";
+      dynamic headers = {
+        'Authorization':
+            'Basic NnhNbnZuc3lDbnJvWE1lTTZTMExlVFJiYndqOlQ2VkxETWQycG4zNWptNFkzNFUzcDVkdjlCSENpSUowVGRjVVh5WGRaNW9VYng0OW84aWt3WW5uenZrTDBRZUE=',
+        'Content-Type': 'application/json'
+      };
+
+      dynamic response = await post(
+        Uri.parse(
+          url,
+        ),
+        headers: headers,
+        body: json.encode({
+          "transaction": {
+            "payment_method_token": paymentMethodToken,
+            "amount": amount * 100,
+            "currency_code": "USD"
+          }
+        }),
+      );
+      dynamic createData = jsonDecode(response.body);
+      print(response.statusCode);
+      print(response.body);
+      print("***************************************$createData");
+      if (response.statusCode == 201|| response.statusCode == 200) {
+        Fluttertoast.showToast(msg: "Success Payment!");
+
+      } else {
+        throw createData["errors"][0]["message"];
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   // increment() => qty++;
@@ -735,7 +805,7 @@ class CartController extends GetxController {
     grandTotal.value = 0;
     subTprice.value = 0;
     tvatprice.value = 0;
-    deliveryCharge.value = 0;
+
     cuppon.value = 0.0;
     voucher.value = 0;
     discount.value = 0;
@@ -775,7 +845,7 @@ class CartController extends GetxController {
       isLoading(true);
       imageloader(true);
       // await Future.delayed(Duration(seconds: 1));
-      Service.menulist(id).then((va) {
+      await Service.menulist(id).then((va) {
         if (va != null) {
           shoptype.value = "assets/images/type${va.shopCategory}.jpg";
           menucover.value = va.shopcover;

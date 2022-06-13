@@ -20,8 +20,8 @@ class ProductController extends GetxController {
     update();
   }
 
-  void sendfavorit(var shop, var status) async {
-    await Future.delayed(Duration(seconds: 1));
+  Future<void> sendfavorit(var shop, var status) async {
+
     SharedPreferences pre = await SharedPreferences.getInstance();
     print("0");
     var id = pre.getInt("id") ?? pre.getString("id");
@@ -29,7 +29,7 @@ class ProductController extends GetxController {
     //  var shop = pre.getString('shopid');
     print('status $status');
 
-    Service.setToggleFavorite(id, shop, status).then((values) {
+   await Service.setToggleFavorite(id, shop, status).then((values) {
       var value = values;
       // datum.value = values.data;
       print('values===${value.statusCode}');

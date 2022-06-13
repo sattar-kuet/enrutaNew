@@ -8,8 +8,11 @@ import 'package:enruta/widgetview/textwidget.dart';
 import 'package:enruta/widgetview/voucherpanel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class MyVoucher extends StatelessWidget {
+  final bool isFromSlider;
+  MyVoucher({this.isFromSlider = false});
   // List<VoucherListData> voucherList = VoucherListData.voucherList;
   final voucherController = Get.put(VoucherController());
 
@@ -23,7 +26,7 @@ class MyVoucher extends StatelessWidget {
     voucherController.getvoucher();
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 80,
           leading: IconButton(
             onPressed: () {
               Get.back();
@@ -174,7 +177,7 @@ class MyVoucher extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           print("add voucher");
-                          voucherController.advoucher();
+                          voucherController.advoucher(isFromSlider);
                         },
                         child: Stack(
                           // ignore: deprecated_member_use
@@ -217,13 +220,13 @@ class MyVoucher extends StatelessWidget {
                               left: 16,
                               child: Center(
                                   child: Text(
-                                "\$" + model.minOrder.toString() ??
-                                    "" + " minimum",
+                                "minimum \$" +
+                                    (model.minOrder.toString() ?? "") ,
                                 style: TextStyle(
-                                  fontFamily: "TTCommonsd",
-                                  fontSize: 11,
-                                  color: text1Color,
-                                ),
+                                    fontFamily: "TTCommonsd",
+                                    fontSize: 11,
+                                    color:
+                                        Color(Helper.getHexToInt("#9F9F9F"))),
                               )),
                             ),
                             Positioned(
@@ -231,7 +234,8 @@ class MyVoucher extends StatelessWidget {
                                 right: 16,
                                 child: Center(
                                   child: Text(
-                                    model.validity.toString() ?? "",
+                                    DateFormat("yyyy-MM-dd")
+                                        .format(model.validity),
                                     style: TextStyle(
                                         fontFamily: "TTCommonsd",
                                         fontSize: 14,
@@ -250,8 +254,9 @@ class MyVoucher extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(3)),
-                                    color: Color(Helper.getHexToInt("#C5FFEC"))
-                                        .withOpacity(0.67),
+                                    color: Color(
+                                      Helper.getHexToInt("#C5FFEC"),
+                                    ).withOpacity(0.67),
                                   ),
                                   child: Center(
                                     child: Text(

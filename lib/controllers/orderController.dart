@@ -22,12 +22,19 @@ class OrderController extends GetxController {
     try {
       allOrderList.value = [];
 
-      await Future.delayed(Duration(seconds: 1));
-      Service.getAllOrder(id).then((values) {
+      await Service.getAllOrder(id).then((values) {
         allOrderList.value = values.orders.toList();
         print(allOrderList.length);
         isLoading(false);
       });
     } finally {}
+  }
+
+  Future<AllOrderModel> getOrder() async {
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    var id = pre.getInt("id");
+    // int pId = int.parse(id);
+    print('pid is $id');
+    return Service.getAllOrder(id);
   }
 }

@@ -9,16 +9,20 @@ import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
 import 'package:enruta/screen/permissionCheck.dart';
+import 'package:enruta/screen/productDetails.dart';
 import 'package:enruta/widgetview/custom_btn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignUp extends StatefulWidget {
   final heroTag;
@@ -36,6 +40,8 @@ class _SignUpState extends State<SignUp> {
   String text(String key) {
     return language.text(key);
   }
+
+  GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
 
   // var selectedCard = 'WEIGHT';
   static final FacebookLogin facebookSignIn = new FacebookLogin();
@@ -67,351 +73,468 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Container(
-        // margin: EdgeInsets.only(bottom: 20),
-        // padding: EdgeInsets.only(bottom: 20),
-        child: ListView(children: [
-          Stack(children: [
-            Container(
-              height: MediaQuery.of(context).size.height - 0.0,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-                Color(Helper.getHexToInt("#11C7A1")),
-                Color(Helper.getHexToInt("#11E4A1"))
-              ])),
-            ),
-            Positioned(
-                top: 150.0,
-                child: Container(
+      body: SafeArea(
+        child: Container(
+          // margin: EdgeInsets.only(bottom: 20),
+          // padding: EdgeInsets.only(bottom: 20),
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height - 0.0,
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25.0),
-                          topRight: Radius.circular(25.0),
-                        ),
-                        color: Colors.white),
-                    height: MediaQuery.of(context).size.height - 100.0,
-                    width: MediaQuery.of(context).size.width)),
-
-            // profileImage(),
-            Positioned(
-              top: 90.0,
-              left: (MediaQuery.of(context).size.width / 2) - 60.0,
-              child: Container(
-                decoration: BoxDecoration(),
-                child: profileImage(),
-              ),
-            ),
-            Positioned(
-              top: 220.0,
-              left: 25.0,
-              right: 25.0,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 10,
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            colors: [
+                          Color(Helper.getHexToInt("#11C7A1")),
+                          Color(Helper.getHexToInt("#11E4A1"))
+                        ])),
                   ),
-                  Form(
-                    key: _formkey,
-                    child: Column(
-                      children: <Widget>[
-                        FadeAnimation(
-                          1.3,
-                          buildTextfield3(text('name'), nameController),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FadeAnimation(
-                            1.3,
-                            buildTextfield3(
-                                text('address'), addressController)),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FadeAnimation(1.3,
-                            buildTextfield3(text('email'), emailController)),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FadeAnimation(
-                            1.3,
-                            buildTextfield3(
-                                text('password'), passwordController)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  FadeAnimation(
-                    1.6,
-                    CustomButton(
-                      loadingenabled: true,
-                      onclick: () async {
-                        print("Container clicked");
-
-                        if (_formkey.currentState.validate()) {
-                          var name = nameController.text;
-                          var address = addressController.text;
-                          var email = emailController.text;
-                          var password = passwordController.text;
-
-                          if (name.isEmpty) {
-                            Fluttertoast.showToast(
-                                msg: text('please_input_your_name'),
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                // backgroundColor: Colors.red,
-                                textColor: Colors.red,
-                                fontSize: 12.0);
-                            return;
-                          }
-                          if (email.isEmpty ||
-                              !(email.contains('@') && email.contains('.'))) {
-                            Fluttertoast.showToast(
-                                msg: text('please_input_valid_email'),
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                // backgroundColor: Colors.red,
-                                textColor: Colors.red,
-                                fontSize: 12.0);
-                            return;
-                          }
-                          if (password.isEmpty || password.length < 6) {
-                            Fluttertoast.showToast(
-                                msg: text('please_input_valid_password'),
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                // backgroundColor: Colors.red,
-                                textColor: Colors.red,
-                                fontSize: 12.0);
-                            return;
-                          }
-
-                          setState(() {
-                            message = 'please wait....';
-                          });
-                          print(email + "" + password);
-                          // var rsps = await sendForm("url",
-                          //     {
-                          //       'name': name,
-                          //       'email': email,
-                          //       'password': password,
-                          //       'address': address,
-                          //
-                          //     }, {'avatar': imageF});
-
-                          // var r = rsps ;
-                          // print("res-1 "+ r);
-
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              });
-
-                          var rsp = await registration(
-                              name,
-                              address,
-                              email,
-                              password,
-                              !imagepassed ? null : File(imageF.path));
-                          // var rsps=  await signUpWithImage(name, address, email, password,imageF);
-                          // print("\n\nstatus:"+rsp['status'].toString());
-                          if (rsp["status"] == 0) {
-                            // print("\n\n"+rsp["status_text"]);
-                            Navigator.pop(context);
-                            Get.snackbar(rsp["status_text"], "",
-                                colorText: Colors.red,
-                                snackPosition: SnackPosition.BOTTOM);
-                          } else if (rsp["status"] == 1) {
-                            Navigator.pop(context);
-                            lController.login(email, password);
-                          }
-
-                          // if (rsp["status"] == 1) {
-                          //   Fluttertoast.showToast(
-                          //       msg: "Registration  success",
-                          //       toastLength: Toast.LENGTH_SHORT,
-                          //       gravity: ToastGravity.BOTTOM,
-                          //       timeInSecForIosWeb: 1,
-                          //       textColor: Colors.black,
-                          //       fontSize: 12.0);
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => LoginPage()));
-                          // } else {
-                          //   Fluttertoast.showToast(
-                          //       msg: "Something wrong ",
-                          //       toastLength: Toast.LENGTH_SHORT,
-                          //       gravity: ToastGravity.BOTTOM,
-                          //       timeInSecForIosWeb: 1,
-                          //       // backgroundColor: Colors.red,
-                          //       textColor: Colors.red,
-                          //       fontSize: 16.0);
-                          // }
-                          //
-                          // print(r);
-                        }
-                      },
+                  Positioned(
+                      top: 150.0,
                       child: Container(
-                        height: 50,
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              colors: [
-                                Color(Helper.getHexToInt("#11CAA1")),
-                                Color(Helper.getHexToInt("#11E3A1"))
-                              ]),
-                        ),
-                        child: Center(
-                          child: Text(
-                            text('signup'),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25.0),
+                                topRight: Radius.circular(25.0),
+                              ),
+                              color: Colors.white),
+                          height: MediaQuery.of(context).size.height - 100.0,
+                          width: MediaQuery.of(context).size.width)),
+
+                  // profileImage(),
+                  Positioned(
+                    top: 90.0,
+                    left: (MediaQuery.of(context).size.width / 2) - 60.0,
+                    child: Container(
+                      decoration: BoxDecoration(),
+                      child: profileImage(),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                    1.7,
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          children: <Widget>[
+                  Positioned(
+                    top: 220.0,
+                    left: 20.0,
+                    right: 20.0,
+                    bottom: 20,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Form(
+                            key: _formkey,
+                            child: Column(
+                              children: <Widget>[
+                                FadeAnimation(
+                                  1.3,
+                                  buildTextfield3(text('name'), nameController),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                FadeAnimation(
+                                    1.3,
+                                    buildTextfield3(
+                                        text('address'), addressController)),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                FadeAnimation(
+                                    1.3,
+                                    buildTextfield3(
+                                        text('email'), emailController)),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                FadeAnimation(
+                                    1.3,
+                                    buildTextfield3(
+                                        text('password'), passwordController)),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          FadeAnimation(
+                            1.6,
+                            CustomButton(
+                              loadingenabled: true,
+                              onclick: () async {
+                                print("Container clicked");
+                                FocusScope.of(context)
+                                    .requestFocus(new FocusNode());
+                                if (_formkey.currentState.validate()) {
+                                  var name = nameController.text;
+                                  var address = addressController.text;
+                                  var email = emailController.text;
+                                  var password = passwordController.text;
+
+                                  if (name.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: text('please_input_your_name'),
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        // backgroundColor: Colors.red,
+                                        textColor: Colors.red,
+                                        fontSize: 12.0);
+                                    return;
+                                  }
+                                  if (email.isEmpty ||
+                                      !(email.contains('@') &&
+                                          email.contains('.'))) {
+                                    Fluttertoast.showToast(
+                                        msg: text('please_input_valid_email'),
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        // backgroundColor: Colors.red,
+                                        textColor: Colors.red,
+                                        fontSize: 12.0);
+                                    return;
+                                  }
+                                  if (password.isEmpty || password.length < 6) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            text('please_input_valid_password'),
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        // backgroundColor: Colors.red,
+                                        textColor: Colors.red,
+                                        fontSize: 12.0);
+                                    return;
+                                  }
+
+                                  setState(() {
+                                    message = 'please wait....';
+                                  });
+                                  print(email + "" + password);
+                                  // var rsps = await sendForm("url",
+                                  //     {
+                                  //       'name': name,
+                                  //       'email': email,
+                                  //       'password': password,
+                                  //       'address': address,
+                                  //
+                                  //     }, {'avatar': imageF});
+
+                                  // var r = rsps ;
+                                  // print("res-1 "+ r);
+
+                                  var rsp = await registration(
+                                      name,
+                                      address,
+                                      email,
+                                      password,
+                                      !imagepassed ? null : imageF.path);
+                                  // var rsps=  await signUpWithImage(name, address, email, password,imageF);
+                                  // print("\n\nstatus:"+rsp['status'].toString());
+                                  if (rsp["status"] == 0) {
+                                    // print("\n\n"+rsp["status_text"]);
+
+                                    Get.snackbar(rsp["status_text"], "",
+                                        colorText: Colors.red,
+                                        snackPosition: SnackPosition.BOTTOM);
+                                  } else if (rsp["status"] == 1) {
+                                    Get.snackbar(rsp["status_text"], "",
+                                        snackPosition: SnackPosition.BOTTOM);
+                                    lController.login(email, password);
+                                  }
+
+                                  // if (rsp["status"] == 1) {
+                                  //   Fluttertoast.showToast(
+                                  //       msg: "Registration  success",
+                                  //       toastLength: Toast.LENGTH_SHORT,
+                                  //       gravity: ToastGravity.BOTTOM,
+                                  //       timeInSecForIosWeb: 1,
+                                  //       textColor: Colors.black,
+                                  //       fontSize: 12.0);
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //           builder: (context) => LoginPage()));
+                                  // } else {
+                                  //   Fluttertoast.showToast(
+                                  //       msg: "Something wrong ",
+                                  //       toastLength: Toast.LENGTH_SHORT,
+                                  //       gravity: ToastGravity.BOTTOM,
+                                  //       timeInSecForIosWeb: 1,
+                                  //       // backgroundColor: Colors.red,
+                                  //       textColor: Colors.red,
+                                  //       fontSize: 16.0);
+                                  // }
+                                  //
+                                  // print(r);
+                                }
+                              },
+                              child: Container(
+                                height: 50,
+                                margin: EdgeInsets.symmetric(horizontal: 0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      colors: [
+                                        Color(Helper.getHexToInt("#11CAA1")),
+                                        Color(Helper.getHexToInt("#11E3A1"))
+                                      ]),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    text('signup'),
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            1.7,
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text(
+                                      text('have_an_account_already'),
+                                      style: GoogleFonts.poppins(
+                                          color: Color(
+                                              Helper.getHexToInt("#6F6F6F"))),
+                                    ),
+                                    GestureDetector(
+                                        onTap: () {
+                                          print("Container clicked");
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage()));
+                                        },
+                                        child: new Container(
+                                          child: Text(
+                                            text('login'),
+                                            style: GoogleFonts.nunito(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(Helper.getHexToInt(
+                                                    "#11C4A1"))),
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Divider(
+                            thickness: 1,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            1.7,
                             Text(
-                              text('have_an_account_already'),
-                              style: TextStyle(
+                              text('or_signup_with'),
+                              style: GoogleFonts.poppins(
+                                  fontSize: 16,
                                   color: Color(Helper.getHexToInt("#6F6F6F"))),
                             ),
-                            GestureDetector(
-                                onTap: () {
-                                  print("Container clicked");
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginPage()));
-                                },
-                                child: new Container(
-                                  child: Text(
-                                    text('login'),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(
-                                            Helper.getHexToInt("#11C4A1"))),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: FadeAnimation(
+                                  1.9,
+                                  CustomButton(
+                                    btncolor: Colors.blue,
+                                    loadingenabled: true,
+                                    onclick: () {
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
+                                      // Get.to(ProductDetails());
+                                      print("facebook");
+                                      faceBookLogin();
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color(
+                                              Helper.getHexToInt("#4267B2"))),
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/facebook.png",
+                                              fit: BoxFit.cover,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Facebook",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                )),
-                          ],
-                        )),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                    1.7,
-                    Text(
-                      text('or_signup_with'),
-                      style: TextStyle(
-                          color: Color(Helper.getHexToInt("#6F6F6F"))),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: FadeAnimation(
+                                  2,
+                                  CustomButton(
+                                    loadingenabled: true,
+                                    btncolor: Colors.red,
+                                    onclick: () {
+                                      print("google");
+                                      _handleSignIn();
+                                      // lController.handleSignIn();
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color(
+                                              Helper.getHexToInt("#EB4132"))),
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/google.png",
+                                              fit: BoxFit.cover,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Google",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Platform.isIOS
+                              ? FadeAnimation(
+                                  1.9,
+                                  SignInWithAppleButton(
+                                    onPressed: () async {
+                                      if (await SignInWithApple.isAvailable()) {
+                                        final credential = await SignInWithApple
+                                            .getAppleIDCredential(
+                                          scopes: [
+                                            AppleIDAuthorizationScopes.email,
+                                            AppleIDAuthorizationScopes.fullName,
+                                          ],
+                                        );
+                                        final oauthCredential =
+                                            OAuthProvider("apple.com")
+                                                .credential(
+                                          idToken: credential.identityToken,
+                                        );
+                                        print(credential);
+                                        await FirebaseAuth.instance
+                                            .signInWithCredential(
+                                                oauthCredential);
+                                                 await FirebaseAuth.instance.currentUser
+                                            .updateProfile(
+                                                displayName: ((credential
+                                                            .givenName ??
+                                                        '') +
+                                                    ' ' +
+                                                    (credential.familyName ??
+                                                        '')));
+                                        await setcurentAppleUser();
+                                        Get.offAll(HomePage());
+                                      }
+
+                                      // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                                      // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+                                    },
+                                  ),
+                                )
+                              : Container(),
+                          SizedBox(
+                            height: Platform.isIOS ? 20 : 0,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: FadeAnimation(
-                          1.9,
-                          CustomButton(
-                            btncolor: Colors.blue,
-                            loadingenabled: true,
-                            onclick: () {
-                              // Get.to(ProductDetails());
-                              print("facebook");
-                              faceBookLogin();
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Color(Helper.getHexToInt("#4267B2"))),
-                              child: Center(
-                                child: Text(
-                                  "Facebook",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Expanded(
-                        child: FadeAnimation(
-                          2,
-                          CustomButton(
-                            loadingenabled: true,
-                            btncolor: Colors.red,
-                            onclick: () {
-                              print("google");
-                              _handleSignIn();
-                              // lController.handleSignIn();
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Color(Helper.getHexToInt("#EB4132"))),
-                              child: Center(
-                                child: Text(
-                                  "Google",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
+                    height: 80,
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              width: 80,
-            ),
-          ])
-        ]),
+            ],
+          ),
+        ),
       ),
-    ));
+    );
+  }
+
+   Future<void> setcurentAppleUser() async {
+    SharedPreferences shp = await SharedPreferences.getInstance();
+
+    // int uid = int.parse(currentUser.id) ;
+    // shp.setInt("id", uid);
+    shp.setString("name", FirebaseAuth.instance.currentUser?.displayName ?? '');
+    shp.setString("email", FirebaseAuth.instance.currentUser.email);
+    shp.setString("profileImage", FirebaseAuth.instance.currentUser.photoUrl);
+    shp.setString("checkLogin", "a");
+    // lController.pimage.value = FirebaseAuth.instance.currentUser.photoUrl;
+
+    await lController.appleuser(
+        FirebaseAuth.instance.currentUser.email,
+        FirebaseAuth.instance.currentUser.displayName,
+        FirebaseAuth.instance.currentUser.uid);
+    print(FirebaseAuth.instance.currentUser.photoUrl);
+
+    print(FirebaseAuth.instance.currentUser);
   }
 
   Widget buildTextField(String hintText) {
@@ -426,6 +549,7 @@ class _SignUpState extends State<SignUp> {
               height: 60,
               padding: EdgeInsets.all(2),
               child: TextField(
+                textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   hintText: hintText,
                   hintStyle: TextStyle(
@@ -538,14 +662,21 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 60,
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(3),
                   decoration: BoxDecoration(
                       // border: Border.all(
                       //   color: Color(Helper.getHexToInt("#11CAA1")),
                       // ),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: TextFormField(
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 15,
+                      letterSpacing: 0,
+                    ),
+                    onChanged: (_) {
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
                       hintText: hintText,
                       hintStyle: TextStyle(
@@ -554,11 +685,21 @@ class _SignUpState extends State<SignUp> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       prefixIcon: hintText == text('email')
-                          ? Icon(Icons.email)
+                          ? Icon(
+                              Icons.email,
+                              color: Color(Helper.getHexToInt("#BDBDBD")),
+                            )
                           : hintText == text('password')
-                              ? Icon(Icons.lock)
+                              ? Icon(
+                                  Icons.lock,
+                                  color: Color(Helper.getHexToInt("#BDBDBD")),
+                                )
                               : hintText == text('name')
-                                  ? Icon(Icons.person)
+                                  ? Icon(
+                                      Icons.person,
+                                      color:
+                                          Color(Helper.getHexToInt("#BDBDBD")),
+                                    )
                                   : hintText == text('address')
                                       ? Icon(Icons.location_on)
                                       : null,
@@ -569,7 +710,16 @@ class _SignUpState extends State<SignUp> {
                                   ? Icon(Icons.visibility_off)
                                   : Icon(Icons.visibility),
                             )
-                          : null,
+                          : hintText == text('email')
+                              ? Icon(
+                                  RegExp(emailRegx)
+                                          .hasMatch(scontroller.text.trim())
+                                      ? Icons.check_circle
+                                      : Icons.radio_button_unchecked,
+                                  // Icons.radio_button_unchecked,
+                                  color: Color(Helper.getHexToInt("#00E9A3")),
+                                )
+                              : null,
                     ),
                     controller: scontroller,
                     obscureText:
@@ -583,6 +733,9 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
+
+  static const String emailRegx =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   // Widget imageProfile() {
   //   return Center(
@@ -662,7 +815,8 @@ class _SignUpState extends State<SignUp> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(
-        source: source, maxHeight: 400, maxWidth: 300);
+      source: source,
+    );
     // final pickedFile = await _picker.getImage(
     //   source: source,
     // );
@@ -685,16 +839,33 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future<Null> faceBookLogin() async {
-    facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+    //await Geolocator().getCurrentPosition();
+    facebookSignIn.loginBehavior = FacebookLoginBehavior.webOnly;
     // final result = await facebookSignIn.logInWithReadPermissions(['email']);
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
     // await facebookSignIn.logIn(['email']);
+    print(result.errorMessage);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final FacebookAccessToken accessToken = result.accessToken;
+        print(accessToken.token);
+// Create a credential from the access token
+        final OAuthCredential facebookAuthCredential =
+            FacebookAuthProvider.credential(accessToken.token);
+
+        // Once signed in, return the UserCredential
+        await FirebaseAuth.instance
+            .signInWithCredential(facebookAuthCredential);
         final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}');
+            'https://graph.facebook.com/v2.12/me?fields=first_name,email,picture&access_token=${accessToken.token}');
         final profile = jsonDecode(graphResponse.body);
         print(profile);
         setState(() {
@@ -703,47 +874,39 @@ class _SignUpState extends State<SignUp> {
         });
 
         SharedPreferences shp = await SharedPreferences.getInstance();
+        var id = profile['id'];
 
         // int uid = int.parse(currentUser.id) ;
-        // shp.setInt("id", uid);
+        // shp.setInt("id", int.parse(id));
         shp.setString("name", name);
-        shp.setString("email", profile['id']);
+        shp.setString("email", profile['email']);
         shp.setString("profileImage", image);
         shp.setInt("islogin", 1);
         shp.setString("checkLogin", "a");
+        await lController.facebookUser(profile['email'], name, id);
+
         // lController.pimage.value = currentUser.photoUrl;
         print(name);
 
         print(image);
-        // await Geolocator().getCurrentPosition();
-        // var permission = await Geolocator().checkGeolocationPermissionStatus();
-        // if (permission != GeolocationStatus.denied) {
-        //   Get.offAll(HomePage());
-        // } else {
-        //   Get.defaultDialog(title: "Please give Permission first");
-        // }
-        //Get.offAll(HomePage());
-        var permission = await Geolocator().checkGeolocationPermissionStatus();
-        if (permission != GeolocationStatus.denied) {
-          Get.offAll(HomePage());
-        } else {
-          Get.offAll(PermissionCheckScreen());
-        }
 
         print('''
-         Logged in!
-         
-         Token: ${accessToken.token}
-         User id: ${accessToken.userId}
-         Expires: ${accessToken.expires}
-         Permissions: ${accessToken.permissions}
-         Declined permissions: ${accessToken.declinedPermissions}
-         ''');
+       Logged in!
+
+       Token: ${accessToken.token}
+       User id: ${accessToken.userId}
+       Expires: ${accessToken.expires}
+       Permissions: ${accessToken.permissions}
+       Declined permissions: ${accessToken.declinedPermissions}
+       ''');
         break;
       case FacebookLoginStatus.cancelledByUser:
+        Navigator.of(context).pop();
         print('Login cancelled by the user.');
         break;
       case FacebookLoginStatus.error:
+        Get.snackbar(result.errorMessage, "");
+        Navigator.of(context).pop();
         print('Something went wrong with the login process.\n'
             'Here\'s the error Facebook gave us: ${result.errorMessage}');
         break;
@@ -753,18 +916,64 @@ class _SignUpState extends State<SignUp> {
   Future<void> _handleSignIn() async {
     try {
       print("login");
-      handleSignOut();
-      await googleSignIn.signIn();
-
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+      // handleSignOut();
+      currentUser = await googleSignIn.signIn();
       if (currentUser != null) {
         handleSignOut();
       }
       if (lController.currentUser != null) {
         handleSignOut();
       }
-    } catch (error) {
+      if (currentUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await currentUser?.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        // Once signed in, return the UserCredential
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        await setcurentgoogleUser();
+        Get.offAll(HomePage());
+      } else {
+        Navigator.of(context).pop();
+      }
+      //await Geolocator().getCurrentPosition();
+
+    } on FirebaseAuthException catch (error) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(msg: error.message);
       print(error);
-    }
+    } catch (error) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(msg: error.toString());
+      print(error);
+    } finally {}
+  }
+
+  Future<void> setcurentgoogleUser() async {
+    SharedPreferences shp = await SharedPreferences.getInstance();
+
+    // int uid = int.parse(currentUser.id) ;
+    // shp.setInt("id", uid);
+    shp.setString("name", currentUser.displayName);
+    shp.setString("email", currentUser.email);
+    shp.setString("profileImage", currentUser.photoUrl);
+    shp.setString("checkLogin", "a");
+    // lController.pimage.value = currentUser.photoUrl;
+    await lController.googleuser(
+        currentUser.email, currentUser.displayName, currentUser.id);
+    print(currentUser.photoUrl);
+    print(currentUser.id);
+    print(currentUser);
   }
 
   Future<void> handleSignOut() async {

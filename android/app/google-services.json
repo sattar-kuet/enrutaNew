@@ -1,30 +1,65 @@
 {
   "project_info": {
-    "project_number": "467898034236",
-    "project_id": "enrutademo",
-    "storage_bucket": "enrutademo.appspot.com"
+    "project_number": "653683245037",
+    "project_id": "enruta-10c43",
+    "storage_bucket": "enruta-10c43.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:467898034236:android:1f3cfbf445c34381e47b39",
+        "mobilesdk_app_id": "1:653683245037:android:b97e1662fd6342de9131e4",
         "android_client_info": {
-          "package_name": "com.app.itscholarbd.fooddelivery"
+          "package_name": "com.app.itscholarbdfooddelivery"
         }
       },
-      "oauth_client": [],
-     
+      "oauth_client": [
+        {
+          "client_id": "653683245037-4r2r8hc07voahiqisp8jfug4jmie1vkn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbdfooddelivery",
+            "certificate_hash": "709e5affc670547e36d9db677ad5b2930354a413"
+          }
+        },
+        {
+          "client_id": "653683245037-orek9773d5eoiqqj03jqvme3is61jk8r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbdfooddelivery",
+            "certificate_hash": "cefa96c5d06f2d5dbc30d9ba3e84aedf57ff471d"
+          }
+        },
+        {
+          "client_id": "653683245037-s8gpoeqltqjq2vvjpiapl4posp5okehh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.itscholarbdfooddelivery",
+            "certificate_hash": "616f4664562ed59b1a6ade659f5e3fbed7b8aa57"
+          }
+        },
+        {
+          "client_id": "653683245037-mnktmsoop34bubmnnjie691bt4bc7go3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyARvB5EhNvXNEjzif6BviT4AU0vkXPfF5s"
+          "current_key": "AIzaSyDwNkBdbYPs-Y3tXWTaNUVCArLNJgoDmvI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "467898034236-e9d5e7hfdvkci2erne8iogsukajkdbjd.apps.googleusercontent.com",
+              "client_id": "653683245037-mnktmsoop34bubmnnjie691bt4bc7go3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "653683245037-1d6m5c29be3oade7dps0fkip436i5oqe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.enruta"
+              }
             }
           ]
         }

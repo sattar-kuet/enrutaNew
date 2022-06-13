@@ -1,67 +1,79 @@
 // ignore: unused_import
+import 'dart:async';
 import 'dart:io';
 
-import 'package:enruta/controllers/cartController.dart';
 import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/loginController/loginBinding.dart';
 import 'package:enruta/screen/getReview/getReview.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/login.dart';
-import 'package:enruta/screen/permissionCheck.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'package:google_sign_in/google_sign_in.dart';
+
 // ignore: unused_import
 import 'api/httpcert.dart';
-import 'controllers/textController.dart';
 import 'helper/helper.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
-
+GlobalKey<NavigatorState> navigatorKey= GlobalKey<NavigatorState>();
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await GetStorage.init();
-  HttpOverrides.global = MyHttpOverrides();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.blue, // navigation bar color
-    statusBarColor: Color(Helper.getHexToInt("#11C7A1")), // status bar color
-    statusBarBrightness: Brightness.dark, //status bar brigtness
-    statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
-    systemNavigationBarDividerColor:
-        Color(Helper.getHexToInt("#11C7A1")), //Navigation bar divider color
-    systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
-  ));
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+     await Firebase.initializeApp();
 
-  runApp(GetMaterialApp(
-    color: Color(Helper.getHexToInt("#11C7A1")),
-    debugShowCheckedModeBanner: false,
+    await GetStorage.init();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    HttpOverrides.global = MyHttpOverrides();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white, // navigation bar color
+      statusBarColor: Color(Helper.getHexToInt("#11C7A1")), // status bar color
+      statusBarBrightness: Brightness.dark, //status bar brigtness
+      statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
+      systemNavigationBarDividerColor:
+         Colors.white,//Navigation bar divider color
+      systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
+    ));
 
-    theme: ThemeData(
-        accentColor: Color(Helper.getHexToInt("#11C7A1")),
-        focusColor: Color(Helper.getHexToInt("#11C7A1")),
-        primaryColor: Color(Helper.getHexToInt("#11C7A1")),
-        primaryColorDark: Color(Helper.getHexToInt("#11C7A1")),
-        unselectedWidgetColor: Color(Helper.getHexToInt("#6F6F6F")),
-        selectedRowColor: Color(Helper.getHexToInt("#11C7A1")),
-        iconTheme: IconThemeData(color: Color(Helper.getHexToInt("#11C7A1"))),
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: Color(Helper.getHexToInt("#11C7A1")),
-          selectionColor: Color(Helper.getHexToInt("#11C7A1")),
-          selectionHandleColor: Color(Helper.getHexToInt("#11C7A1")),
-        )),
-    initialBinding: LoginBinding(),
-    // defaultTransition: Transition.fade,
-    home: SplashScreen(),
-  ));
+    runApp(GetMaterialApp(
+      key: navigatorKey,
+      color: Color(Helper.getHexToInt("#11C7A1")),
+      debugShowCheckedModeBanner: false,
+
+      theme: ThemeData(
+          accentColor: Color(Helper.getHexToInt("#11C7A1")),
+          focusColor: Color(Helper.getHexToInt("#11C7A1")),
+          primaryColor: Color(Helper.getHexToInt("#11C7A1")),
+          primaryColorDark: Color(Helper.getHexToInt("#11C7A1")),
+          unselectedWidgetColor: Color(Helper.getHexToInt("#6F6F6F")),
+          selectedRowColor: Color(Helper.getHexToInt("#11C7A1")),
+          iconTheme: IconThemeData(color: Color(Helper.getHexToInt("#11C7A1"))),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Color(Helper.getHexToInt("#11C7A1")),
+            selectionColor: Color(Helper.getHexToInt("#11C7A1")),
+            selectionHandleColor: Color(Helper.getHexToInt("#11C7A1")),
+          )),
+      initialBinding: LoginBinding(),
+      // defaultTransition: Transition.fade,
+      home: SplashScreen(),
+    ));
+  } catch (e) {
+    runApp(GetMaterialApp(
+      home: Scaffold(
+          body: Center(
+        child: Text(e.toString()),
+      )),
+    ));
+  }
 }
 
 class SplashScreen extends StatefulWidget {
@@ -115,12 +127,12 @@ class _SplashScreenState extends State<SplashScreen> {
       var permission = await Geolocator().checkGeolocationPermissionStatus();
       if (permission != GeolocationStatus.denied) {
         if (orderComplete != null) {
-          Get.to(GetReviewPage(orderComplete));
+          // Get.to(GetReviewPage(orderComplete));
         } else {
           Get.offAll(HomePage());
         }
       } else {
-        Get.offAll(PermissionCheckScreen());
+        Get.offAll(HomePage());
       }
     } else {
       Get.offAll(LoginPage());

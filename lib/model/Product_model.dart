@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 class Product {
   Product(
       {this.id,
+      this.shopId,
       this.title,
       this.subTxt,
       this.price,
@@ -12,6 +13,7 @@ class Product {
       this.colors});
 
   int id;
+  int shopId;
   String title;
   String subTxt;
   double price;
@@ -28,6 +30,7 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
+        shopId: json["shop_id"],
         title: json["title"],
         subTxt: json["subTxt"],
         price: json["price"].toDouble(),
@@ -45,6 +48,7 @@ class Product {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "shop_id": shopId,
         "title": title,
         "subTxt": subTxt,
         "price": price,

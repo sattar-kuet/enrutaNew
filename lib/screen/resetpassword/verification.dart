@@ -6,9 +6,14 @@ import 'package:enruta/screen/resetpassword/resetController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
 
 // ignore: must_be_immutable
 class Verification extends StatelessWidget {
+  final String email;
+  Verification(this.email);
   final resetController = Get.put(ResetController());
   // ignore: unused_field
   final _formKey = GlobalKey<FormState>();
@@ -19,10 +24,14 @@ class Verification extends StatelessWidget {
     return language.text(key);
   }
 
+  OtpFieldController otpController;
+  String otp = '';
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final node = FocusScope.of(context);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 90,
@@ -65,20 +74,30 @@ class Verification extends StatelessWidget {
             ),
             Container(
               height: 100,
-              // width: 200,
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    inputCode(context, 0, resetController.cod1.value),
-                    inputCode(context, 1, resetController.cod2.value),
-                    inputCode(context, 2, resetController.cod3.value),
-                    inputCode(context, 3, resetController.cod4.value),
-                    inputCode(context, 4, resetController.cod5.value),
-                    inputCode(context, 5, resetController.cod6.value),
-                  ],
-                ),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: FittedBox(
+                child: OTPTextField(
+                    controller: otpController,
+                    length: 6,
+                    width: MediaQuery.of(context).size.width,
+                    textFieldAlignment: MainAxisAlignment.spaceAround,
+                    fieldWidth: 55,
+                    fieldStyle: FieldStyle.box,
+                    otpFieldStyle: OtpFieldStyle(
+                        focusBorderColor: Color(Helper.getHexToInt("#11C7A1")),
+                        borderColor: Color(Helper.getHexToInt("#11C7A1"))),
+                    outlineBorderRadius: 15,
+                    style: TextStyle(fontSize: 17),
+                    onChanged: (pin) {
+                      resetController.getotp(pin);
+                      print("Changed: " + pin);
+                    },
+                    onCompleted: (pin) {
+                      resetController.checkverificationCode(pin);
+                      otp = pin;
+                      print("Completed: " + pin);
+                    }),
               ),
               //     StaggeredGridView.countBuilder(
               //  itemCount: 6,
@@ -106,44 +125,70 @@ class Verification extends StatelessWidget {
             //   },
             // )
             // ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: 100,
-              height: 20,
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                text('resend_code'),
-                style: TextStyle(
-                    fontFamily: "TTCommonsr", fontSize: 20, color: theamColor),
-              ),
-            ),
-            Container(
-              height: 30,
-              padding: EdgeInsets.only(top: 10, left: 20),
-              child: Text(
-                text('verification_code'),
-                style: TextStyle(
-                    fontFamily: "TTCommonsr", fontSize: 20, color: black),
-              ),
-            ),
-            Container(
-              height: 60,
-              padding: EdgeInsets.only(top: 10, left: 20),
-              child: Text(
-                text('check_your_mail'),
-                style: TextStyle(
-                  fontFamily: "Poppinsr",
-                  fontSize: 14,
-                  color: Color(Helper.getHexToInt("#778191")),
+
+            InkWell(
+              onTap: () async {
+                try {
+                  await resetController.resetPassword(email);
+                  Get.snackbar(
+                    "We send a code to your email, please check",
+                    "",
+                    snackPosition: SnackPosition.BOTTOM,
+                    colorText: Color(Helper.getHexToInt("#11E4A1")),
+                  );
+                } catch (e) {
+                  Get.snackbar(
+                    e,
+                    '',
+                    snackPosition: SnackPosition.BOTTOM,
+                    colorText: Colors.red,
+                  );
+                }
+              },
+              child: Container(
+                width: 100,
+                height: 20,
+                padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  text('resend_code'),
+                  style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Color(Helper.getHexToInt("#778191"))),
                 ),
               ),
             ),
             SizedBox(
               height: 40,
             ),
+            Container(
+              height: MediaQuery.of(context).size.height / 20,
+              padding: EdgeInsets.only(top: 10, left: 20),
+              child: Text(
+                text('verification_code'),
+                style: GoogleFonts.poppins(fontSize: 20, color: black),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 60,
+              padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+              child: Text(
+                text('check_your_mail'),
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Color(Helper.getHexToInt("#778191")),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 80,
+            ),
             sendButton(),
+            SizedBox(
+              height: 50,
+            ),
           ])),
     );
   }
@@ -176,7 +221,7 @@ class Verification extends StatelessWidget {
             child: TextFormField(
           keyboardType: TextInputType.phone,
           // ignore: deprecated_member_use
-          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+          // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           // inputFormatters: [
           //   new LengthLimitingTextInputFormatter(1),
           // ],
@@ -205,45 +250,35 @@ class Verification extends StatelessWidget {
       height: 100.0,
       padding: EdgeInsets.all(20),
       width: double.infinity,
-      child: Row(
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                // print(object)
-                // print(textFieldControllers[1].text);
+      child: InkWell(
+        onTap: () {
+          // print(object)
+          // print(textFieldControllers[1].text);
 
-                resetController.checkverificationCode();
-                // Get.to(NewPassword());
-              },
-              child: Container(
-                height: 70,
-                // margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-                    Color(Helper.getHexToInt("#11C7A1")),
-                    // Colors.green[600],
-                    Color(Helper.getHexToInt("#11E4A1"))
-                  ]),
-                  // color: Colors.white,
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                child: Center(
-                    child: Text(
-                  text('conform'),
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontFamily: 'TTCommonsm',
-                  ),
-                )),
-              ),
+          resetController.checkverificationCode(otp);
+          // Get.to(NewPassword());
+        },
+        child: Container(
+          height: 70,
+          // margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topLeft, colors: [
+              Color(Helper.getHexToInt("#11C7A1")),
+              // Colors.green[600],
+              Color(Helper.getHexToInt("#11E4A1"))
+            ]),
+            // color: Colors.white,
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Center(
+              child: Text(
+            text('confirm'),
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              color: Colors.white,
             ),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-        ],
+          )),
+        ),
       ),
     );
   }

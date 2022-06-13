@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-class GLoginController extends GetxController{
 
-
+class GLoginController extends GetxController {
   final googleSignIn = GoogleSignIn();
-  var _isSigningIn= false.obs;
+  var _isSigningIn = false.obs;
 
   @override
   void onInit() {
@@ -13,9 +12,7 @@ class GLoginController extends GetxController{
     super.onInit();
   }
 
-
   bool get isSigningIn => _isSigningIn.value;
-
 
   set isSigningIn(bool isSigningIn) {
     _isSigningIn.value = isSigningIn;
@@ -31,12 +28,12 @@ class GLoginController extends GetxController{
       return;
     } else {
       final googleAuth = await user.authentication;
-
+      print("---------$googleAuth");
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
+      
       await FirebaseAuth.instance.signInWithCredential(credential);
 
       isSigningIn = false;
@@ -47,6 +44,4 @@ class GLoginController extends GetxController{
     await googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
   }
-
-
 }

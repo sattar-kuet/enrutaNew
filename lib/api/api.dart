@@ -1,4 +1,4 @@
-import 'dart:convert';
+  import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -44,7 +44,7 @@ Future<Response> sendForm(
     var convertedDatatojson = jsonDecode(response.toString());
     var a = convertedDatatojson["status"];
     if (a == 1) {
-      g.Get.snackbar("Wellcome", "Registration  success",
+      g.Get.snackbar("Welcome", "Registration  success",
           colorText: Colors.white);
       g.Get.offAll(LoginPage());
       return response;
@@ -70,15 +70,15 @@ Future<File> getImageFileFromAssets(String path) async {
 }
 
 Future<dynamic> registration(String name, String address, String email,
-    String password, File _imageFile) async {
-  if (_imageFile == null) {
-    _imageFile = await getImageFileFromAssets("assets/images/group4320.png");
+    String password, String imageFile) async {
+  if (imageFile == null) {
+    imageFile =( await getImageFileFromAssets("assets/icons/profileimage.png")).path;
   }
   var request = http.MultipartRequest(
       'POST', Uri.parse("https://enruta.itscholarbd.com/api/v2/signup"));
-  print('path = $_imageFile');
+  print('path = $imageFile');
   request.files.add(
-      await http.MultipartFile.fromPath('avatar', _imageFile.path.toString()));
+      await http.MultipartFile.fromPath('avatar', imageFile.toString()));
   request.fields['user_id'] = '155';
   request.fields['name'] = name;
   request.fields['email'] = email;

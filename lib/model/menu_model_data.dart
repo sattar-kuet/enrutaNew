@@ -22,8 +22,8 @@ class MenuModel {
   int status;
   String shopid;
   String shopname;
-  int vat;
-  int deliveryCharge;
+  double vat;
+  double deliveryCharge;
   int shopCategory;
   String categoryName;
   String shopcover;
@@ -33,8 +33,8 @@ class MenuModel {
         status: json["status"],
         shopid: json["shopid"],
         shopname: json["shopname"],
-        vat: json["vat"],
-        deliveryCharge: json["deliveryCharge"],
+        vat: json["vat"].toDouble(),
+        deliveryCharge: json["deliveryCharge"].toDouble(),
         shopCategory: json["shopCategory"],
         categoryName: json["categoryName"],
         shopcover: json["shopcover"],

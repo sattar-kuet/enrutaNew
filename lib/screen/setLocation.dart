@@ -7,6 +7,7 @@ import 'package:enruta/screen/myMap/myMap.dart';
 import 'package:enruta/view/location_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SetLocation extends StatelessWidget {
   // List<LocationListData> locationList = LocationListData.locationList;
@@ -23,7 +24,7 @@ class SetLocation extends StatelessWidget {
     addressController.getlocationlist();
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 80,
           leading: IconButton(
             onPressed: () {
               Get.back();
@@ -67,6 +68,7 @@ class SetLocation extends StatelessWidget {
                             return ListView.separated(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
+                              padding: EdgeInsets.only(top: 15,bottom: 15),
                               physics: ClampingScrollPhysics(),
                               itemCount:
                                   addressController.addressList?.length ?? 0,
@@ -78,10 +80,13 @@ class SetLocation extends StatelessWidget {
                                 ),
                                 key: UniqueKey(),
                                 onDismissed: (_) {
+                                  GetStorage box = GetStorage();
                                   var removed =
                                       addressController.addressList[index];
 
                                   addressController.addressList.removeAt(index);
+                                  box.write("addressList",
+                                      addressController.addressList);
                                   // cartCont.totalcalculate();
                                   Get.snackbar('',
                                       text('the_address_successfully_removed'),
@@ -90,7 +95,7 @@ class SetLocation extends StatelessWidget {
                                       mainButton: TextButton(
                                         child: Text('Undo'),
                                         onPressed: () {
-                                          if (removed.isNull) {
+                                          if (removed == null) {
                                             return;
                                           }
                                           addressController.addressList
@@ -135,24 +140,19 @@ class SetLocation extends StatelessWidget {
                                 print("add new address");
                                 Get.to(MyMap());
                               },
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    top: 20,
-                                    left: 110,
-                                    child: Center(
-                                      child: Container(
-                                          child: Icon(
-                                        Icons.add,
-                                        color: Color(
-                                            Helper.getHexToInt("#11C4A1")),
-                                      )),
-                                    ),
-                                  ),
-                                  Positioned(
-                                      top: 25,
-                                      left: 147,
-                                      // right: 10,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        child: Icon(
+                                      Icons.add,
+                                      color:
+                                          Color(Helper.getHexToInt("#11C4A1")),
+                                    )),
+                                    const SizedBox(width: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
                                       child: Text(
                                         text('add_new_address'),
                                         style: TextStyle(
@@ -160,8 +160,10 @@ class SetLocation extends StatelessWidget {
                                             fontSize: 16,
                                             color: Color(
                                                 Helper.getHexToInt("#11C4A1"))),
-                                      )),
-                                ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

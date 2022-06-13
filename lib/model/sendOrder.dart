@@ -25,6 +25,7 @@ class SendOrderModel {
 
   int userId;
   String delivery_address;
+   String deliveryAddressType;
   double tax;
   double delivery_charge;
   double coupon;

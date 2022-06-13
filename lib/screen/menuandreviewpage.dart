@@ -13,6 +13,7 @@ import 'package:enruta/view/review_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'cartPage.dart';
 
@@ -25,8 +26,8 @@ class MenuAndReviewPage extends StatelessWidget {
   var shop_id = 0;
   // ignore: non_constant_identifier_names
   var shop_name = "";
-  var vat = 0;
-  var deliveryCharge = 0;
+  var vat = 0.0;
+  var deliveryCharge = 0.0;
   var address = '';
   String time;
 
@@ -63,6 +64,9 @@ class MenuAndReviewPage extends StatelessWidget {
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
+                    // actions: [
+                    //   IconButton(onPressed: () {}, icon: Icon(Icons.search))
+                    // ],
                     automaticallyImplyLeading: false,
                     leading: InkWell(
                       onTap: () {
@@ -86,107 +90,116 @@ class MenuAndReviewPage extends StatelessWidget {
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(20),
                             bottomRight: Radius.circular(20))),
-                    flexibleSpace: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20)),
-                        gradient:
-                            LinearGradient(begin: Alignment.topLeft, colors: [
-                          Color(Helper.getHexToInt("#11C7A1")),
-                          // Colors.green[600],
-                          Color(Helper.getHexToInt("#11E4A1"))
-                        ]),
-                      ),
-                      child: FlexibleSpaceBar(
-                        centerTitle: true,
-                        title: Text(
-                          this.address ??
-                              '2060  LA Colendge, BLvd 2.1 Miles- Fast Food ',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'TTCommonsd',
-                            fontSize: 11,
-                          ),
+                    flexibleSpace: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                          gradient:
+                              LinearGradient(begin: Alignment.topLeft, colors: [
+                            Color(Helper.getHexToInt("#11C7A1")),
+                            // Colors.green[600],
+                            Color(Helper.getHexToInt("#11E4A1"))
+                          ]),
                         ),
-                        background: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(20)),
-                          // child: Opacity(
-                          //   opacity: 0.5,
-                          child: Stack(
-                            children: [
-                              Positioned(
+                        child: FlexibleSpaceBar(
+                          centerTitle: true,
+                          title: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30.0, right: 30),
+                                child: Text(
+                                  this.address ?? '',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          background: ClipRRect(
+                            borderRadius: BorderRadius.vertical(
+                                bottom: Radius.circular(20)),
+                            // child: Opacity(
+                            //   opacity: 0.5,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Obx(() {
+                                      if (cartCont.menucover.value == "" ||
+                                          cartCont.menucover == null) {
+                                        if (cartCont.imageloader.value) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else
+                                          return Opacity(
+                                            opacity: 1,
+                                            child: Image.asset(
+                                              cartCont.shoptype.value,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                      } else {
+                                        return Opacity(
+                                          opacity: 1,
+                                          child: Image.network(
+                                            cartCont.menucover.value,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace stackTrace) {
+                                              return Center(
+                                                  child: Image.asset(
+                                                "assets/icons/image.png",
+                                                scale: 5,
+                                              ));
+                                            },
+                                            loadingBuilder:
+                                                (context, child, progress) {
+                                              return progress == null
+                                                  ? child
+                                                  : Center(
+                                                      child: Center(
+                                                          child:
+                                                              CircularProgressIndicator()));
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    })),
+                                Positioned(
                                   top: 0,
                                   left: 0,
                                   bottom: 0,
                                   right: 0,
-                                  child: Obx(() {
-                                    if (cartCont.menucover.value == "" ||
-                                        cartCont.menucover == null) {
-                                      if (cartCont.imageloader.value) {
-                                        return Center(
-                                            child: CircularProgressIndicator(
-                                          backgroundColor: Colors.black,
-                                        ));
-                                      } else
-                                        return Opacity(
-                                          opacity: 1,
-                                          child: Image.asset(
-                                            cartCont.shoptype.value,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        );
-                                    } else {
-                                      return Opacity(
-                                        opacity: 1,
-                                        child: Image.network(
-                                          cartCont.menucover.value,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,
-                                              Object exception,
-                                              StackTrace stackTrace) {
-                                            return Center(
-                                                child: Image.asset(
-                                              "assets/icons/image.png",
-                                              scale: 5,
-                                            ));
-                                          },
-                                          loadingBuilder:
-                                              (context, child, progress) {
-                                            return progress == null
-                                                ? child
-                                                : Center(
-                                                    child: Center(
-                                                        child:
-                                                            CircularProgressIndicator()));
-                                          },
-                                        ),
-                                      );
-                                    }
-                                  })),
-                              Positioned(
-                                top: 0,
-                                left: 0,
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  color: Color(Helper.getHexToInt("#000000"))
-                                      .withOpacity(.5),
+                                  child: Container(
+                                    color: Color(Helper.getHexToInt("#000000"))
+                                        .withOpacity(.5),
+                                  ),
                                 ),
-                              ),
-                              Positioned(
-                                  top: 50,
-                                  left: 50,
-                                  right: 50,
-                                  bottom: 50,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 5, right: 5, top: 10),
                                   child: Container(
                                       color: Colors.transparent,
                                       child: Center(
                                         child: Text(
                                           this.shop_name,
                                           textAlign: TextAlign.center,
+                                          maxLines: 2,
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 40,
@@ -196,10 +209,12 @@ class MenuAndReviewPage extends StatelessWidget {
                                       )
                                       // child: Image.asset(
                                       //     'assets/icons/shoplogo.png')),
-                                      )),
-                            ],
+                                      ),
+                                ),
+                              ],
+                            ),
+                            // ),
                           ),
-                          // ),
                         ),
                       ),
                     ),
@@ -238,19 +253,17 @@ class MenuAndReviewPage extends StatelessWidget {
                           //cartCont.getmenuItems(shop_id);
                           if (cartCont.isLoading.value) {
                             print("card value ${cartCont.isLoading}");
+                            return Center(child: CircularProgressIndicator());
+                          } else if (cartCont.menuItems.isEmpty) {
                             return Center(
-                                child: CircularProgressIndicator(
-                              backgroundColor: Colors.black,
-                            ));
-                          } else
+                                child: Text(text('no_menu_available_yet')));
+                          } else {
                             return StaggeredGridView.countBuilder(
                               itemCount: cartCont.menuItems.length,
                               crossAxisCount: 1,
                               crossAxisSpacing: 1,
                               mainAxisSpacing: 1,
                               itemBuilder: (context, index) {
-                                print(
-                                    "price = ${cartCont.menuItems[index].price}"); //menu items
                                 return ReviewListView(
                                   menuitemdata: cartCont.menuItems[index],
                                   shopid: shop_id.toString(),
@@ -262,6 +275,7 @@ class MenuAndReviewPage extends StatelessWidget {
                               staggeredTileBuilder: (index) =>
                                   StaggeredTile.fit(1),
                             );
+                          }
                         }),
                         // Obx(
                         //   () => ListView.builder(
@@ -285,10 +299,10 @@ class MenuAndReviewPage extends StatelessWidget {
                       child: Obx(() {
                         if (mController.isLoading.value) {
                           print("card value ${cartCont.isLoading}");
+                          return Center(child: CircularProgressIndicator());
+                        } else if (mController.reviewItems.isEmpty) {
                           return Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.black,
-                          ));
+                              child: Text(text('no_review_available_yet')));
                         } else
                           return StaggeredGridView.countBuilder(
                             crossAxisCount: 1,
@@ -333,55 +347,59 @@ class MenuAndReviewPage extends StatelessWidget {
       },
       child: Stack(
         children: [
-          Container(
-            height: 60,
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.topLeft, colors: [
-                Color(Helper.getHexToInt("#11C7A1")),
-                // Colors.green[600],
-                Color(Helper.getHexToInt("#11E4A1"))
-              ]),
-              // color: Colors.white,
-              borderRadius: BorderRadius.circular(9),
-            ),
-            child: Center(
-                child: Text(
-              text('VIEW_CART_&_CHECKOUT'),
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontFamily: 'TTCommons Medium',
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              height: 60,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(begin: Alignment.topLeft, colors: [
+                  Color(Helper.getHexToInt("#11C7A1")),
+                  // Colors.green[600],
+                  Color(Helper.getHexToInt("#11E4A1"))
+                ]),
+                // color: Colors.white,
+                borderRadius: BorderRadius.circular(9),
               ),
-            )),
+              child: Center(
+                  child: Text(
+                text('VIEW_CART_&_CHECKOUT'),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontFamily: 'TTCommons Medium',
+                ),
+              )),
+            ),
           ),
           Positioned(
-            left: 20,
+            left: 15,
             top: 15,
             child: InkWell(
-              child: Container(
-                alignment: Alignment.topLeft,
-                // padding: EdgeInsets.only(top: 5, left: 5),
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Color(Helper.getHexToInt("#41E9C3")),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Center(
-                    child: Obx(
-                  () => cartCont.cartList.length != null
-                      ? Text(
-                          cartCont.cartList.length.toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'TTCommons',
-                          ),
-                        )
-                      : Text("0"),
-                )),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  // padding: EdgeInsets.only(top: 5, left: 5),
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Color(Helper.getHexToInt("#41E9C3")),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                      child: Obx(
+                    () => cartCont.cartList.length != null
+                        ? Text(
+                            cartCont.cartList.length.toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'TTCommons',
+                            ),
+                          )
+                        : Text("0"),
+                  )),
+                ),
               ),
             ),
           ),

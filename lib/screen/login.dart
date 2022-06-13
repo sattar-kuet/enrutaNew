@@ -9,25 +9,28 @@ import 'package:enruta/screen/resetpassword/resetPassword.dart';
 
 import 'package:enruta/screen/signup.dart';
 import 'package:enruta/widgetview/custom_btn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:enruta/Animation/FadeAnimation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 // ignore: unused_import
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../helper/helper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:enruta/helper/FacebookLogin.dart';
 import 'package:http/http.dart' as http;
-import 'package:apple_sign_in/apple_sign_in.dart' as applesignin;
 
 // class LoginPage extends GetWidget<LoginController> {
 // class LoginPage extends StatelessWidget {
 
-GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
 // GoogleSignIn _googleSignIn = GoogleSignIn(
 //   scopes: <String>[
 //     'email',
@@ -52,6 +55,10 @@ class _LoginPageState extends State<LoginPage> {
     return language.text(key);
   }
 
+  GetStorage box = GetStorage();
+
+  GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
+
   final LoginController lController = Get.put(LoginController());
   final heroTag = "assets/images/homeimage.png";
   bool _isHidden = true;
@@ -62,6 +69,8 @@ class _LoginPageState extends State<LoginPage> {
       _isHidden = !_isHidden;
     });
   }
+
+  bool _isLoading = false;
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 
@@ -86,11 +95,12 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       // await Geolocator().getCurrentPosition();
       var permission = await Geolocator().checkGeolocationPermissionStatus();
-      if (permission != GeolocationStatus.denied) {
-        Get.offAll(HomePage());
-      } else {
-        Get.offAll(PermissionCheckScreen());
-      }
+      // if (permission != GeolocationStatus.denied) {
+      //   Get.offAll(HomePage());
+      // } else {
+      //   Get.offAll(PermissionCheckScreen());
+      // }
+      Get.offAll(HomePage());
       //Get.offAll(HomePage());
 
     }
@@ -104,12 +114,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    if(Platform.isIOS){                                                      //check for ios if developing for both android & ios
-      applesignin.AppleSignIn.onCredentialRevoked.listen((_) {
-        print("Credentials revoked");
-      });
+    if (Platform.isIOS) {
+      //check for ios if developing for both android & ios
+      // applesignin.AppleSignIn.onCredentialRevoked.listen((_) {
+      //   print("Credentials revoked");
+      // });
     }
-
+    var userName = box?.read('rememberMePrefUserName') ?? '';
+    var pass = box?.read('rememberMePrefPassword') ?? '';
+    print("username : $userName");
+    if ((userName?.toString()?.trim()?.isNotEmpty ?? false) &&
+        (pass?.toString()?.trim()?.isNotEmpty ?? false)) {
+      emailController.text = userName;
+      passwordController.text = pass;
+      lController.flag.value = true;
+    }
     // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
     //   setState(() {
     //     _currentUser = account;
@@ -121,15 +140,15 @@ class _LoginPageState extends State<LoginPage> {
     // _googleSignIn.signInSilently();
 
     //
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      setState(() {
-        currentUser = account;
-        if (currentUser != null) {
-          setcurentgoogleUser();
-          print(currentUser.photoUrl);
-        }
-      });
-    });
+    // googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+    //   setState(() {
+    //     currentUser = account;
+    //     if (currentUser != null) {
+
+    //       print(currentUser.photoUrl);
+    //     }
+    //   });
+    // });
     // googleSignIn.signInSilently();
   }
 
@@ -188,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
   //   }
   // }
 
-  void setcurentgoogleUser() async {
+  Future<void> setcurentgoogleUser() async {
     SharedPreferences shp = await SharedPreferences.getInstance();
 
     // int uid = int.parse(currentUser.id) ;
@@ -198,370 +217,480 @@ class _LoginPageState extends State<LoginPage> {
     shp.setString("profileImage", currentUser.photoUrl);
     shp.setString("checkLogin", "a");
     // lController.pimage.value = currentUser.photoUrl;
-    lController.googleuser(currentUser.email, currentUser.displayName);
+    await lController.googleuser(
+        currentUser.email, currentUser.displayName, currentUser.id);
     print(currentUser.photoUrl);
     print(currentUser.id);
     print(currentUser);
-    // Get.offAll(HomePage());
   }
 
-  bool rememberme = false;
+  Future<void> setcurentAppleUser() async {
+    SharedPreferences shp = await SharedPreferences.getInstance();
+
+    // int uid = int.parse(currentUser.id) ;
+    // shp.setInt("id", uid);
+    shp.setString("name", FirebaseAuth.instance.currentUser ?.displayName??'');
+    shp.setString("email", FirebaseAuth.instance.currentUser.email);
+    shp.setString("profileImage", FirebaseAuth.instance.currentUser.photoUrl);
+    shp.setString("checkLogin", "a");
+    // lController.pimage.value = FirebaseAuth.instance.currentUser.photoUrl;
+
+    await lController.appleuser(
+        FirebaseAuth.instance.currentUser.email, FirebaseAuth.instance.currentUser.displayName, FirebaseAuth.instance.currentUser.uid);
+    print(FirebaseAuth.instance.currentUser.photoUrl);
+
+    print(FirebaseAuth.instance.currentUser);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(children: [
-      Stack(children: [
-        Container(
-          height: MediaQuery.of(context).size.height - 2.0,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              alignment: Alignment.topCenter,
-              matchTextDirection: false,
-              image: AssetImage("assets/images/homeimage.png"),
-              fit: BoxFit.none,
+        body: ListView(
+            reverse: false,
+            shrinkWrap: false,
+            physics: NeverScrollableScrollPhysics(),
+            addAutomaticKeepAlives: false,
+            addRepaintBoundaries: false,
+            children: [
+          Stack(children: [
+            Container(
+              height: MediaQuery.of(context).size.height - 2.0,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  alignment: Alignment.topCenter,
+                  matchTextDirection: false,
+                  image: AssetImage("assets/images/homeimage.png"),
+                  fit: BoxFit.none,
+                ),
+              ),
             ),
-          ),
-        ),
-        Positioned(
-            top: 230.0,
-            child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0),
+            Positioned(
+                top: 230.0,
+                child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0),
+                        ),
+                        color: Colors.white),
+                    height: MediaQuery.of(context).size.height - 100.0,
+                    width: MediaQuery.of(context).size.width)),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 100,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          text('welcome'),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                              color: Colors.white, fontSize: 36),
+                        ),
+                        Text(
+                          text('please_log_into_your_account'),
+                          style: GoogleFonts.poppins(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                      ],
                     ),
-                    color: Colors.white),
-                height: MediaQuery.of(context).size.height - 100.0,
-                width: MediaQuery.of(context).size.width)),
-        Positioned(
-          top: 120.0,
-          left: (MediaQuery.of(context).size.width / 2) - 150,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20),
+                  ),
+                )
+              ],
+            ),
+            Positioned(
+              top: 250.0,
+              left: 20.0,
+              right: 20.0,
+              bottom: 10,
+              child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Text(
-                      text('welcome'),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 40),
+                    SizedBox(
+                      height: 10,
                     ),
-                    Text(
-                      text('please_log_into_your_account'),
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    Form(
+                        key: _formkey,
+                        child: Column(
+                          children: <Widget>[
+                            FadeAnimation(
+                                1.3,
+                                buidTextfield3(
+                                    text('email'), emailController, context)),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            FadeAnimation(
+                                1.3,
+                                buidTextfield3(text('password'),
+                                    passwordController, context)),
+                          ],
+                        )),
+                    FadeAnimation(
+                      1.3,
+                      Container(
+                        height: 50,
+                        alignment: Alignment.topLeft,
+                        child: Center(
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: -9,
+                                child: Obx(() => IconButton(
+                                      icon: lController.flag.value
+                                          ? Icon(
+                                              Icons.check_box_rounded,
+                                              color: theamColor,
+                                            )
+                                          : Icon(
+                                              Icons
+                                                  .check_box_outline_blank_outlined,
+                                              color: theamColor,
+                                            ),
+                                      onPressed: () {
+                                        lController.flag.toggle();
+                                      },
+                                    )),
+                                //  Checkbox(
+                                //   activeColor: Color(Helper.getHexToInt("#11CBA1")),
+                                //   onChanged: (bool rest) {
+                                //     setState(() {
+                                //       rememberme = rest;
+                                //     });
+                                //   },
+                                //   value: rememberme,
+                                // ),
+                              ),
+                              Positioned(
+                                left: 35,
+                                top: 15,
+                                child: Text(
+                                  text('remember_me'),
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color:
+                                          Color(Helper.getHexToInt("#6F6F6F"))),
+                                ),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 15,
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.to(ResetPassword());
+                                  },
+                                  child: Text(
+                                    text('forgot_password'),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Color(
+                                            Helper.getHexToInt("#6F6F6F"))),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    FadeAnimation(
+                        1.6,
+                        CustomButton(
+                          loadingenabled: true,
+                          child: Container(
+                            height: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 2),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  colors: [
+                                    Color(Helper.getHexToInt("#11CAA1")),
+                                    Color(Helper.getHexToInt("#11E3A1"))
+                                  ]),
+                            ),
+                            child: Center(
+                              child: Text(
+                                text('Log In'),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          ),
+                          onclick: () async {
+                            print("Container clicked");
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) => HomePage()));
+
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+                            if (_formkey.currentState.validate()) {
+                              var email = emailController.text;
+                              var password = passwordController.text;
+                              if (email.isEmpty) {
+                                Get.snackbar(
+                                    text('please_enter_valid_email'), "",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    colorText: Colors.red);
+                                return;
+                              }
+                              if (password.isEmpty) {
+                                Get.snackbar(
+                                    text('please_enter_valid_password'), "",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    colorText: Colors.red,
+                                    backgroundColor: Colors.green.shade200);
+                                return;
+                              }
+
+                              print(email + "" + password);
+
+                              try {
+                                if (lController.flag.value ?? false) {
+                                  print("set: Login");
+                                  await box.write(
+                                      'rememberMePrefUserName', email);
+                                  await box.write(
+                                      'rememberMePrefPassword', password);
+                                } else {
+                                  await box.remove('rememberMePrefUserName');
+                                  await box.remove('rememberMePrefPassword');
+                                }
+                                await lController.login(email, password);
+                              } catch (e) {
+                                Fluttertoast.showToast(
+                                    msg: e.toString(), textColor: Colors.red);
+                              }
+
+                              // }
+                            }
+
+                            print("Container was tapped");
+                          },
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FadeAnimation(
+                      1.7,
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                text('don_t_have_an_account_yet'),
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    color:
+                                        Color(Helper.getHexToInt("#6F6F6F"))),
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    print("Container clicked");
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SignUp(
+                                                  heroTag:
+                                                      "assets/group4320.png",
+                                                )));
+                                  },
+                                  child: new Container(
+                                    child: Text(
+                                      text('register'),
+                                      style: GoogleFonts.nunito(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(
+                                              Helper.getHexToInt("#11C4A1"))),
+                                    ),
+                                  )),
+                            ],
+                          )),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Divider(
+                      thickness: 1,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FadeAnimation(
+                      1.7,
+                      GestureDetector(
+                          onTap: () {
+                            // print("Container clicked");
+                            // Get.to(TestPage());
+                            //   Navigator.push(context,
+                            //       MaterialPageRoute(builder: (context) => HomePaget()));
+                          },
+                          child: new Container(
+                            child: Text(
+                              text('or_signup_with'),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(Helper.getHexToInt("#6F6F6F"))),
+                            ),
+                          )),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: FadeAnimation(
+                              1.9,
+                              CustomButton(
+                                loadingenabled: _isLoading,
+                                btncolor: Colors.blue,
+                                onclick: () {
+                                  print("facebook");
+
+                                  faceBookLogin();
+                                },
+                                child: Container(
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color:
+                                          Color(Helper.getHexToInt("#4267B2"))),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/facebook.png",
+                                          fit: BoxFit.cover,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        // Icon(Icons.facebook,color: Color(Helper.getHexToInt("#4267B2"))),
+                                        Text(
+                                          "Facebook",
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: FadeAnimation(
+                              2,
+                              CustomButton(
+                                loadingenabled: true,
+                                btncolor: Colors.red,
+                                onclick: () {
+                                  print("google");
+                                  _handleSignIn();
+                                  // lController.handleSignIn();
+                                },
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color:
+                                          Color(Helper.getHexToInt("#EB4132"))),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/google.png",
+                                          fit: BoxFit.cover,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Google",
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Platform.isIOS
+                        ? FadeAnimation(
+                            1.9,
+                            SignInWithAppleButton(
+                              onPressed: () async {
+                                if (await SignInWithApple.isAvailable()) {
+                                  final credential = await SignInWithApple
+                                      .getAppleIDCredential(
+                                    scopes: [
+                                      AppleIDAuthorizationScopes.email,
+                                      AppleIDAuthorizationScopes.fullName,
+                                    ],
+                                  );
+                                  print(credential.email);
+                                  final oauthCredential =
+                                      OAuthProvider("apple.com").credential(
+                                    idToken: credential.identityToken,
+                                  );
+
+                                  await FirebaseAuth.instance
+                                      .signInWithCredential(oauthCredential);
+                                  await FirebaseAuth.instance.currentUser
+                                      .updateProfile(
+                                          displayName: ((credential.givenName??'') +
+                                              ' ' +
+                                              (credential.familyName??'')));
+                                  await setcurentAppleUser();
+                                  Get.offAll(HomePage());
+                                  print(credential);
+                                }
+
+                                // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                                // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+                              },
+                            ),
+                          )
+                        : Container(),
+                    SizedBox(
+                      height: Platform.isIOS ? 20 : 0,
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-        Positioned(
-          top: 250.0,
-          left: 25.0,
-          right: 25.0,
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10,
               ),
-              Form(
-                  key: _formkey,
-                  child: Column(
-                    children: <Widget>[
-                      FadeAnimation(
-                          1.3,
-                          buidTextfield3(
-                              text('email'), emailController, context)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      FadeAnimation(
-                          1.3,
-                          buidTextfield3(
-                              text('password'), passwordController, context)),
-                    ],
-                  )),
-              SizedBox(
-                height: 1,
-              ),
-              Container(
-                height: 50,
-                alignment: Alignment.topLeft,
-                child: Center(
-                  child: Stack(
-                    children: [
-                      Positioned(
-                          left: -9,
-                          child: Obx(() => IconButton(
-                                icon: lController.flag.value
-                                    ? Icon(
-                                        Icons.check_box_rounded,
-                                        color: theamColor,
-                                      )
-                                    : Icon(
-                                        Icons.check_box_outline_blank_outlined,
-                                        color: theamColor,
-                                      ),
-                                onPressed: () {
-                                  lController.flag.toggle();
-                                },
-                              ))
-
-                          //  Checkbox(
-                          //   activeColor: Color(Helper.getHexToInt("#11CBA1")),
-                          //   onChanged: (bool rest) {
-                          //     setState(() {
-                          //       rememberme = rest;
-                          //     });
-                          //   },
-                          //   value: rememberme,
-                          // ),
-                          ),
-                      Positioned(
-                        left: 35,
-                        top: 15,
-                        child: Text(
-                          text('remember_me'),
-                          style: TextStyle(
-                              color: Color(Helper.getHexToInt("#6F6F6F"))),
-                        ),
-                      ),
-                      Positioned(
-                        right: 10,
-                        top: 15,
-                        child: InkWell(
-                          onTap: () {
-                            Get.to(ResetPassword());
-                          },
-                          child: Text(
-                            text('forgot_password'),
-                            style: TextStyle(
-                                color: Color(Helper.getHexToInt("#6F6F6F"))),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              FadeAnimation(
-                  1.6,
-                  CustomButton(
-                    loadingenabled: true,
-                    child: Container(
-                      height: 50,
-                      margin: EdgeInsets.symmetric(horizontal: 2),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            colors: [
-                              Color(Helper.getHexToInt("#11CAA1")),
-                              Color(Helper.getHexToInt("#11E3A1"))
-                            ]),
-                      ),
-                      child: Center(
-                        child: Text(
-                          text('login'),
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    onclick: () async {
-                      print("Container clicked");
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => HomePage()));
-
-                      if (_formkey.currentState.validate()) {
-                        var email = emailController.text;
-                        var password = passwordController.text;
-                        if (email.isEmpty) {
-                          Get.snackbar(text('please_enter_valid_email'), "",
-                              snackPosition: SnackPosition.BOTTOM);
-                          return;
-                        }
-                        if (password.isEmpty) {
-                          Get.snackbar(text('please_enter_valid_password'), "",
-                              snackPosition: SnackPosition.BOTTOM);
-                          return;
-                        }
-
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            });
-
-                        print(email + "" + password);
-
-                        lController.login(email, password);
-
-                        Navigator.pop(context);
-                        // }
-                      }
-
-                      print("Container was tapped");
-                    },
-                  )),
-              SizedBox(
-                height: 20,
-              ),
-              FadeAnimation(
-                1.7,
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          text('don_t_have_an_account_yet'),
-                          style: TextStyle(
-                              color: Color(Helper.getHexToInt("#6F6F6F"))),
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              print("Container clicked");
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUp(
-                                            heroTag: "assets/group4320.png",
-                                          )));
-                            },
-                            child: new Container(
-                              child: Text(
-                                text('register'),
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Color(Helper.getHexToInt("#11C4A1"))),
-                              ),
-                            )),
-                      ],
-                    )),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Divider(
-                thickness: 1,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              FadeAnimation(
-                1.7,
-                GestureDetector(
-                    onTap: () {
-                      // print("Container clicked");
-                      // Get.to(TestPage());
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (context) => HomePaget()));
-                    },
-                    child: new Container(
-                      child: Text(
-                        text('or_login_with'),
-                        style: TextStyle(
-                            color: Color(Helper.getHexToInt("#6F6F6F"))),
-                      ),
-                    )),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: FadeAnimation(
-                        1.9,
-                        CustomButton(
-                          loadingenabled: true,
-                          btncolor: Colors.blue,
-                          onclick: () {
-                            print("facebook");
-
-                            faceBookLogin();
-                          },
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Color(Helper.getHexToInt("#4267B2"))),
-                            child: Center(
-                              child: Text(
-                                "Facebook",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Expanded(
-                    child: FadeAnimation(
-                        2,
-                        CustomButton(
-                          loadingenabled: true,
-                          btncolor: Colors.red,
-                          onclick: () {
-                            print("google");
-                            _handleSignIn();
-                            // lController.handleSignIn();
-                          },
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Color(Helper.getHexToInt("#EB4132"))),
-                            child: Center(
-                              child: Text(
-                                "Google",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        )),
-                  ),
-                ],
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
-              FadeAnimation(
-                  1.9,
-                  applesignin.AppleSignInButton(
-                    style: applesignin.ButtonStyle.black,
-                    type: applesignin.ButtonType.continueButton,
-                    onPressed: appleLogIn,
-                  )),
-              SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: 80,
-        ),
-      ])
-    ]));
+            ),
+            SizedBox(
+              width: 80,
+            ),
+          ])
+        ]));
   }
 
   Widget buidTextfield3(String hintText, TextEditingController scontroller,
@@ -574,16 +703,37 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: <Widget>[
           Container(
-            height: 55,
             // height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 2),
 
             child: TextField(
+              // style: scontroller == text('password')
+              //     ? GoogleFonts.poppins(
+              //         color: Colors.grey,
+              //         fontSize: 15,
+              //         letterSpacing: 0,
+              //       )
+              //     : GoogleFonts.poppins(
+              //         color: Colors.grey,
+              //         fontSize: 15,
+              //         letterSpacing: 15,
+              //       ),
+              style: GoogleFonts.poppins(
+                color: Colors.grey,
+                fontSize: 15,
+                letterSpacing: 0,
+              ),
+              onChanged: (_) {
+                setState(() {});
+              },
               // keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle:
-                    TextStyle(color: Color(Helper.getHexToInt("#6F6F6F"))),
+                hintStyle: TextStyle(
+                  color: Color(
+                    Helper.getHexToInt("#6F6F6F"),
+                  ),
+                  letterSpacing: 0,
+                ),
 
                 focusedBorder: OutlineInputBorder(
                   gapPadding: 5,
@@ -605,10 +755,15 @@ class _LoginPageState extends State<LoginPage> {
                 prefixIcon: hintText == text('email')
                     ? Icon(
                         Icons.email,
+                        color: Color(Helper.getHexToInt("#BDBDBD")),
                       )
                     : hintText == text('password')
-                        ? Icon(Icons.lock)
+                        ? Icon(
+                            Icons.lock,
+                            color: Color(Helper.getHexToInt("#BDBDBD")),
+                          )
                         : null,
+
                 suffixIcon: hintText == text('password')
                     ? IconButton(
                         // onPressed: () {
@@ -626,7 +781,15 @@ class _LoginPageState extends State<LoginPage> {
                                 color: theamColor,
                               ),
                       )
-                    : null,
+                    : hintText == text('email')
+                        ? RegExp(emailRegx).hasMatch(scontroller.text.trim())
+                            ? Icon(
+                                Icons.check_circle,
+                                // Icons.radio_button_unchecked,
+                                color: Color(Helper.getHexToInt("#00E9A3")),
+                              )
+                            : null
+                        : null,
               ),
               controller: scontroller,
               obscureText: hintText == text('password') ? _isHidden : false,
@@ -643,75 +806,141 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleSignIn() async {
     try {
       print("login");
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
       // handleSignOut();
-      //await googleSignIn.signIn();
+      currentUser = await googleSignIn.signIn();
+
       if (currentUser != null) {
         handleSignOut();
       }
       if (lController.currentUser != null) {
         handleSignOut();
       }
+      if (currentUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await currentUser?.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        // Once signed in, return the UserCredential
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        await setcurentgoogleUser();
+        Get.offAll(HomePage());
+      } else {
+        Navigator.of(context).pop();
+      }
       //await Geolocator().getCurrentPosition();
-      await googleSignIn.signIn();
-    } catch (error) {
+
+    } on FirebaseAuthException catch (error) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(msg: error.message);
       print(error);
-    }
+    } catch (error) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(msg: error.toString());
+    } finally {}
   }
 
   // LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+  static const String emailRegx =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   Future<Null> faceBookLogin() async {
-    //await Geolocator().getCurrentPosition();
-    facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
-    // final result = await facebookSignIn.logInWithReadPermissions(['email']);
-    final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
-    // await facebookSignIn.logIn(['email']);
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+      //await Geolocator().getCurrentPosition();
+      facebookSignIn.loginBehavior = FacebookLoginBehavior.webOnly;
+      // final result = await facebookSignIn.logInWithReadPermissions(['email']);
+      final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+      // await facebookSignIn.logIn(['email']);
+      print(result.errorMessage);
 
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final FacebookAccessToken accessToken = result.accessToken;
-        final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}');
-        final profile = jsonDecode(graphResponse.body);
-        print(profile);
-        setState(() {
-          name = profile['first_name'];
-          image = profile['picture']['data']['url'];
-        });
+      switch (result.status) {
+        case FacebookLoginStatus.loggedIn:
+          final FacebookAccessToken accessToken = result.accessToken;
+          print(accessToken.token);
+          // Create a credential from the access token
+          final OAuthCredential facebookAuthCredential =
+              FacebookAuthProvider.credential(accessToken.token);
 
-        SharedPreferences shp = await SharedPreferences.getInstance();
-        var id = profile['id'];
+          // Once signed in, return the UserCredential
+          await FirebaseAuth.instance
+              .signInWithCredential(facebookAuthCredential);
+          final graphResponse = await http.get(
+              'https://graph.facebook.com/v2.12/me?fields=first_name,email,picture&access_token=${accessToken.token}');
+          if (graphResponse.statusCode == 200 &&
+              graphResponse.body.isNotEmpty) {
+            final profile = jsonDecode(graphResponse.body);
+            print(profile);
+            setState(() {
+              name = profile['first_name'];
+              image = profile['picture']['data']['url'];
+            });
 
-        // int uid = int.parse(currentUser.id) ;
-        shp.setInt("id", int.parse(id));
-        shp.setString("name", name);
-        shp.setString("email", profile['id']);
-        shp.setString("profileImage", image);
-        shp.setInt("islogin", 1);
-        shp.setString("checkLogin", "a");
-        lController.facebookUser(id, name);
-        // lController.pimage.value = currentUser.photoUrl;
-        print(name);
+            SharedPreferences shp = await SharedPreferences.getInstance();
+            var id = profile['id'];
 
-        print(image);
+            await lController.facebookUser(profile['email'], name, id);
+            // int uid = int.parse(currentUser.id) ;
+            // shp.setInt("id", int.parse(id));
+            shp.setString("name", name);
+            shp.setString("email", profile['email']);
+            shp.setString("profileImage", image);
+            shp.setInt("islogin", 1);
+            shp.setString("checkLogin", "a");
+            setState(() {
+              _isLoading = false;
+            });
+          }
+          // lController.pimage.value = currentUser.photoUrl;
+          print(name);
 
-        print('''
-         Logged in!
-         
-         Token: ${accessToken.token}
-         User id: ${accessToken.userId}
-         Expires: ${accessToken.expires}
-         Permissions: ${accessToken.permissions}
-         Declined permissions: ${accessToken.declinedPermissions}
-         ''');
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print('Login cancelled by the user.');
-        break;
-      case FacebookLoginStatus.error:
-        print('Something went wrong with the login process.\n'
-            'Here\'s the error Facebook gave us: ${result.errorMessage}');
-        break;
+          print(image);
+
+          print('''
+       Logged in!
+
+       Token: ${accessToken.token}
+       User id: ${accessToken.userId}
+       Expires: ${accessToken.expires}
+       Permissions: ${accessToken.permissions}
+       Declined permissions: ${accessToken.declinedPermissions}
+       ''');
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          Navigator.of(context).pop();
+          Get.snackbar(result.errorMessage, "");
+          print('Login cancelled by the user.');
+          break;
+        case FacebookLoginStatus.error:
+          Get.snackbar(result.errorMessage, "");
+          Navigator.of(context).pop();
+          print('Something went wrong with the login process.\n'
+              'Here\'s the error Facebook gave us: ${result.errorMessage}');
+          break;
+      }
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(msg: e.message);
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -726,28 +955,32 @@ class _LoginPageState extends State<LoginPage> {
     googleSignIn.disconnect();
   }
 
-  Future<Null> appleLogIn() async {
-    if(await applesignin.AppleSignIn.isAvailable()) {
-      final applesignin.AuthorizationResult result = await applesignin.AppleSignIn.performRequests([
-        applesignin.AppleIdRequest(requestedScopes: [applesignin.Scope.email, applesignin.Scope.fullName])
-      ]);
-      switch (result.status) {
-        case applesignin.AuthorizationStatus.authorized:
-          print(String.fromCharCodes(result.credential.identityToken),);
-          break;//All the required credentials
-        case applesignin.AuthorizationStatus.error:
-          print("Sign in failed: ${result.error.localizedDescription}");
-          break;
-        case applesignin.AuthorizationStatus.cancelled:
-          print('User cancelled');
-          break;
-      }
-    }else{
-      print('Apple SignIn is not available for your device');
-    }
-
-  }
-
+  // Future<Null> appleLogIn() async {
+  //   if (await applesignin.AppleSignIn.isAvailable()) {
+  //     final applesignin.AuthorizationResult result =
+  //         await applesignin.AppleSignIn.performRequests([
+  //       applesignin.AppleIdRequest(requestedScopes: [
+  //         applesignin.Scope.email,
+  //         applesignin.Scope.fullName
+  //       ])
+  //     ]);
+  //     switch (result.status) {
+  //       case applesignin.AuthorizationStatus.authorized:
+  //         print(
+  //           String.fromCharCodes(result.credential.identityToken),
+  //         );
+  //         break; //All the required credentials
+  //       case applesignin.AuthorizationStatus.error:
+  //         print("Sign in failed: ${result.error.localizedDescription}");
+  //         break;
+  //       case applesignin.AuthorizationStatus.cancelled:
+  //         print('User cancelled');
+  //         break;
+  //     }
+  //   } else {
+  //     print('Apple SignIn is not available for your device');
+  //   }
+  // }
 }
 
 // e7:61:78:2b:d5:fb:90:90:03:8a:43:61:35:3d:e8:88:59:8e:ef:54

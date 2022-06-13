@@ -12,6 +12,7 @@ import 'package:enruta/model/sendOrder.dart';
 import 'package:enruta/screen/orerder/orderDetailsModel.dart';
 import 'package:enruta/screen/promotion/offerModel.dart';
 import 'package:enruta/screen/voucher/voucher_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' as g;
 import 'package:http/http.dart' as http;
 
@@ -52,7 +53,7 @@ class Service {
       'https://enruta.itscholarbd.com/api/v2/addORupdateReview';
 
   static Future<Respons> addorupdateReview(AddReview model) async {
-    var data = json.encode(model);
+    var data = json.encode(model.toJson());
     print(data);
     try {
       final response = await http.post(addorupdaterivew,
@@ -137,7 +138,7 @@ class Service {
           //print(response.body);
           return model;
         } else {
-          print("get menu api eerror");
+          print("get menu api error");
           return null;
         }
       } catch (e) {
@@ -184,7 +185,7 @@ class Service {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'user_id': "1",
+          'user_id': userid.toString(),
           'lat': lats,
           'lng': lon,
         }),
@@ -323,25 +324,30 @@ class Service {
 
   static Future<NearByPlace> createAlbum(int id, var lat, var lo) async {
     // String json = '{"user_id": $id, "lat": $lat, "lng": $lo}';
-    String json = '{"user_id": $id, "lat": $lat, "lng": $lo}';
+    try {
+      String json = '{"user_id": $id, "lat": $lat, "lng": $lo}';
+      print("=========json"+json);
+      final response = await http.post(urls,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json);
+      print('SUCCESSFUL: $response');
+      if (response.statusCode == 200) {
+        print('SUCCESSFUL: ');
 
-    final response = await http.post(urls,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: json);
-
-    if (response.statusCode == 200) {
-      print('SUCCESSFUL: ');
-
-      return NearByPlace.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to create album.');
+        return NearByPlace.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to create album.');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
   static Future<AllOrderModel> getAllOrder(int id) async {
     String json = '{"user_id": $id}';
+    print(json);
 
     final response = await http.post(getAllorderUrl,
         headers: <String, String>{
@@ -373,30 +379,34 @@ class Service {
   }
 
   static Future<PopularShop> getPopularShop(var userId, var lat, var lo) async {
-    g.Get.put(TestController());
-    print("Get popular whenComplete");
-    final tController = g.Get.find<TestController>();
-    String json = '{"user_id": $userId, "lat": $lat, "lng": $lo}';
-    tController.spin.value = true;
-    print("User id $userId");
+    try {
+      // g.Get.put(TestController());
+      print("Get popular whenComplete");
+      // final tController = g.Get.find<TestController>();
+      String json = '{"user_id": $userId, "lat": $lat, "lng": $lo}';
+      // tController.spin.value = true;
+      print("User id $userId");
 
-    final response = await http.post(getPopularShopUrl,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: json);
+      final response = await http.post(getPopularShopUrl,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json);
 
-    //print(response.body);
-    print("${response.statusCode} response status");
+      //print(response.body);
+      print("${response.statusCode} response status");
 
-    if (response.statusCode == 200) {
-      tController.spin.value = false;
+      if (response.statusCode == 200) {
+        // tController.spin.value = false;
 
-      var p = PopularShop.fromJson(jsonDecode(response.body));
-      print(p);
-      return p;
-    } else {
-      throw Exception('Failed to get order List.');
+        var p = PopularShop.fromJson(jsonDecode(response.body));
+        print(p);
+        return p;
+      } else {
+        throw Exception('Failed to get order List.');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 

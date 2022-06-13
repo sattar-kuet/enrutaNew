@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -23,21 +23,23 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1910059739169028</string>
-				<string>com.googleusercontent.apps.653683245037-1d6m5c29be3oade7dps0fkip436i5oqe</string>
+				<string>fb2000465763418925</string>
+				<string>com.googleusercontent.apps.653683245037-1ljo4841h56349r2vqhobo9ksitdlj8f</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<false/>
 	<key>FacebookAppID</key>
-	<string>1910059739169028</string>
+	<string>2000465763418925</string>
 	<key>FacebookAutoLogAppEventsEnabled</key>
 	<false/>
 	<key>FacebookDisplayName</key>
 	<string>Enruta</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -54,12 +56,22 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This permission use for image</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This permission use for location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location is required for xyz benefits for you</string>
+	<string>This permission use for location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This permission your location give perfect results</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Would like to save photos from the app to your gallery</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This permission use for image</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>appTrackingTransparency</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -67,8 +79,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -79,5 +89,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSContactsUsageDescription</key>
+	<string>This permission your contact information.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This permission your canender information.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This permission your give Media information.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>This permission your give Motion information.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This permission your give Speech information.</string>
 </dict>
 </plist>

@@ -109,8 +109,8 @@ class Shop {
   int status;
   DateTime createdAt;
   DateTime updatedAt;
-  int vat;
-  int deliveryCharge;
+  double vat;
+  double deliveryCharge;
   int shopOwnerId;
 
   factory Shop.fromJson(Map<String, dynamic> json) => Shop(

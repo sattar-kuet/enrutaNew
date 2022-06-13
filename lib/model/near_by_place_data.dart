@@ -52,8 +52,8 @@ class Datum {
   int userId;
   int discountOffer;
   String name;
-  int vat;
-  int deliveryCharge;
+  double vat;
+  double deliveryCharge;
   bool favorite;
   String time;
   String logo;
@@ -72,8 +72,8 @@ class Datum {
         name: json["name"],
         discountOffer:
             json["discountOffer"] == null ? 0 : json["discountOffer"],
-        vat: json["vat"] == null ? 0 : json["vat"].toInt(),
-        deliveryCharge: json["delivery_charge"],
+        vat: json["vat"] == null ? 0 : json["vat"].toDouble(),
+        deliveryCharge: json["delivery_charge"].toDouble(),
         favorite: json["favorite"],
         time: json["time"],
         logo: json["logo"],

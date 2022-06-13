@@ -2,6 +2,7 @@ import 'package:enruta/controllers/language_controller.dart';
 import 'package:enruta/controllers/textController.dart';
 import 'package:enruta/helper/helper.dart';
 import 'package:enruta/screen/bottomnavigation/bottomController.dart';
+import 'package:enruta/screen/drawer/myDrawerPage.dart';
 import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/myAccount/myaccount.dart';
 import 'package:enruta/screen/myFavorite/myFavorite.dart';
@@ -11,9 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../main.dart';
+
 // @immutable
 // ignore: must_be_immutable
 class BottomNavigation extends StatefulWidget {
+  GlobalKey<ScaffoldState> key;
+  BottomNavigation(this.key);
   // void onTabTappeds(BuildContext context) {
   //   if (_currentIndex == 0) {
   //     Navigator.pushAndRemoveUntil(
@@ -43,6 +48,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return language.text(key);
   }
 
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     int currentScrreen = 0;
@@ -61,7 +67,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         //   );
         // }
 
-        controller.getPopularShops();
+        // controller.getPopularShops();
         Get.to(HomePage());
       } else if (index == 1) {
         print("one");
@@ -84,14 +90,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Get.to(MyAccount());
       } else if (index == 4) {
         print("four");
-        Scaffold.of(context).openDrawer();
+        Scaffold.of(widget.key.currentContext).openDrawer();
         // Get.to(GetReviewPage());
       }
     }
 
     return ClipRRect(
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+          // topLeft: Radius.circular(15), topRight: Radius.circular(15)
+          ),
       child: BottomNavigationBar(
         selectedIconTheme:
             IconThemeData(color: Color(Helper.getHexToInt("#11C7A1"))),
@@ -112,8 +119,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
         // unselectedLabelStyle: TextStyle(
         //     color: Color(Helper.getHexToInt("#929292")), fontSize: 10),
         onTap: (v) {
-          if (v == 0 || v == 3) {
-            bottomController.curentPage(v);
+          if (v != 4) {
+          bottomController.curentPage(v);
           }
           print("tapped $v");
 

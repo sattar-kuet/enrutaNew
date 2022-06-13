@@ -17,7 +17,7 @@ class HomePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getmenulist();
+    // getmenulist();
     _getLocation();
   }
 

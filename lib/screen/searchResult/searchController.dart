@@ -34,12 +34,12 @@ class SearchController extends GetxController {
     filter1.value = false; //currenty open
     filter2.value = false; //offering discount
     filter3.value = false; //free delevery
-    // filter4.value = false;
-    // filter5.value = false;
-    // filter6.value = false;
-    // filter7.value = false;
-    // filter8.value = false;
-    // filter9.value = false;
+    filter4.value = false;
+    filter5.value = false;
+    filter6.value = false;
+    filter7.value = false;
+    filter8.value = false;
+    filter9.value = false;
   }
 
   void searchData(String name) {

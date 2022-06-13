@@ -26,7 +26,7 @@ class VoucherController extends GetxController {
 
     isLoading(true);
     //await Future.delayed(Duration(seconds: 3));
-    await Service.getAllVoucher(95).then((values) {
+    await Service.getAllVoucher(id).then((values) {
       voucher.value = values.voucher;
       code.value = voucher.value.code;
       discount.value = voucher.value.discount;
@@ -35,7 +35,7 @@ class VoucherController extends GetxController {
     }).whenComplete(() => isLoading(false));
   }
 
-  void advoucher() {
+  void advoucher(bool isFromBootm) {
     String miniprice = minimum.value.toString();
 
     // ignore: unused_local_variable
@@ -43,8 +43,11 @@ class VoucherController extends GetxController {
 
     ccont.shopvoucher.value = discount.value;
     ccont.voucherMinimum.value = minimum.value;
+    ccont.voucherName.value = voucher.value.code;
 
     ccont.totalcalculate();
-    Get.back();
+    if (isFromBootm == false) {
+      Get.back();
+    }
   }
 }

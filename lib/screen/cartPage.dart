@@ -7,22 +7,26 @@ import 'package:enruta/helper/helper.dart';
 import 'package:enruta/helper/style.dart';
 import 'package:enruta/model/cart_list_data.dart';
 import 'package:enruta/model/review_list_data.dart';
+import 'package:enruta/screen/homePage.dart';
 import 'package:enruta/screen/resetpassword/resetController.dart';
+import 'package:enruta/screen/viewMenu/viewMenu.dart';
 //import 'package:enruta/screen/viewMenu/viewMenu.dart';
 import 'package:enruta/screen/voucher/myvoucher.dart';
+import 'package:enruta/screen/voucher/voucherController.dart';
+import 'package:enruta/screen/voucher/voucher_model.dart';
 import 'package:enruta/view/cart_list_view.dart';
 import 'package:enruta/view/cart_slid_view.dart';
 import 'package:enruta/widgetview/custom_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'paymentmethods.dart';
 import 'setLocation.dart';
 
 // ignore: must_be_immutable
 class CartPage extends StatelessWidget {
-  List<ReviewListData> reviewList = ReviewListData.reviewList;
-  List<CartListData> cartList = CartListData.cartList;
   final CartController cartCont = Get.put(CartController());
   final cCont = Get.find<CartController>();
   final suggestController = Get.put(SuggestController());
@@ -50,6 +54,7 @@ class CartPage extends StatelessWidget {
     print(cartCont.totalPrice);
     print(cartCont.vat.value);
     print(cartCont.gTotal);
+
     // cCont.subTprice.value = 0.0;
     // cCont.tvatprice.value = 0.0;
     // cCont.grandTotalprice.value = 0.0;
@@ -60,7 +65,7 @@ class CartPage extends StatelessWidget {
     // }
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: 70,
           leading: IconButton(
             onPressed: () {
               // Navigator.of(context).pop();
@@ -89,14 +94,41 @@ class CartPage extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
+          margin: EdgeInsets.only(top: 20),
           child: Stack(
             children: [
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: ListView(
+              Positioned(
+                bottom: -100,
+                left: -30,
+                child: new Container(
+                    width: 150.0,
+                    height: 220.0,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      // borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: AssetImage('assets/icons/unnamed (1).png'),
+                          fit: BoxFit.cover),
+                    )),
+              ),
+              Positioned(
+                bottom: -90,
+                right: -50,
+                child: new Container(
+                    width: 150.0,
+                    height: 150.0,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      // borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          image: AssetImage('assets/icons/unnamed.png'),
+                          fit: BoxFit.cover),
+                    )),
+              ),
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView(
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
                       children: [
@@ -106,8 +138,8 @@ class CartPage extends StatelessWidget {
 
                         // Text(cartCont.cartList.length.toString()),
 
-                        Obx(
-                          () => ListView.separated(
+                        Obx(() {
+                          return ListView.separated(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             physics: ClampingScrollPhysics(),
@@ -150,8 +182,8 @@ class CartPage extends StatelessWidget {
                             separatorBuilder: (context, index) {
                               return Text("");
                             },
-                          ),
-                        ),
+                          );
+                        }),
 
                         // ListView(
                         //   shrinkWrap: true,
@@ -163,201 +195,218 @@ class CartPage extends StatelessWidget {
                         //   }),
                         // ),
                         Container(
-                          height: 50,
-                          margin: EdgeInsets.only(left: 20),
+                          margin:
+                              EdgeInsets.only(left: 20, top: 20, bottom: 10),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(text('suggested_items')),
                           ),
                         ),
+
                         Container(
-                          // padding: EdgeInsets.only(top: 100),
-                          height: MediaQuery.of(context).size.height / 1.29,
-                          child: Stack(
+                          height: 110,
+                          decoration: BoxDecoration(),
+                          child: Obx(() {
+                            if (cartCont.suggetItems.isNotEmpty) {
+                              return ListView.builder(
+                                  itemCount: cartCont.suggetItems.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return CartSlidView(
+                                      cartData: cartCont.suggetItems[index],
+                                    );
+                                  });
+                            } else {
+                              return Center(
+                                  child: Text(
+                                text('no_suggested_available_yet'),
+                              ));
+                            }
+                          }),
+                        ),
+                        // Container(
+                        //   margin: EdgeInsets.symmetric(
+                        //       horizontal: 15, vertical: 30),
+                        //   // height: 71,
+                        //   child: Text(
+                        //     "We will deliver to your door”, all deliveries " +
+                        //         "comes in a big box over USPS or Fedex Or UPS, doesn’t matter, " +
+                        //         "Just keep it Simple: We will deliver to your door",
+                        //     textAlign: TextAlign.justify,
+                        //     style: TextStyle(
+                        //         fontSize: 14,
+                        //         fontFamily: 'TTCommonsm',
+                        //         color: Color(Helper.getHexToInt("#959599"))),
+                        //   ),
+                        // ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Positioned(
-                                  top: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height,
-                                    margin: EdgeInsets.only(top: 50),
-                                    color: cardbackgroundColor,
-                                  )),
-                              Positioned(
-                                  top: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Container(
-                                    height: 110,
-                                    decoration: BoxDecoration(),
-                                    child: Obx(() => cartCont.suggetItems !=
-                                            null
-                                        ? ListView.builder(
-                                            itemCount:
-                                                cartCont.suggetItems.length,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) {
-                                              return CartSlidView(
-                                                cartData:
-                                                    cartCont.suggetItems[index],
-                                              );
-                                            })
-                                        : null),
-                                  )),
-                              Positioned(
-                                top: 123,
-                                left: 20,
-                                right: 20,
-                                child: Divider(),
-                                //   child: Container(
-                                //     // margin: EdgeInsets.all(5),
-                                //     height: 71,
-                                //     child: Text(
-                                //       "We will deliver to your door”, all deliveries " +
-                                //           "comes in a big box over USPS or Fedex Or UPS, doesn’t matter, " +
-                                //           "Just keep it Simple: We will deliver to your door",
-                                //       textAlign: TextAlign.justify,
-                                //       style: TextStyle(
-                                //           fontSize: 14,
-                                //           fontFamily: 'TTCommonsm',
-                                //           color: Color(
-                                //               Helper.getHexToInt("#959599"))),
-                                //     ),
-                                //   ),
+                              Text(
+                                text('apply_coupon_code'),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'TTCommonsd',
+                                    color: Color(Helper.getHexToInt("#636573"))
+                                        .withOpacity(0.6)),
                               ),
-                              Positioned(
-                                  top: 150,
-                                  left: 20,
-                                  right: 20,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        text('apply_coupon_code'),
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: 'TTCommonsd',
-                                            color: Color(Helper.getHexToInt(
-                                                    "#636573"))
-                                                .withOpacity(0.6)),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Get.to(MyVoucher());
-                                        },
-                                        child: Text(
-                                          text('check_voucher'),
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontFamily: 'TTCommonsd',
-                                              color: Color(Helper.getHexToInt(
-                                                      "#11C7A1"))
-                                                  .withOpacity(0.6)),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                              Positioned(
-                                  top: 180,
-                                  left: 20,
-                                  right: 20,
-                                  child: Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          height: 50,
-                                          width: 200,
-                                          margin: EdgeInsets.only(left: 20),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              hintText: "BARBIQ20",
-                                              hintStyle: TextStyle(
-                                                color: Color(Helper.getHexToInt(
-                                                        "#636573"))
-                                                    .withOpacity(.2),
-                                                fontSize: 16.0,
-                                              ),
-                                              border: InputBorder.none,
-                                            ),
-                                            onChanged: (text) {
-                                              cartCont.checkOffer.value = 0;
-                                              // print(text);
-                                            },
-                                            controller: voucherController,
-                                          ),
-                                          // child: TextField(
+                              InkWell(
+                                onTap: () {
+                                  Get.to(MyVoucher()).then((value) {
+                                    voucherController.text =
+                                        cCont.voucherName.value;
+                                  });
+                                },
+                                child: Text(
+                                  text('check_voucher'),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: 'TTCommonsd',
+                                      color:
+                                          Color(Helper.getHexToInt("#11C7A1"))
+                                              .withOpacity(0.6)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
-                                          //   decoration: InputDecoration(
-                                          //       border: InputBorder.none,
-                                          //       hintText:
-                                          //           'Enter a search term'),
-                                          // ),
-                                        ),
-                                        Container(
-                                          width: 100,
-                                          height: 41,
-                                          decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                  begin: Alignment.topLeft,
-                                                  colors: [
-                                                    Color(Helper.getHexToInt(
-                                                        "#11C7A1")),
-                                                    Color(Helper.getHexToInt(
-                                                        "#11E4A1"))
-                                                  ]),
-                                              borderRadius:
-                                                  BorderRadius.circular(6)),
-                                          child: InkWell(
-                                            onTap: () async {
-                                              await cartCont.applyVoucher(
-                                                  voucherController.text);
-
-                                              cartCont.totalcalculate();
-                                            },
-                                            child: Center(
-                                                child: Text(
-                                              text('apply_now'),
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: 'TTCommonsd',
-                                                  color: Colors.white),
-                                            )),
-                                          ),
-                                        )
-                                      ],
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 200,
+                                margin: EdgeInsets.only(left: 20),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    hintText: "BARBIQ20",
+                                    hintStyle: TextStyle(
+                                      color:
+                                          Color(Helper.getHexToInt("#636573"))
+                                              .withOpacity(.2),
+                                      fontSize: 16.0,
                                     ),
-                                  )),
-                              Obx(() => cartCont.checkOffer.value == 1
-                                  ? Positioned(
-                                      top: 233,
-                                      left: 20,
-                                      right: 20,
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (text) {
+                                    cartCont.checkOffer.value;
+                                    print(cartCont.checkOffer.value);
+
+                                    // print(text);
+                                  },
+                                  controller: voucherController,
+                                ),
+                                // child: TextField(
+
+                                //   decoration: InputDecoration(
+                                //       border: InputBorder.none,
+                                //       hintText:
+                                //           'Enter a search term'),
+                                // ),
+                              ),
+                              Container(
+                                width: 100,
+                                height: 41,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        colors: [
+                                          Color(Helper.getHexToInt("#11C7A1")),
+                                          Color(Helper.getHexToInt("#11E4A1"))
+                                        ]),
+                                    borderRadius: BorderRadius.circular(6)),
+                                child: InkWell(
+                                  onTap: () async {
+                                    try {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          });
+                                      await cartCont
+                                          .applyVoucher(voucherController.text);
+
+                                      cartCont.totalcalculate();
+                                    } catch (e) {
+                                      Fluttertoast.showToast(msg: e.toString());
+                                    } finally {
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  child: Center(
                                       child: Text(
-                                        cartCont.cuponerrortxt.value,
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      height: 0,
-                                    )),
-                              Positioned(
-                                  top: 260,
-                                  left: 20,
-                                  right: 20,
+                                    text('apply_now'),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'TTCommonsd',
+                                        color: Colors.white),
+                                  )),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Obx(() => cartCont.checkOffer.value == 1
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Text(
+                                  cartCont.cuponerrortxt.value,
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              )
+                            : SizedBox(
+                                height: 0,
+                              )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                text('payment_details'),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'TTCommonsd',
+                                    color: Color(Helper.getHexToInt("#000000"))
+                                        .withOpacity(0.4)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(top: 10, bottom: 14),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                            ),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      top: 5, bottom: 5, left: 15, right: 15),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        text('payment_details'),
+                                        text('subtotal'),
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontFamily: 'TTCommonsd',
@@ -365,412 +414,279 @@ class CartPage extends StatelessWidget {
                                                     "#000000"))
                                                 .withOpacity(0.4)),
                                       ),
+                                      Obx(() => cartCont.subTprice.value != null
+                                          ? Text(
+                                              "\$" +
+                                                  cartCont.subTprice.value
+                                                      .toString(),
+                                              // cCont.totalPrice
+                                              //     .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'TTCommonsd',
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#000000"))
+                                                      .withOpacity(0.4)),
+                                            )
+                                          : Text("0")),
                                     ],
-                                  )),
-                              Positioned(
-                                  top: 280,
-                                  left: 20,
-                                  right: 20,
-                                  child: Container(
-                                      padding:
-                                          EdgeInsets.only(top: 10, bottom: 14),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(7)),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                top: 5,
-                                                bottom: 5,
-                                                left: 15,
-                                                right: 15),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  text('subtotal'),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: 'TTCommonsd',
-                                                      color: Color(Helper
-                                                              .getHexToInt(
-                                                                  "#000000"))
-                                                          .withOpacity(0.4)),
-                                                ),
-                                                Obx(() =>
-                                                    cartCont.subTprice.value !=
-                                                            null
-                                                        ? Text(
-                                                            "\$" +
-                                                                cartCont
-                                                                    .subTprice
-                                                                    .value
-                                                                    .toString(),
-                                                            // cCont.totalPrice
-                                                            //     .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 14,
-                                                                fontFamily:
-                                                                    'TTCommonsd',
-                                                                color: Color(Helper
-                                                                        .getHexToInt(
-                                                                            "#000000"))
-                                                                    .withOpacity(
-                                                                        0.4)),
-                                                          )
-                                                        : Text("0")),
-                                              ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      top: 5, bottom: 5, left: 15, right: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        text('Vat'),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'TTCommonsd',
+                                            color: Color(Helper.getHexToInt(
+                                                    "#000000"))
+                                                .withOpacity(0.4)),
+                                      ),
+                                      Obx(
+                                        () => cartCont.tvatprice.value != null
+                                            ? Text(
+                                                "\$" +
+                                                    cartCont.tvatprice.value
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: 'TTCommonsd',
+                                                    color: Color(
+                                                            Helper.getHexToInt(
+                                                                "#000000"))
+                                                        .withOpacity(0.4)),
+                                              )
+                                            : Text("0"),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      top: 5, bottom: 5, left: 15, right: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        text('delivery'),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'TTCommonsd',
+                                            color: Color(Helper.getHexToInt(
+                                                    "#000000"))
+                                                .withOpacity(0.4)),
+                                      ),
+                                      Obx(
+                                        () => cartCont.deliveryCharge.value !=
+                                                null
+                                            ? Text(
+                                                "\$" +
+                                                    cartCont
+                                                        .deliveryCharge.value
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: 'TTCommonsd',
+                                                    color: Color(
+                                                            Helper.getHexToInt(
+                                                                "#000000"))
+                                                        .withOpacity(0.4)),
+                                              )
+                                            : Text("\$0"),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Obx(() => cartCont.cuppon.value > 0
+                                    ? Container(
+                                        padding: EdgeInsets.only(
+                                            top: 3,
+                                            bottom: 5,
+                                            left: 15,
+                                            right: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              text('coupon'),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'TTCommonsd',
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#000000"))
+                                                      .withOpacity(0.4)),
                                             ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                top: 5,
-                                                bottom: 5,
-                                                left: 15,
-                                                right: 15),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  text('vat'),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: 'TTCommonsd',
-                                                      color: Color(Helper
-                                                              .getHexToInt(
-                                                                  "#000000"))
-                                                          .withOpacity(0.4)),
-                                                ),
-                                                Obx(
-                                                  () => cartCont.tvatprice
-                                                              .value !=
-                                                          null
+                                            Obx(
+                                              () =>
+                                                  cartCont.cuppon.value != null
                                                       ? Text(
-                                                          "\$" +
-                                                              cartCont.tvatprice
-                                                                  .value
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  'TTCommonsd',
-                                                              color: Color(Helper
-                                                                      .getHexToInt(
-                                                                          "#000000"))
-                                                                  .withOpacity(
-                                                                      0.4)),
-                                                        )
-                                                      : Text("0"),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                top: 5,
-                                                bottom: 5,
-                                                left: 15,
-                                                right: 15),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  text('delivery'),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: 'TTCommonsd',
-                                                      color: Color(Helper
-                                                              .getHexToInt(
-                                                                  "#000000"))
-                                                          .withOpacity(0.4)),
-                                                ),
-                                                Obx(
-                                                  () => cartCont.deliveryCharge
-                                                              .value !=
-                                                          null
-                                                      ? Text(
-                                                          "\$" +
+                                                          "- \$" +
                                                               cartCont
-                                                                  .deliveryCharge
-                                                                  .value
+                                                                  .cuppon.value
                                                                   .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  'TTCommonsd',
-                                                              color: Color(Helper
-                                                                      .getHexToInt(
-                                                                          "#000000"))
-                                                                  .withOpacity(
-                                                                      0.4)),
-                                                        )
-                                                      : Text("0"),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Obx(() => cartCont.cuppon.value > 0
-                                              ? Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 5,
-                                                      bottom: 5,
-                                                      left: 15,
-                                                      right: 15),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        text('coupon'),
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontFamily:
-                                                                'TTCommonsd',
-                                                            color: Color(Helper
-                                                                    .getHexToInt(
-                                                                        "#000000"))
-                                                                .withOpacity(
-                                                                    0.4)),
-                                                      ),
-                                                      Obx(
-                                                        () => cartCont.cuppon
-                                                                    .value !=
-                                                                null
-                                                            ? Text(
-                                                                "- \$" +
-                                                                    cartCont
-                                                                        .cuppon
-                                                                        .value
-                                                                        .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'TTCommonsd',
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.4)),
-                                                              )
-                                                            : Text(
-                                                                "\$" + "0",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'TTCommonsd',
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.4)),
-                                                              ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  height: 0,
-                                                )),
-                                          Obx(() => cartCont.voucher.value > 0
-                                              ? Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 5,
-                                                      bottom: 5,
-                                                      left: 15,
-                                                      right: 15),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(text('voucher'),
                                                           style: TextStyle(
                                                               fontSize: 14,
                                                               fontFamily:
                                                                   'TTCommonsd',
                                                               color: Colors.red
                                                                   .withOpacity(
-                                                                      0.4))),
-                                                      Obx(
-                                                        () => cartCont.voucher
-                                                                    .value !=
-                                                                null
-                                                            ? Text(
-                                                                "- \$" +
-                                                                    cartCont
-                                                                        .voucher
-                                                                        .value
-                                                                        .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'TTCommonsd',
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.4)))
-                                                            : Text("\$" + "0"),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  height: 0,
-                                                )),
-                                          Obx(() => cartCont.discount.value > 0
-                                              ? Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 5,
-                                                      bottom: 5,
-                                                      left: 15,
-                                                      right: 15),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        text('offer'),
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontFamily:
-                                                                'TTCommonsd',
-                                                            color: Color(Helper
-                                                                    .getHexToInt(
-                                                                        "#000000"))
-                                                                .withOpacity(
-                                                                    0.4)),
-                                                      ),
-                                                      Obx(
-                                                        () => cartCont.discount.value !=
-                                                                null
-                                                            ? Text(
-                                                                "- \$" +
-                                                                    cartCont
-                                                                        .discount
-                                                                        .value
-                                                                        .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'TTCommonsd',
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.4)))
-                                                            : Text(
-                                                                "\$" + "0",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'TTCommonsd',
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.4)),
-                                                              ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  height: 0,
-                                                )),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                top: 5,
-                                                bottom: 5,
-                                                left: 15,
-                                                right: 15),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  text('total'),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: 'TTCommonsd',
-                                                      color: Colors.black),
-                                                ),
-                                                Obx(
-                                                  () => Text(
-                                                      "\$" +
-                                                          cartCont
-                                                              .grandTotalprice
-                                                              .value
+                                                                      0.4)),
+                                                        )
+                                                      : Text(
+                                                          "\$" + "0",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontFamily:
+                                                                  'TTCommonsd',
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.4)),
+                                                        ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 0,
+                                      )),
+                                Obx(() => cartCont.voucher.value > 0
+                                    ? Container(
+                                        padding: EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 5,
+                                            left: 15,
+                                            right: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(text('voucher'),
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: 'TTCommonsd',
+                                                    color: Colors.red
+                                                        .withOpacity(0.4))),
+                                            Obx(
+                                              () => cartCont.voucher.value !=
+                                                      null
+                                                  ? Text(
+                                                      "- \$" +
+                                                          cartCont.voucher.value
                                                               .toString(),
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontFamily:
                                                               'TTCommonsd',
-                                                          color: Colors.black)),
-                                                )
-                                              ],
+                                                          color: Colors.red
+                                                              .withOpacity(
+                                                                  0.4)))
+                                                  : Text("\$" + "0"),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 0,
+                                      )),
+                                Obx(() => cartCont.discount.value > 0
+                                    ? Container(
+                                        padding: EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 5,
+                                            left: 15,
+                                            right: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              text('offer'),
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'TTCommonsd',
+                                                  color: Color(
+                                                          Helper.getHexToInt(
+                                                              "#000000"))
+                                                      .withOpacity(0.4)),
                                             ),
-                                          ),
-                                        ],
-                                      ))),
-                              Positioned(
-                                  bottom: -55,
-                                  left: -55,
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: new Container(
-                                        width: 150.0,
-                                        height: 150.0,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          // borderRadius: BorderRadius.circular(8),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/icons/unnamed (1).png'),
-                                              fit: BoxFit.cover),
-                                        )),
-                                  )),
-                              Positioned(
-                                  bottom: -55,
-                                  right: -55,
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: new Container(
-                                        width: 150.0,
-                                        height: 150.0,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          // borderRadius: BorderRadius.circular(8),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/icons/unnamed.png'),
-                                              fit: BoxFit.cover),
-                                        )),
-                                  )),
-                              Positioned(
-                                  bottom: 10,
-                                  left: 10,
-                                  right: 10,
-                                  child: buidbottomfield(context)),
-                            ],
-                          ),
-                        ),
+                                            Obx(
+                                              () => cartCont.discount.value !=
+                                                      null
+                                                  ? Text(
+                                                      "- \$" +
+                                                          cartCont
+                                                              .discount.value
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily:
+                                                              'TTCommonsd',
+                                                          color: Colors.red
+                                                              .withOpacity(
+                                                                  0.4)))
+                                                  : Text(
+                                                      "\$" + "0",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily:
+                                                              'TTCommonsd',
+                                                          color: Colors.red
+                                                              .withOpacity(
+                                                                  0.4)),
+                                                    ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 0,
+                                      )),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      top: 5, bottom: 5, left: 15, right: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        text('total'),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'TTCommonsd',
+                                            color: Colors.black),
+                                      ),
+                                      Obx(
+                                        () => Text(
+                                            "\$" +
+                                                cartCont.grandTotalprice.value
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'TTCommonsd',
+                                                color: Colors.black)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )),
+                        const SizedBox(height: 20),
+                        buidbottomfield(context),
                       ],
-                    )),
-                  ],
-                ),
-              )
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ));
@@ -790,22 +706,21 @@ class CartPage extends StatelessWidget {
         onTap: () {},
         child: Stack(
           children: [
-            Positioned(
-              top: 5,
-              left: 5,
-              bottom: 10,
-              child: Container(
-                height: 43,
-                width: 43,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                      image: Get.find<ResetController>().pimage.value != null
-                          ? NetworkImage(
-                              '${Get.find<ResetController>().pimage.value}')
-                          : AssetImage('assets/icons/profile.png'),
-                      fit: BoxFit.cover),
-                ),
+            Container(
+              height: 43,
+              width: 43,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                    onError: (exception, stackTrace) =>
+                        AssetImage('assets/icons/image.png'),
+                    image:
+                        (Get.find<ResetController>().pimage.value?.isNotEmpty ??
+                                false)
+                            ? NetworkImage(
+                                '${Get.find<ResetController>().pimage.value}')
+                            : AssetImage('assets/icons/image.png'),
+                    fit: BoxFit.cover),
               ),
             ),
             Positioned(
@@ -824,26 +739,26 @@ class CartPage extends StatelessWidget {
                 ),
               ),
             ),
-            // Positioned(
-            //     bottom: 10,
-            //     top: 10,
-            //     right: 10,
-            //     child: Center(
-            //       child: InkWell(
-            //         onTap: () {
-            //           // Get.to();
-            //           Get.to(ViewMenuPage());
-            //           print("view all ");
-            //         },
-            //         child: Text(
-            //           text('view_menu'),
-            //           style: TextStyle(
-            //               fontFamily: "TTCommonsd",
-            //               fontSize: 14,
-            //               color: Color(Helper.getHexToInt("#3AD8B4"))),
-            //         ),
-            //       ),
-            //     )),
+            Positioned(
+                bottom: 10,
+                top: 10,
+                right: 10,
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      // Get.to();
+                      Navigator.of(context).pop();
+                      print("view all ");
+                    },
+                    child: Text(
+                      text('view_menu'),
+                      style: TextStyle(
+                          fontFamily: "TTCommonsd",
+                          fontSize: 14,
+                          color: Color(Helper.getHexToInt("#3AD8B4"))),
+                    ),
+                  ),
+                )),
           ],
         ),
       ),
@@ -891,7 +806,7 @@ class CartPage extends StatelessWidget {
             )),
           ),
           Positioned(
-            left: 20,
+            left: 15,
             top: 15,
             child: InkWell(
               child: Container(
@@ -961,11 +876,6 @@ class CartPage extends StatelessWidget {
                       color:
                           Color(Helper.getHexToInt("#707070")).withOpacity(0.1),
                     )),
-// Positioned(
-//   top: 60,
-//   left: 0,
-//   right: 0,
-// ),
 
                 Positioned(
                     top: 60,
@@ -983,12 +893,11 @@ class CartPage extends StatelessWidget {
                           Obx(
                             () => cartCont.deliveryType.value == 1
                                 ? Container(
-                                    padding:
-                                        EdgeInsets.only(top: 5, bottom: 10),
+                                    padding: EdgeInsets.only(top: 5, bottom: 8),
                                     child: showcart(context),
                                   )
                                 : SizedBox(
-                                    height: 0,
+                                    height: 10,
                                   ),
                           ),
                           Container(
@@ -1305,10 +1214,10 @@ class CartPage extends StatelessWidget {
               child: Center(
                 child: Container(
                   child: Text(
-                    text('order_method'),
+                    text('payment_method'),
                     style: TextStyle(
                         fontFamily: "TTCommonsm",
-                        fontSize: 14,
+                        fontSize: 15,
                         color: Color(Helper.getHexToInt("#C4C4C4"))),
                   ),
                 ),
@@ -1327,7 +1236,7 @@ class CartPage extends StatelessWidget {
                             image: pmController.paymentType.value == 1
                                 ? AssetImage('assets/icons/cashpa.png')
                                 : pmController.paymentType.value == 2
-                                    ? AssetImage('assets/icons/payPalIcon.png')
+                                    ? AssetImage('assets/icons/cIcon.png')
                                     : null,
                             fit: BoxFit.contain),
                       ),
@@ -1389,17 +1298,21 @@ class CartPage extends StatelessWidget {
             ),
           )),
         ),
-        onclick: () {
-          if (cartCont.deliverOption.value != "" ||
-              Get.put(TestController()).sendtime.value != "") {
-            cartCont.sendOrder(context);
+        onclick: () async {
+          try {
+            // if (cartCont.deliverOption.value != "") {
+            await cartCont.sendOrder(context);
+            showSuccessfullyBottompopup(context);
+            // }
+          } catch (e) {
+            Fluttertoast.showToast(msg: e.toString());
           }
           // Get.snackbar("", "Provide all details or wait a min");
         });
   }
 
   // ignore: missing_return
-  Widget showSuccessfullyBottompopup(BuildContext context) {
+  void showSuccessfullyBottompopup(BuildContext context) {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
@@ -1407,56 +1320,54 @@ class CartPage extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (BuildContext bc) {
-          return Center(
-            child: Container(
-              // height: 200,
-              child: Stack(
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Positioned(
-                      top: 20,
-                      child: Container(
-                        height: 160,
-                        width: MediaQuery.of(context).size.width,
-                        child: Image(
-                          image: AssetImage("assets/icons/delevery.png"),
-                        ),
-                      )),
-
-                  Positioned(
-                      bottom: 160,
-                      left: 20,
-                      right: 20,
-                      child: Center(
-                        child: Text(
-                          text('your_order_placed_successfully'),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontFamily: 'TTCommonsd',
-                              color: Color(Helper.getHexToInt("#959595"))),
-                        ),
-                      )),
-                  Positioned(
-                    bottom: 120,
-                    left: 82,
-                    right: 82,
-                    // child: Center(
+                  Container(
+                    height: 150,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image(
+                      image: AssetImage("assets/icons/delevery.png"),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        text('your_order_placed'),
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 23,
+                            color: Color(Helper.getHexToInt("#959595"))),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        text('successfully'),
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 23, color: Colors.green),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: Text(
-                      text('you_will_receive_a_conformation_mail'),
+                      text('you_will_receive_a_conformation_mail') + ".",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'TTCommonsm',
+                      maxLines: 2,
+                      style: GoogleFonts.poppins(
+                          fontSize: 15,
                           color: Color(Helper.getHexToInt("#959595"))),
                     ),
                   ),
                   // ),
-                  Positioned(
-                    bottom: 10,
-                    left: 10,
-                    right: 10,
-                    child: goHomebottomfield(context),
-                  ),
+                  const SizedBox(height: 10),
+                  goHomebottomfield(context),
                   // Center(
                   //   child: Column(
                   //     mainAxisAlignment: MainAxisAlignment.center,

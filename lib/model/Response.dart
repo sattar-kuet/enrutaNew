@@ -17,7 +17,7 @@ class Respons {
 
   factory Respons.fromJson(Map<String, dynamic> json) => Respons(
         status: json["status"],
-        categories: List<Category>.from(
+        categories:json["categories"]==null? []: List<Category>.from(
             json["categories"].map((x) => Category.fromJson(x))),
       );
 

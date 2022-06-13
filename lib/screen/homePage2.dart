@@ -28,7 +28,7 @@ class _HomePagetState extends State<HomePaget> {
     return Scaffold(
         body: _children[_curentIndex],
         bottomNavigationBar: Container(
-          height: 73,
+          height: 80,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(30), topLeft: Radius.circular(30)),
@@ -44,8 +44,8 @@ class _HomePagetState extends State<HomePaget> {
               backgroundColor: Colors.white,
               selectedItemColor: Color(Helper.getHexToInt("#6F6F6F")),
               unselectedItemColor: Color(Helper.getHexToInt("##929292")),
-              selectedFontSize: 14,
-              unselectedFontSize: 14,
+              // selectedFontSize: 14,
+              // unselectedFontSize: 14,
               // new
 
               currentIndex:
